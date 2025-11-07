@@ -131,5 +131,19 @@
     "minPlayers": 2,
     "maxPlayers": 50,
     "link": "https://garticphone.com/"
+  },
+  {
+    "name": "Who Said It?",
+    "description": "Guess who said the quote: Trump, Kanye, or H*tler.",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://www.playscape.gg/t3Lh9z"
+  },
+  {
+    "name": "Linkterpol",
+    "description": "Guess if the portrait is from LinkedIn or from Interpol.",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://linkterpol.fr/"
   }
 ]
