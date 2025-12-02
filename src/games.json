@@ -145,5 +145,19 @@
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://linkterpol.fr/"
+  },
+  {
+    "name": "Pédantix",
+    "description": "Discover the Wikipedia page.",
+    "minPlayers": 1,
+    "maxPlayers": -1,
+    "link": "https://pedantix.certitudes.org/"
+  },
+  {
+    "name": "Cémantix",
+    "description": "Discover the word.",
+    "minPlayers": 1,
+    "maxPlayers": -1,
+    "link": "https://cemantix.certitudes.org/"
   }
 ]
