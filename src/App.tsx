@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.scss";
 import { Games } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
+import { Helmet } from "react-helmet-async";
 
 function App() {
   const [players, setPlayers] = useState(4);
@@ -13,6 +14,21 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>
+          What we play? Find a game to play online with your friends!
+        </title>
+        <meta
+          name="description"
+          content="Find the best game to play online with your friends based on player count."
+        />
+        <meta property="og:title" content="What we play?" />
+        <meta
+          property="og:description"
+          content="Find games online for your group."
+        />
+        <meta property="og:image" content="/what-we-play.png" />
+      </Helmet>
       <header>
         <h1>What we play?</h1>
         <div className="how-many">
