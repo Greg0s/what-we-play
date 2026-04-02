@@ -98,6 +98,13 @@
     "link": "https://jklm.fun/"
   },
   {
+    "name": "rentguessr",
+    "description": "Guess rent price based on accommodations images.",
+    "minPlayers": 1,
+    "maxPlayers": -1,
+    "link": "https://www.rentguessr.fun/game"
+  },
+  {
     "name": "OpenGuessr",
     "description": "Guess locations on a map based on Street View images.",
     "minPlayers": 1,
@@ -159,5 +166,12 @@
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://cemantix.certitudes.org/"
+  },
+  {
+    "name": "brandcolorgame",
+    "description": "Guess the brand's color.",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://brandcolorgame.com/"
   }
 ]
