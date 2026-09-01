@@ -140,13 +140,6 @@
     "link": "https://garticphone.com/"
   },
   {
-    "name": "Who Said It?",
-    "description": "Guess who said the quote: Trump, Kanye, or H*tler.",
-    "minPlayers": 1,
-    "maxPlayers": 1,
-    "link": "https://www.playscape.gg/t3Lh9z"
-  },
-  {
     "name": "Linkterpol",
     "description": "Guess if the portrait is from LinkedIn or from Interpol.",
     "minPlayers": 1,
@@ -173,5 +166,19 @@
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://brandcolorgame.com/"
+  },
+  {
+    "name": "Blindtest.gg",
+    "description": "Guess songs faster than everyone else in a music blind test.",
+    "minPlayers": 1,
+    "maxPlayers": 15,
+    "link": "https://blindtest.gg/"
+  },
+  {
+    "name": "What the Tune",
+    "description": "Music blind test: guess the song from a short audio clip.",
+    "minPlayers": 1,
+    "maxPlayers": 10,
+    "link": "https://whatthetune.com/"
   }
 ]
