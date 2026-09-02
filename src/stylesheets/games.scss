@@ -15,7 +15,7 @@
   padding: 3.6rem 2.5rem 1rem;
   border-radius: $border-radius;
   width: 100%;
-  height: 10.75rem;
+  height: 12.5rem;
   box-sizing: border-box;
   overflow: hidden;
 
@@ -31,6 +31,13 @@
     margin: 0.5rem 0 0 0;
     font-size: 0.9rem;
     opacity: 0.8;
+  }
+
+  &__players {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    opacity: 0.55;
   }
 
   &::after {

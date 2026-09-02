@@ -25,10 +25,11 @@ No test suite in this repo.
 - `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
 - `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, and the player-count filter. Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
-- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `PlayerCountNav` (links to the player-count pages).
+- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `PlayerCountNav` (links to the player-count pages), `Faq` (landing pages only).
 - `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
 - `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
 - `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
+- `src/structuredData.ts` — the JSON-LD each page carries, built from `games.json` and the locales.
 - `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
 - `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
 - `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
@@ -38,8 +39,9 @@ No test suite in this repo.
 The site is prerendered at build time and hydrated in the browser. `pnpm run build`
 runs three steps: the client build, an SSR build of `src/entry-server.tsx` into
 `dist-ssr/`, then `scripts/prerender.js`, which renders every route and writes it
-to `dist/<path>/index.html`, along with `sitemap.xml`. The build fails if a page's
-games do not reach its file, so an empty page cannot ship unnoticed.
+to `dist/<path>/index.html`, along with `sitemap.xml` and `llms.txt`. The build
+fails if a page's games do not reach its file, so an empty page cannot ship
+unnoticed.
 
 This matters because GitHub Pages serves files only, and crawlers that do not run
 JavaScript — every generative engine among them — would otherwise receive an empty
@@ -81,6 +83,27 @@ links are real anchors — they work without JavaScript and are what crawlers
 follow — upgraded to in-place navigation when JavaScript is available. The
 counter itself uses `replaceState`, since pushing one history entry per keystroke
 would make Back unusable.
+
+## Structured data
+
+Every page carries JSON-LD from `src/structuredData.ts`, written into the static
+HTML — the engines it is meant for do not run JavaScript, so injecting it at
+runtime would be pointless.
+
+Each page gets a `CollectionPage` wrapping an `ItemList` of `VideoGame`. The
+vocabulary fits the data exactly: `numberOfPlayers` is a `QuantitativeValue`, and
+`maxPlayers: -1` is expressed by *omitting* `maxValue` rather than by inventing a
+number. Landing pages add `WebSite` and `FAQPage`; player-count pages add a
+`BreadcrumbList`.
+
+`dateModified` comes from the last commit touching `src/games.json` or
+`src/i18n/locales` — not from the build clock, which would move on every deploy
+and mean nothing. If git cannot answer, the field is omitted rather than guessed,
+which is why the deploy workflow checks out with `fetch-depth: 0`.
+
+Claims in the copy and in the markup (`isAccessibleForFree`, "nothing to
+install") are the ones the README makes about the catalogue. If that stops being
+true of every game, both the FAQ answers and `isAccessibleForFree` have to change.
 
 ## Internationalization (i18n)
 

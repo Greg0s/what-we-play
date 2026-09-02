@@ -26,6 +26,43 @@ export const es: Translation = {
   language: {
     label: "Idioma",
   },
+  content: {
+    homeIntro:
+      "Dinos cuántos sois y obtén la lista de juegos en línea que funcionan con ese grupo. Todos se juegan en un navegador y son gratis.",
+    countIntro: (games: number, players: number) =>
+      players === 1
+        ? `${games} juegos para jugar en solitario, directamente en un navegador y gratis.`
+        : `${games} juegos que funcionan con ${players} jugadores, directamente en un navegador y gratis.`,
+    playerRange: (min: number, max: number) => {
+      const label = (count: number) =>
+        count === 1 ? "1 jugador" : `${count} jugadores`;
+      if (max === -1) return `${label(min)} o más`;
+      if (min === max) return label(min);
+      return `${min} a ${max} jugadores`;
+    },
+    faqTitle: "Preguntas frecuentes",
+    faq: [
+      {
+        question: "¿Estos juegos son gratis?",
+        answer: "Sí. Todos los juegos que aparecen aquí son gratuitos.",
+      },
+      {
+        question: "¿Hay que instalar algo?",
+        answer:
+          "No. Todos funcionan en un navegador, tanto en ordenador como en móvil.",
+      },
+      {
+        question: "¿Se puede jugar en solitario?",
+        answer:
+          "Sí. Pon el contador en 1 y la lista se queda con los juegos que se pueden jugar solo.",
+      },
+      {
+        question: "¿Cómo encuentro un juego para mi grupo?",
+        answer:
+          "Indica cuántos sois: la lista se actualiza con los juegos que funcionan con ese número de jugadores.",
+      },
+    ],
+  },
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",
     "wikipedia-speedruns":

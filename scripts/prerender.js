@@ -7,6 +7,7 @@
  * to crawlers that do not run JavaScript, and what gives each language and each
  * player count a real URL of its own.
  */
+import { execFileSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -19,9 +20,30 @@ const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const HEAD_START = "<!--head:start-->";
 const HEAD_END = "<!--head:end-->";
 
-const { renderAllPages, buildSitemap } = await import(
+const { renderAllPages, buildSitemap, buildLlmsTxt } = await import(
   pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href
 );
+
+/**
+ * When the content itself last changed — not when this build ran. A date that
+ * moved on every deploy would teach crawlers to ignore the signal, so if git
+ * cannot answer (shallow clone, no history) we publish no date at all rather
+ * than a misleading one. CI fetches full history for this reason.
+ */
+function contentLastModified() {
+  try {
+    const iso = execFileSync(
+      "git",
+      ["log", "-1", "--format=%cI", "--", "src/games.json", "src/i18n/locales"],
+      { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }
+    ).trim();
+    return iso === "" ? undefined : iso;
+  } catch {
+    return undefined;
+  }
+}
+
+const dateModified = contentLastModified();
 
 const template = await readFile(templatePath, "utf8");
 
@@ -34,7 +56,7 @@ for (const marker of [ROOT_PLACEHOLDER, HEAD_START, HEAD_END]) {
 const headStart = template.indexOf(HEAD_START);
 const headEnd = template.indexOf(HEAD_END) + HEAD_END.length;
 
-const pages = renderAllPages();
+const pages = renderAllPages({ dateModified });
 
 for (const page of pages) {
   if (page.html.trim() === "") {
@@ -63,7 +85,9 @@ for (const page of pages) {
 }
 
 await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap());
+await writeFile(path.join(distDir, "llms.txt"), buildLlmsTxt());
 
 console.log(
-  `prerender: ${pages.length} pages écrites dans dist/, sitemap.xml régénéré`
+  `prerender: ${pages.length} pages écrites dans dist/, sitemap.xml et llms.txt régénérés` +
+    (dateModified ? `, dateModified=${dateModified}` : ", sans dateModified (pas d'historique git)")
 );

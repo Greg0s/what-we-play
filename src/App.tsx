@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.scss";
-import { Games, LanguageSwitcher, PlayerCountNav } from "./components/";
+import { Faq, Games, LanguageSwitcher, PlayerCountNav } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { buildPath, parseRoute, type Route } from "./routes";
+import { gamesForPlayerCount } from "./games";
 import { useDocumentMeta } from "./useDocumentMeta";
 
 function App({ route }: { route: Route }) {
@@ -125,7 +126,17 @@ function App({ route }: { route: Route }) {
         />
       </header>
 
-      <Games players={players} />
+      <main>
+        <p className="intro">
+          {isHome
+            ? t.content.homeIntro
+            : t.content.countIntro(gamesForPlayerCount(players).length, players)}
+        </p>
+
+        <Games players={players} />
+
+        {isHome && <Faq />}
+      </main>
     </>
   );
 }

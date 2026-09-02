@@ -212,7 +212,7 @@ moteurs arbitrent seuls ; le paragraphe d'introduction de la phase 3 le lèvera.
 > chaque jeu de 1 à 99 joueurs — la correction ne change rien aujourd'hui, elle
 > ferme la porte.
 
-### Phase 3 — rendre le contenu citable par les modèles (~1 journée, cœur du GEO)
+### Phase 3 — rendre le contenu citable par les modèles (~1 journée, cœur du GEO) — ✅ faite
 
 - JSON-LD `ItemList` de `VideoGame` par page : `numberOfPlayers`, `playMode`,
   `gamePlatform: "Web browser"`, `url`. Le schéma épouse exactement `games.json`.
@@ -226,6 +226,40 @@ moteurs arbitrent seuls ; le paragraphe d'introduction de la phase 3 le lèvera.
 - `llms.txt` à la racine : index Markdown du catalogue. Convention émergente,
   coût quasi nul.
 - Exposer `dateModified` — la fraîcheur pèse dans la sélection des sources.
+
+69 blocs JSON-LD générés et validés : 33 `CollectionPage` (une par page), 3
+`WebSite` et 3 `FAQPage` (accueils seulement), 30 `BreadcrumbList` (pages de
+comptage). Le texte lisible sans JavaScript passe de ~1 140 à ~1 970 caractères
+sur l'accueil.
+
+Décisions prises en chemin :
+
+- **`maxValue` est omis quand `maxPlayers` vaut `-1`**, plutôt que rempli d'un
+  nombre arbitraire : c'est ainsi que schema.org exprime « pas de limite », et
+  inventer un maximum serait une affirmation que les données ne portent pas.
+- **La FAQ n'est que sur les trois accueils.** La répéter sur les 33 pages
+  aurait fabriqué du contenu dupliqué, et c'est là qu'atterrit une question
+  « c'est quoi ce site ». Effet de bord utile : l'accueil et
+  `/games-for-4-players/` ne se ressemblent plus, ce qui lève le recouvrement
+  signalé en phase 2.
+- **`dateModified` vient du dernier commit touchant `src/games.json` ou
+  `src/i18n/locales`**, pas de l'horloge du build. Si git ne peut pas répondre
+  (clone superficiel), le champ est omis plutôt que deviné — d'où le
+  `fetch-depth: 0` ajouté au workflow de déploiement.
+- **`<main>` ajouté et `rel="noopener"` sur les liens de jeux**, deux constats P2
+  de l'audit qui tombaient à leur place ici.
+- **La hauteur des cartes passe de 10,75 à 12,5 rem** pour loger la plage de
+  joueurs sans tronquer les descriptions ; vérifié qu'aucune carte n'est coupée.
+
+Réserve sur la FAQ : Google a retiré les résultats enrichis `FAQPage` en 2023
+pour la plupart des sites. Le balisage reste utile pour les moteurs génératifs,
+qui y lisent des paires question/réponse propres, mais il ne faut pas en attendre
+d'affichage enrichi dans les résultats de recherche.
+
+Les affirmations du contenu et du balisage (`isAccessibleForFree`, « sans rien
+installer ») reprennent ce que le README avance sur le catalogue. Si cela cesse
+d'être vrai de tous les jeux, les réponses de la FAQ et `isAccessibleForFree`
+doivent bouger ensemble.
 
 `public/robots.txt` proposé :
 

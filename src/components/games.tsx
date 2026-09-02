@@ -5,7 +5,7 @@ import "../stylesheets/games.scss";
 import { useTranslation } from "../i18n";
 
 export function Games({ players }: { players: number }) {
-  const { gameDescription } = useTranslation();
+  const { gameDescription, t } = useTranslation();
 
   return (
     <div className="grid">
@@ -15,6 +15,7 @@ export function Games({ players }: { players: number }) {
           name={game.name}
           description={gameDescription(game.id)}
           playLink={game.link}
+          playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
         />
       ))}
     </div>
