@@ -18,11 +18,21 @@ pnpm run lint     # ESLint
 pnpm run preview  # prévisualiser le build
 ```
 
+Pas de suite de tests dans ce repo.
+
 ## Structure
 
-- `src/games.json` — la liste des jeux (source de données). Chaque entrée : `name`, `description`, `minPlayers`, `maxPlayers` (`-1` = pas de max), `link`.
-- `src/components/` — `Game` (carte d'un jeu), `Games` (liste filtrée), `HowMany` (sélecteur du nombre de joueurs), `Title`.
-- `src/App.tsx` — assemble le tout, gère l'état du nombre de joueurs et le filtrage.
+- `src/games.json` — la liste des jeux (source de données), sans texte traduisible. Chaque entrée : `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = pas de max), `link`.
+- `src/i18n/` — internationalisation (voir section dédiée ci-dessous).
+- `src/components/` — `Game` (carte d'un jeu), `Games` (liste filtrée par nombre de joueurs), `LanguageSwitcher` (sélecteur de langue).
+- `src/App.tsx` — assemble le tout, gère l'état du nombre de joueurs et le rend via `Games`.
+- `src/stylesheets/` — styles Sass partagés (variables, styles des jeux, du switcher de langue).
+
+## Internationalisation (i18n)
+
+Le site est disponible en **anglais**, **français** et **espagnol** (`src/i18n/locales/`). `en.ts` est la locale de référence : **le build échoue** si une autre locale manque une clé. Les descriptions des jeux sont dans les fichiers de locale (indexées par le `id` du jeu dans `games.json`) et retombent sur l'anglais si la traduction manque.
+
+Pour ajouter une langue : voir la section "Adding a language" du [README](README.md).
 
 ## Workflow Git
 
@@ -30,7 +40,7 @@ pnpm run preview  # prévisualiser le build
 
 ## Déploiement
 
-Automatique via [.github/workflows/deploy.yml](.github/workflows/deploy.yml) : tout push sur `main` déclenche un build et un déploiement sur GitHub Pages. Pas de branche de review/preview — `main` est déployé directement.
+Automatique via [.github/workflows/deploy.yml](.github/workflows/deploy.yml) : tout push sur `main` déclenche un build et un déploiement sur GitHub Pages via pnpm/Node 24. Pas de branche de review/preview — `main` est déployé directement.
 
 ## Fonctionnalités prévues (voir README)
 
