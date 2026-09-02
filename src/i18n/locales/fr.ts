@@ -5,6 +5,14 @@ export const fr: Translation = {
     title: "À quoi on joue ? Trouve un jeu à jouer en ligne avec tes amis !",
     description:
       "Trouve le meilleur jeu à jouer en ligne avec tes amis selon le nombre de joueurs.",
+    countTitle: (games: number, players: number) =>
+      players === 1
+        ? `${games} jeux en ligne à jouer seul`
+        : `${games} jeux en ligne à jouer à ${players}`,
+    countDescription: (games: number, players: number) =>
+      players === 1
+        ? `${games} jeux navigateur à jouer en solo, tous gratuits et sans rien à installer.`
+        : `${games} jeux navigateur pour ${players} joueurs, tous gratuits et sans rien à installer.`,
   },
   header: {
     title: "À quoi on joue ?",
@@ -12,6 +20,7 @@ export const fr: Translation = {
     addPlayer: "Ajouter un joueur",
     removePlayer: "Retirer un joueur",
     players: { one: "joueur", other: "joueurs" },
+    byPlayerCount: "Jeux par nombre de joueurs",
   },
   language: {
     label: "Langue",

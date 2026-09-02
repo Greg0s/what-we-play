@@ -12,6 +12,13 @@ export const LANGUAGE_NAMES: Record<Language, string> = {
   es: "Español",
 };
 
+/** Open Graph wants language_TERRITORY rather than a bare language code. */
+export const OG_LOCALES: Record<Language, string> = {
+  en: "en_US",
+  fr: "fr_FR",
+  es: "es_ES",
+};
+
 export const STORAGE_KEY = "what-we-play:language";
 
 export function isLanguage(value: string): value is Language {

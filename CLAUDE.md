@@ -25,8 +25,10 @@ No test suite in this repo.
 - `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
 - `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, and the player-count filter. Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
-- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector).
-- `src/App.tsx` — wires everything together, holds the player-count state and renders it via `Games`.
+- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `PlayerCountNav` (links to the player-count pages).
+- `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
+- `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
+- `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
 - `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
 - `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
 - `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
@@ -35,9 +37,9 @@ No test suite in this repo.
 
 The site is prerendered at build time and hydrated in the browser. `pnpm run build`
 runs three steps: the client build, an SSR build of `src/entry-server.tsx` into
-`dist-ssr/`, then `scripts/prerender.js`, which renders the page and writes the
-markup into `dist/index.html`. The build fails if that markup does not reach the
-file, so an empty page cannot ship unnoticed.
+`dist-ssr/`, then `scripts/prerender.js`, which renders every route and writes it
+to `dist/<path>/index.html`, along with `sitemap.xml`. The build fails if a page's
+games do not reach its file, so an empty page cannot ship unnoticed.
 
 This matters because GitHub Pages serves files only, and crawlers that do not run
 JavaScript — every generative engine among them — would otherwise receive an empty
@@ -49,9 +51,36 @@ Two constraints follow, and breaking either is silent:
   do not exist at build time, and reading them while rendering makes the client
   disagree with the prerendered HTML. Put that work in an effect, the way
   `LanguageProvider` detects the language.
-- **The page is prerendered in English at `DEFAULT_PLAYERS`.** That is the state
-  the first client render has to reproduce; it then switches to the visitor's
-  language in a layout effect, before the first paint.
+- **The first client render must reproduce the page's URL.** `main.tsx` parses
+  the path and passes the route down; anything that makes the browser start from
+  a different state than the build used will break hydration.
+
+## URLs
+
+One page per language and per player count — 33 in all, listed by `allRoutes()`
+in `src/routes.ts`:
+
+| Language | Landing | Player count |
+| --- | --- | --- |
+| English | `/` | `/games-for-4-players/` |
+| French | `/fr/` | `/fr/jeux-a-4-joueurs/` |
+| Spanish | `/es/` | `/es/juegos-para-4-jugadores/` |
+
+English is unprefixed and is the `x-default` target. Each page carries a
+self-referencing canonical and reciprocal `hreflang` annotations, both generated
+from `src/routes.ts`, so adding a language or a player count updates every page
+and the sitemap at once.
+
+`vite.config.ts` therefore sets `base: "/"`: a relative base would resolve
+`./assets/…` against `/fr/` and 404.
+
+In the browser, a prefixed URL states the language and wins outright. Only the
+unprefixed pages fall back to the visitor's own preference, and that redirect
+uses `replaceState` so Back does not bounce between `/` and `/fr/`. Player-count
+links are real anchors — they work without JavaScript and are what crawlers
+follow — upgraded to in-place navigation when JavaScript is available. The
+counter itself uses `replaceState`, since pushing one history entry per keystroke
+would make Back unusable.
 
 ## Internationalization (i18n)
 

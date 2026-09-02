@@ -16,8 +16,8 @@ export const DEFAULT_PLAYERS = 4;
 
 export function matchesPlayerCount(game: Game, players: number): boolean {
   return (
-    (players >= game.minPlayers && players <= game.maxPlayers) ||
-    game.maxPlayers === -1
+    players >= game.minPlayers &&
+    (game.maxPlayers === -1 || players <= game.maxPlayers)
   );
 }
 

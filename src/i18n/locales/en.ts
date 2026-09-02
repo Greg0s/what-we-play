@@ -7,6 +7,14 @@ export const en = {
     title: "What we play? Find a game to play online with your friends!",
     description:
       "Find the best game to play online with your friends based on player count.",
+    countTitle: (games: number, players: number) =>
+      players === 1
+        ? `${games} online games to play alone`
+        : `${games} online games to play with ${players} players`,
+    countDescription: (games: number, players: number) =>
+      players === 1
+        ? `${games} browser games you can play on your own, all free and with nothing to install.`
+        : `${games} browser games for ${players} players, all free and with nothing to install.`,
   },
   header: {
     title: "What we play?",
@@ -14,6 +22,7 @@ export const en = {
     addPlayer: "Add a player",
     removePlayer: "Remove a player",
     players: { one: "player", other: "players" },
+    byPlayerCount: "Games by player count",
   },
   language: {
     label: "Language",
@@ -68,6 +77,9 @@ export type Translation = {
   meta: {
     title: string;
     description: string;
+    /** Title of a player-count page, given how many games it lists. */
+    countTitle: (games: number, players: number) => string;
+    countDescription: (games: number, players: number) => string;
   };
   header: {
     title: string;
@@ -75,6 +87,7 @@ export type Translation = {
     addPlayer: string;
     removePlayer: string;
     players: { one: string; other: string };
+    byPlayerCount: string;
   };
   language: {
     label: string;

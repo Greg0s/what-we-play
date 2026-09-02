@@ -154,7 +154,7 @@ normalement là où la production hydrate, `main.tsx` distinguant les deux cas.
 > dans des sous-dossiers (`/fr/`), un chemin relatif y résout vers
 > `/fr/assets/…` qui n'existe pas. Passer à `base: "/"` avec la phase 2.
 
-### Phase 2 — passer de 1 à ~33 pages indexables (~1 journée, fort impact)
+### Phase 2 — passer de 1 à ~33 pages indexables (~1 journée, fort impact) — ✅ faite
 
 Personne ne cherche « annuaire de jeux » ; tout le monde cherche « jeu en ligne
 à 4 ».
@@ -172,16 +172,45 @@ Personne ne cherche « annuaire de jeux » ; tout le monde cherche « jeu en lig
 - Titre et description uniques par page (« 12 jeux en ligne à jouer à 4,
   gratuits et sans installation »).
 - `sitemap.xml` généré depuis `games.json` et la liste des locales, avec `lastmod`.
-- Le compteur met à jour l'URL via `history.pushState`, sans rechargement.
+- Le compteur met à jour l'URL sans rechargement.
 
-> **À corriger avant de générer ces pages.** Le filtre de
+33 pages générées, vérifiées automatiquement : canonique auto-référente partout,
+`hreflang` réciproques (chaque page cite les trois langues plus `x-default`, et
+chaque cible renvoie bien vers elle), titres et descriptions tous uniques. Le
+catalogue passe de 16 à **26 jeux sur 26** présents dans le HTML statique.
+
+Deux écarts par rapport à la liste ci-dessus, tous deux volontaires :
+
+- **`replaceState` plutôt que `pushState` pour le compteur.** Le champ est un
+  contrôle continu : `pushState` créait une entrée d'historique par frappe, ce
+  qui rendait le bouton Retour inutilisable. Les actions discrètes — changement
+  de langue, clic sur un lien de nombre de joueurs — poussent bien une entrée.
+- **Un `<nav>` de liens 1 à 10 ajouté sous le compteur.** Sans lui les 30 pages
+  générées seraient orphelines, atteignables par le seul sitemap, ce qui est le
+  plus sûr moyen de ne pas les faire explorer. Ce sont de vrais `<a href>` :
+  ils fonctionnent sans JavaScript et se comportent en navigation interne quand
+  il est disponible. C'est le seul ajout visible de cette phase.
+
+Pas de `lastmod` dans le sitemap : la seule date disponible au build est celle du
+déploiement, et la faire changer à chaque déploiement sans que le contenu bouge
+apprend surtout aux robots à ignorer le signal. À reprendre en phase 3 avec
+`dateModified`.
+
+Reste ouvert : `/` et `/games-for-4-players/` listent les mêmes jeux, avec des
+titres différents. C'est le recouvrement classique accueil//catégorie, que les
+moteurs arbitrent seuls ; le paragraphe d'introduction de la phase 3 le lèvera.
+
+> **Corrigé dans cette phase.** Le filtre de
 > `src/components/games.tsx` écrit
 > `(players >= min && players <= max) || max === -1` : quand `maxPlayers` vaut
 > `-1`, le minimum est ignoré. Sans effet visible aujourd'hui (tous les jeux sans
 > maximum ont `minPlayers: 1`), mais un futur jeu « 2 joueurs minimum, pas de
 > maximum » apparaîtrait sur la page « 1 joueur » — et l'erreur serait figée dans
-> du HTML indexé. Corriger en
-> `players >= min && (max === -1 || players <= max)`.
+> du HTML indexé. Corrigé en
+> `players >= min && (max === -1 || players <= max)`, après vérification que
+> l'ancienne et la nouvelle formule donnent exactement le même résultat pour
+> chaque jeu de 1 à 99 joueurs — la correction ne change rien aujourd'hui, elle
+> ferme la porte.
 
 ### Phase 3 — rendre le contenu citable par les modèles (~1 journée, cœur du GEO)
 

@@ -2,13 +2,18 @@ import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { LanguageProvider } from "./i18n";
+import { parseRoute } from "./routes";
 
 const container = document.getElementById("root")!;
 
+// The URL says which page this is, and the build rendered that same route into
+// this file — so parsing it here is what makes the first client render match.
+const route = parseRoute(window.location.pathname);
+
 const app = (
   <StrictMode>
-    <LanguageProvider>
-      <App />
+    <LanguageProvider initialLanguage={route.language}>
+      <App route={route} />
     </LanguageProvider>
   </StrictMode>
 );
