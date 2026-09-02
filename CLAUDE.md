@@ -142,6 +142,8 @@ To add a language: see the "Adding a language" section of the [README](README.md
 
 Automatic via [.github/workflows/deploy.yml](.github/workflows/deploy.yml): every push to `main` triggers a build and deployment to GitHub Pages via pnpm/Node 24. No review/preview branch — `main` is deployed directly.
 
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs lint and the full build — prerender and `check-seo` included — on every pull request, so a broken build is caught before it reaches `main` rather than during the deploy.
+
 ## Planned features (see README)
 
 - Filters (mobile friendly / free / no download)

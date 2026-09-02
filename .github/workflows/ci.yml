@@ -1,0 +1,49 @@
+name: CI
+
+# Nothing ran on pull requests before this: deploy.yml only fires on push to
+# main, so the first time a build was exercised was the deploy itself. This runs
+# the same build — including scripts/check-seo.js — before merging instead.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "ci-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # Full history, like the deploy: the build reads the last commit
+        # touching the content to publish dateModified.
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Lint
+        run: pnpm run lint
+
+      # Type-checks, builds, prerenders every page, and fails on a broken
+      # canonical, non-reciprocal hreflang, duplicate title, unparseable
+      # JSON-LD, a page missing from the sitemap, or a page with no games.
+      - name: Build and check
+        run: pnpm run build
