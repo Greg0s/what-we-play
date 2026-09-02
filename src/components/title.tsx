@@ -1,7 +1,11 @@
+import { useTranslation } from "../i18n";
+
 export function Title() {
+  const { t } = useTranslation();
+
   return (
     <header>
-      <h1>What do we play?</h1>
+      <h1>{t.header.title}</h1>
     </header>
   );
 }

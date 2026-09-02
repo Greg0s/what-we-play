@@ -1,182 +1,182 @@
 [
   {
+    "id": "uwufufu",
     "name": "UwUFUFU",
-    "description": "Vote in tournaments about various subjects",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://www.uwufufu.com/"
   },
   {
+    "id": "wikipedia-speedruns",
     "name": "Wikipedia Speedruns!",
-    "description": "Race through Wikipedia pages to reach a target article as fast as possible.",
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://wikispeedruns.com/"
   },
   {
+    "id": "more-or-less-game",
     "name": "More or Less game",
-    "description": "Guess if the next item is higher or lower in value compared to the previous.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://moreorless.io/games"
   },
   {
+    "id": "damn-dog",
     "name": "DAMN DOG",
-    "description": "Guess the Wikihow article's title",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://damn.dog/"
   },
   {
+    "id": "framed",
     "name": "Framed",
-    "description": "Guess the movie by seeing one frame at a time.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://framed.wtf/"
   },
   {
+    "id": "the-higher-lower-game",
     "name": "The Higher Lower Game",
-    "description": "Guess what gets Googled more.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "http://www.higherlowergame.com/"
   },
   {
+    "id": "le-petit-bac",
     "name": "Le Petit Bac",
-    "description": "Word game where you find words starting with the same letter.",
     "minPlayers": 2,
     "maxPlayers": 45,
     "link": "https://petitbac.net/"
   },
   {
+    "id": "connect-the-stars",
     "name": "Connect the stars",
-    "description": "Find links betweens celebrities",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://connectthestars.xyz/"
   },
   {
+    "id": "make-it-meme",
     "name": "Make it Meme",
-    "description": "Compete to create the funniest memes from random templates.",
     "minPlayers": 2,
     "maxPlayers": 30,
     "link": "https://makeitmeme.com"
   },
   {
+    "id": "tier-list-maker",
     "name": "Tier List Maker",
-    "description": "Rank items, characters, or ideas into custom tier lists.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://tiermaker.com/"
   },
   {
+    "id": "guess-the-game",
     "name": "Guess The.Game",
-    "description": "Identify a video game from a progressively revealed screenshot.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://guessthe.game/"
   },
   {
+    "id": "tixid",
     "name": "Tixid",
-    "description": "A storytelling card game where players use abstract illustrations to spark creative clues and imaginative guesses.",
     "minPlayers": 3,
     "maxPlayers": 8,
     "link": "https://play-tixid.online/en/login"
   },
   {
+    "id": "bombparty",
     "name": "BombParty",
-    "description": "Type words with given letter combos before the bomb explodes.",
     "minPlayers": 2,
     "maxPlayers": 16,
     "link": "https://jklm.fun/"
   },
   {
+    "id": "popsauce",
     "name": "PopSauce",
-    "description": "Party trivia game mixing pop culture, images, and quick guesses.",
     "minPlayers": 2,
     "maxPlayers": 30,
     "link": "https://jklm.fun/"
   },
   {
+    "id": "rentguessr",
     "name": "rentguessr",
-    "description": "Guess rent price based on accommodations images.",
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://www.rentguessr.fun/game"
   },
   {
+    "id": "openguessr",
     "name": "OpenGuessr",
-    "description": "Guess locations on a map based on Street View images.",
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://openguessr.com/"
   },
   {
+    "id": "squiz",
     "name": "sQuiz",
-    "description": "Online quiz game with multiple categories and fast-paced challenges.",
     "minPlayers": 1,
     "maxPlayers": 200,
     "link": "https://squiz.gg/"
   },
   {
+    "id": "codenames",
     "name": "Codenames",
-    "description": "Give clever clues to help your team guess the right words on the grid.",
     "minPlayers": 4,
     "maxPlayers": 4,
     "link": "https://codenames.game/"
   },
   {
+    "id": "skribbl-io",
     "name": "skribbl.io",
-    "description": "Draw and guess words.",
     "minPlayers": 1,
     "maxPlayers": 20,
     "link": "https://skribbl.io/"
   },
   {
+    "id": "gartic-phone",
     "name": "Gartic Phone",
-    "description": "Telephone Game with drawings and texts.",
     "minPlayers": 2,
     "maxPlayers": 50,
     "link": "https://garticphone.com/"
   },
   {
+    "id": "linkterpol",
     "name": "Linkterpol",
-    "description": "Guess if the portrait is from LinkedIn or from Interpol.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://linkterpol.fr/"
   },
   {
+    "id": "pedantix",
     "name": "Pédantix",
-    "description": "Discover the Wikipedia page.",
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://pedantix.certitudes.org/"
   },
   {
+    "id": "cemantix",
     "name": "Cémantix",
-    "description": "Discover the word.",
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://cemantix.certitudes.org/"
   },
   {
+    "id": "brandcolorgame",
     "name": "brandcolorgame",
-    "description": "Guess the brand's color.",
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://brandcolorgame.com/"
   },
   {
+    "id": "blindtest-gg",
     "name": "Blindtest.gg",
-    "description": "Guess songs faster than everyone else in a music blind test.",
     "minPlayers": 1,
     "maxPlayers": 15,
     "link": "https://blindtest.gg/"
   },
   {
+    "id": "what-the-tune",
     "name": "What the Tune",
-    "description": "Music blind test: guess the song from a short audio clip.",
     "minPlayers": 1,
     "maxPlayers": 10,
     "link": "https://whatthetune.com/"

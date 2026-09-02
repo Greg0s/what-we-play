@@ -2,8 +2,11 @@ import { Game } from "./game";
 import gamesData from "../games.json";
 import "../App.scss";
 import "../stylesheets/games.scss";
+import { useTranslation } from "../i18n";
 
 export function Games({ players }: { players: number }) {
+  const { gameDescription } = useTranslation();
+
   return (
     <div className="grid">
       {gamesData
@@ -12,11 +15,11 @@ export function Games({ players }: { players: number }) {
             (players >= game.minPlayers && players <= game.maxPlayers) ||
             game.maxPlayers === -1
         )
-        .map((game, idx) => (
+        .map((game) => (
           <Game
-            key={idx}
+            key={game.id}
             name={game.name}
-            description={game.description}
+            description={gameDescription(game.id)}
             playLink={game.link}
           />
         ))}
