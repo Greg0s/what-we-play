@@ -1,0 +1,39 @@
+.language-switcher {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  padding: 0.4rem 0.7rem;
+  border-radius: 1rem;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+
+  transition: background-color 0.2s;
+
+  &:hover,
+  &:focus-within {
+    background-color: rgba(255, 255, 255, 0.45);
+  }
+
+  &__icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  select {
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    // The options are rendered by the OS: keep them readable.
+    option {
+      color: #000;
+      background-color: white;
+    }
+  }
+}
