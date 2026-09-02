@@ -1,49 +1,49 @@
 # a-quoi-on-joue (What we play?)
 
-Site front-end qui recense des jeux en ligne (solo ou multi) pour aider à trouver rapidement quoi jouer selon le nombre de joueurs. Déployé sur GitHub Pages : https://whatweplay.gregoiretinn.es/
+Front-end site listing online games (solo or multiplayer) to help quickly find something to play based on the number of players. Deployed on GitHub Pages: https://whatweplay.gregoiretinn.es/
 
 ## Stack
 
 - React 19 + TypeScript + Vite
-- Sass (`sass-embedded`) pour le style
-- **Gestionnaire de paquets : pnpm** (pas npm/yarn — le lockfile est `pnpm-lock.yaml`)
+- Sass (`sass-embedded`) for styling
+- **Package manager: pnpm** (not npm/yarn — the lockfile is `pnpm-lock.yaml`)
 
-## Commandes
+## Commands
 
 ```bash
-pnpm install      # installer les dépendances
-pnpm run dev      # serveur de dev (http://localhost:5173)
-pnpm run build    # build de prod (tsc -b && vite build) dans dist/
+pnpm install      # install dependencies
+pnpm run dev      # dev server (http://localhost:5173)
+pnpm run build    # production build (tsc -b && vite build) into dist/
 pnpm run lint     # ESLint
-pnpm run preview  # prévisualiser le build
+pnpm run preview  # preview the build
 ```
 
-Pas de suite de tests dans ce repo.
+No test suite in this repo.
 
 ## Structure
 
-- `src/games.json` — la liste des jeux (source de données), sans texte traduisible. Chaque entrée : `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = pas de max), `link`.
-- `src/i18n/` — internationalisation (voir section dédiée ci-dessous).
-- `src/components/` — `Game` (carte d'un jeu), `Games` (liste filtrée par nombre de joueurs), `LanguageSwitcher` (sélecteur de langue).
-- `src/App.tsx` — assemble le tout, gère l'état du nombre de joueurs et le rend via `Games`.
-- `src/stylesheets/` — styles Sass partagés (variables, styles des jeux, du switcher de langue).
+- `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
+- `src/i18n/` — internationalization (see dedicated section below).
+- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector).
+- `src/App.tsx` — wires everything together, holds the player-count state and renders it via `Games`.
+- `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
 
-## Internationalisation (i18n)
+## Internationalization (i18n)
 
-Le site est disponible en **anglais**, **français** et **espagnol** (`src/i18n/locales/`). `en.ts` est la locale de référence : **le build échoue** si une autre locale manque une clé. Les descriptions des jeux sont dans les fichiers de locale (indexées par le `id` du jeu dans `games.json`) et retombent sur l'anglais si la traduction manque.
+The site is available in **English**, **French** and **Spanish** (`src/i18n/locales/`). `en.ts` is the reference locale: **the build fails** if another locale is missing a key. Game descriptions live in the locale files (keyed by the game's `id` in `games.json`) and fall back to English when a translation is missing.
 
-Pour ajouter une langue : voir la section "Adding a language" du [README](README.md).
+To add a language: see the "Adding a language" section of the [README](README.md).
 
-## Workflow Git
+## Git Workflow
 
-`main` se déploie automatiquement en prod (pas de preview). On travaille donc toujours sur une branche de feature, avec une Pull Request avant de merger dans `main`.
+`main` deploys automatically to production (no preview). Work is therefore always done on a feature branch, with a Pull Request before merging into `main`.
 
-## Déploiement
+## Deployment
 
-Automatique via [.github/workflows/deploy.yml](.github/workflows/deploy.yml) : tout push sur `main` déclenche un build et un déploiement sur GitHub Pages via pnpm/Node 24. Pas de branche de review/preview — `main` est déployé directement.
+Automatic via [.github/workflows/deploy.yml](.github/workflows/deploy.yml): every push to `main` triggers a build and deployment to GitHub Pages via pnpm/Node 24. No review/preview branch — `main` is deployed directly.
 
-## Fonctionnalités prévues (voir README)
+## Planned features (see README)
 
-- Filtres (mobile friendly / gratuit / sans téléchargement)
-- Images pour les jeux
-- Ajout de nouveaux jeux
+- Filters (mobile friendly / free / no download)
+- Game images
+- Adding new games
