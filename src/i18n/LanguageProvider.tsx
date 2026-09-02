@@ -11,9 +11,8 @@ function updateDocumentMeta(language: Language) {
   document.title = meta.title;
 
   const selectors = [
-    'meta[name="title"]',
     'meta[property="og:title"]',
-    'meta[property="twitter:title"]',
+    'meta[name="twitter:title"]',
   ];
   for (const selector of selectors) {
     document.querySelector(selector)?.setAttribute("content", meta.title);
@@ -22,7 +21,7 @@ function updateDocumentMeta(language: Language) {
   const descriptionSelectors = [
     'meta[name="description"]',
     'meta[property="og:description"]',
-    'meta[property="twitter:description"]',
+    'meta[name="twitter:description"]',
   ];
   for (const selector of descriptionSelectors) {
     document.querySelector(selector)?.setAttribute("content", meta.description);

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One entry, because the site is currently one URL. Phase 2 of the SEO audit
+  (docs/seo-geo-audit.md) replaces this file with one generated at build time
+  from games.json and the locale list.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://whatweplay.gregoiretinn.es/</loc>
+  </url>
+</urlset>

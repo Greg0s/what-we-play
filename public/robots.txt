@@ -1,0 +1,21 @@
+# What we play? — https://whatweplay.gregoiretinn.es/
+# A directory of browser games, filterable by player count.
+
+User-agent: *
+Allow: /
+
+# Generative engines.
+#
+# Google-Extended and Applebot-Extended do not control crawling at all: they
+# control whether the content may be used to ground AI answers and to train
+# models. Naming them here with Allow is therefore an explicit opt-in, which is
+# the coherent choice for a directory whose whole purpose is to be found.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://whatweplay.gregoiretinn.es/sitemap.xml

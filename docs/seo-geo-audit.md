@@ -99,7 +99,7 @@ Vérifiés sur le build de production réel, pas sur le code source.
 
 Cinq phases dans un ordre de dépendance réel.
 
-### Phase 0 — réparer ce qui est cassé (~1 h, aucun risque)
+### Phase 0 — réparer ce qui est cassé (~1 h, aucun risque) — ✅ faite
 
 Corrections isolées dans `index.html` et `public/`.
 
@@ -111,6 +111,14 @@ Corrections isolées dans `index.html` et `public/`.
 - Créer `public/robots.txt` avec déclaration de sitemap et politique crawlers IA.
 - Sortir les polices du CSS : `preconnect` + `<link stylesheet>` dans le `<head>`,
   et `preconnect` vers `www.google.com` pour les favicons.
+
+Deux points relevés à l'exécution. `src/i18n/LanguageProvider.tsx` interrogeait
+des balises supprimées ou renommées ici (`meta[name="title"]`,
+`meta[property="twitter:*"]`) : ses sélecteurs ont été mis à jour, sans quoi le
+changement de langue aurait silencieusement cessé de mettre à jour les
+métadonnées. Et pour que la ligne `Sitemap:` du `robots.txt` ne pointe pas vers
+un fichier absent, un `public/sitemap.xml` statique à une seule URL a été livré ;
+la phase 2 le remplacera par un fichier généré.
 
 ### Phase 1 — pré-rendre le HTML au build (~½ journée, débloque tout)
 
