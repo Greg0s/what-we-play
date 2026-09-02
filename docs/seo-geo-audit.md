@@ -120,7 +120,7 @@ métadonnées. Et pour que la ligne `Sitemap:` du `robots.txt` ne pointe pas ver
 un fichier absent, un `public/sitemap.xml` statique à une seule URL a été livré ;
 la phase 2 le remplacera par un fichier généré.
 
-### Phase 1 — pré-rendre le HTML au build (~½ journée, débloque tout)
+### Phase 1 — pré-rendre le HTML au build (~½ journée, débloque tout) — ✅ faite
 
 L'application reste une SPA React ; on ajoute une étape de génération statique
 qui écrit le HTML final dans `dist/`.
@@ -131,7 +131,24 @@ qui écrit le HTML final dans `dist/`.
 - Hydrater au lieu de monter : `hydrateRoot` dans `src/main.tsx`.
 - Rendre `detectLanguage()` compatible SSR (les gardes `typeof navigator`
   existent déjà, vérifier `localStorage`).
-- Vérifier par `curl` que les 26 jeux apparaissent dans le HTML brut.
+- Vérifier que les jeux apparaissent dans le HTML brut.
+
+Réalisé avec un script maison (`scripts/prerender.js`) plutôt qu'avec
+`vite-react-ssg` : ce dernier est bâti autour de react-router, que le projet
+n'utilise pas encore. Le choix se rediscutera en phase 2, quand il y aura de
+vraies routes. À noter, le rendu utilise `renderToString` et non
+`renderToStaticMarkup` : seul le premier produit un balisage hydratable.
+
+Le corps de `dist/index.html` passe de 0 à ~1 140 caractères de texte lisible
+sans JavaScript, soit les 16 jeux de la vue par défaut (4 joueurs). Les 10 autres
+restent hors du HTML tant que la phase 2 n'a pas créé une page par nombre de
+joueurs. Le compteur de joueurs, lui, vit dans un attribut `value` et non dans du
+texte : un robot lit « joueurs » sans le nombre, ce que la phase 2 corrige aussi.
+
+Deux points d'attention introduits ici, documentés dans `CLAUDE.md` : plus rien
+ne doit lire `navigator`, `window` ou `localStorage` pendant le rendu, sous peine
+de désaccord silencieux avec le HTML prérendu ; et `pnpm run dev` monte l'appli
+normalement là où la production hydrate, `main.tsx` distinguant les deux cas.
 
 > **Piège.** `vite.config.ts` utilise `base: "./"`. Dès que des pages existent
 > dans des sous-dossiers (`/fr/`), un chemin relatif y résout vers

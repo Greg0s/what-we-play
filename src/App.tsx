@@ -3,9 +3,10 @@ import "./App.scss";
 import { Games, LanguageSwitcher } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useTranslation } from "./i18n";
+import { DEFAULT_PLAYERS } from "./games";
 
 function App() {
-  const [players, setPlayers] = useState(4);
+  const [players, setPlayers] = useState(DEFAULT_PLAYERS);
   const { t, playersLabel } = useTranslation();
 
   const handleChange = (value: number) => {

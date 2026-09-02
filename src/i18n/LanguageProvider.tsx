@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
-import { detectLanguage, storeLanguage, type Language } from "./config";
+import {
+  DEFAULT_LANGUAGE,
+  detectLanguage,
+  storeLanguage,
+  type Language,
+} from "./config";
 import { LanguageContext, type LanguageContextValue } from "./context";
 import { translations, type GameId } from "./locales";
 import { en } from "./locales/en";
+import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
 function updateDocumentMeta(language: Language) {
   const { meta } = translations[language];
@@ -28,8 +34,30 @@ function updateDocumentMeta(language: Language) {
   }
 }
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguageState] = useState<Language>(detectLanguage);
+type LanguageProviderProps = {
+  children: ReactNode;
+  /**
+   * Language the markup was rendered in. The prerender passes the locale it
+   * built the page with; in the browser we start from that same value so the
+   * first client render matches the server's HTML exactly.
+   */
+  initialLanguage?: Language;
+};
+
+export function LanguageProvider({
+  children,
+  initialLanguage = DEFAULT_LANGUAGE,
+}: LanguageProviderProps) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
+
+  // Detection reads `navigator` and `localStorage`, neither of which exists at
+  // build time — and reading them during render would make the client disagree
+  // with the prerendered markup and blow up hydration. So it happens after
+  // hydration instead, before the first paint.
+  useIsomorphicLayoutEffect(() => {
+    const detected = detectLanguage();
+    if (detected !== initialLanguage) setLanguageState(detected);
+  }, [initialLanguage]);
 
   useEffect(() => {
     updateDocumentMeta(language);

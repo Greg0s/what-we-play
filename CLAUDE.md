@@ -13,7 +13,7 @@ Front-end site listing online games (solo or multiplayer) to help quickly find s
 ```bash
 pnpm install      # install dependencies
 pnpm run dev      # dev server (http://localhost:5173)
-pnpm run build    # production build (tsc -b && vite build) into dist/
+pnpm run build    # production build into dist/, prerendered (see Rendering)
 pnpm run lint     # ESLint
 pnpm run preview  # preview the build
 ```
@@ -23,10 +23,35 @@ No test suite in this repo.
 ## Structure
 
 - `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
+- `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, and the player-count filter. Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
 - `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector).
 - `src/App.tsx` — wires everything together, holds the player-count state and renders it via `Games`.
+- `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
+- `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
 - `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
+
+## Rendering
+
+The site is prerendered at build time and hydrated in the browser. `pnpm run build`
+runs three steps: the client build, an SSR build of `src/entry-server.tsx` into
+`dist-ssr/`, then `scripts/prerender.js`, which renders the page and writes the
+markup into `dist/index.html`. The build fails if that markup does not reach the
+file, so an empty page cannot ship unnoticed.
+
+This matters because GitHub Pages serves files only, and crawlers that do not run
+JavaScript — every generative engine among them — would otherwise receive an empty
+`<div id="root">`. See [docs/seo-geo-audit.md](docs/seo-geo-audit.md).
+
+Two constraints follow, and breaking either is silent:
+
+- **Nothing browser-only during render.** `navigator`, `window` and `localStorage`
+  do not exist at build time, and reading them while rendering makes the client
+  disagree with the prerendered HTML. Put that work in an effect, the way
+  `LanguageProvider` detects the language.
+- **The page is prerendered in English at `DEFAULT_PLAYERS`.** That is the state
+  the first client render has to reproduce; it then switches to the visitor's
+  language in a layout effect, before the first paint.
 
 ## Internationalization (i18n)
 
