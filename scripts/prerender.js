@@ -8,7 +8,7 @@
  * player count a real URL of its own.
  */
 import { execFileSync } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -19,6 +19,7 @@ const templatePath = path.join(distDir, "index.html");
 const ROOT_PLACEHOLDER = '<div id="root"></div>';
 const HEAD_START = "<!--head:start-->";
 const HEAD_END = "<!--head:end-->";
+const PRELOAD_MARKER = "<!--preload:banner-->";
 
 const { renderAllPages, buildSitemap, buildLlmsTxt } = await import(
   pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href
@@ -45,7 +46,34 @@ function contentLastModified() {
 
 const dateModified = contentLastModified();
 
-const template = await readFile(templatePath, "utf8");
+let template = await readFile(templatePath, "utf8");
+
+/**
+ * The banner is a CSS background, so the browser only discovers it after the
+ * stylesheet has parsed — late, for what is the largest thing on screen.
+ * Preloading it moves that discovery into the initial HTML. Its hashed name is
+ * only knowable here, once Vite has written the CSS.
+ */
+async function bannerPreload() {
+  const cssFiles = (await readdir(path.join(distDir, "assets"))).filter((name) =>
+    name.endsWith(".css")
+  );
+
+  for (const name of cssFiles) {
+    const css = await readFile(path.join(distDir, "assets", name), "utf8");
+    const match = css.match(/url\((\/assets\/banner-[^)"']+)\)/);
+    if (match) {
+      return `<link rel="preload" as="image" href="${match[1]}" fetchpriority="high" />`;
+    }
+  }
+
+  throw new Error("Bannière introuvable dans le CSS construit : preload impossible");
+}
+
+if (!template.includes(PRELOAD_MARKER)) {
+  throw new Error(`Marqueur introuvable dans dist/index.html : ${PRELOAD_MARKER}`);
+}
+template = template.replace(PRELOAD_MARKER, await bannerPreload());
 
 for (const marker of [ROOT_PLACEHOLDER, HEAD_START, HEAD_END]) {
   if (!template.includes(marker)) {

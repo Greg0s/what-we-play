@@ -284,7 +284,7 @@ accepter que le catalogue serve à entraîner et à alimenter des réponses
 d'assistants. Pour un annuaire dont le but est d'être trouvé, l'autorisation est
 cohérente — mais elle se choisit.
 
-### Phase 4 — performance et mesure (~½ journée)
+### Phase 4 — performance et mesure (~½ journée) — ✅ faite en partie
 
 - Auto-héberger les favicons des jeux (récupérées au build, converties en WebP) :
   supprime 26 requêtes tierces et la dépendance à Google.
@@ -297,6 +297,62 @@ cohérente — mais elle se choisit.
   pas les 26 noms de jeux — c'est le garde-fou anti-régression.
 - Tester régulièrement les questions cibles sur ChatGPT, Perplexity et les AI
   Overviews : le site est-il cité, et avec quelles données ?
+
+**Fait.**
+
+- **Polices réduites, mesuré et non estimé** : la requête ne demande plus que les
+  graisses réellement appliquées (600 et 700, aucun italique), vérifiées sur les
+  styles calculés dans le navigateur. Le sous-ensemble latin — celui qu'un
+  navigateur télécharge vraiment — passe de **133 ko à 79 ko**. Contre-intuitif :
+  une plage *variable* étroite (`400..700`) bat le fait de nommer les instances
+  statiques (`600;700`), qui coûtent 121 ko.
+- **Bannière préchargée.** `scripts/prerender.js` extrait son nom haché du CSS
+  construit et injecte le `<link rel="preload">`. C'est un fond CSS : sans ça, le
+  navigateur ne découvre le plus gros élément de la page qu'après avoir analysé
+  la feuille de styles.
+- **Garde-fou de build** (`scripts/check-seo.js`), lancé après le pré-rendu et
+  bloquant. Il relit `dist/` sans importer le code qui l'a produit — un contrôle
+  qui redérive ses attentes du générateur lui donne raison même quand les deux
+  ont tort. Sept classes de régression ont été cassées volontairement pour
+  vérifier qu'il les attrape : canonique fausse, `hreflang` non réciproque, titre
+  dupliqué, JSON-LD illisible, page absente du sitemap, page rendue sans jeux,
+  sitemap manquant.
+
+**Non fait, et pourquoi.**
+
+- **Auto-hébergement des favicons.** L'environnement d'exécution de cet audit
+  bloque le service de favicons de Google : impossible de récupérer les 26
+  images, donc impossible de livrer et de tester la chose. Livrer un script
+  réseau non exécuté aurait été pire que de le dire. Reste donc 26 requêtes
+  tierces et des données de navigation qui partent chez un tiers — le
+  `preconnect` de la phase 0 en amortit le coût, mais pas la dépendance. C'est
+  aussi une décision qui vous appartient.
+- **Conversion WebP/AVIF de la bannière.** Aucun outil d'image dans
+  l'environnement, et ajouter `sharp` (~30 Mo de binaire natif) au projet pour
+  convertir une seule image de 56 ko est un mauvais échange. Le préchargement
+  apporte l'essentiel du gain LCP ; la conversion se fera mieux à la main, une
+  fois, en committant le résultat.
+
+**À faire par vous — je n'ai pas accès à vos comptes.**
+
+1. **Google Search Console** : ajouter la propriété `whatweplay.gregoiretinn.es`
+   (préférer la propriété *domaine*, vérifiée par enregistrement DNS TXT chez le
+   registraire de `gregoiretinn.es`), puis soumettre
+   `https://whatweplay.gregoiretinn.es/sitemap.xml`. C'est aussi là que se
+   vérifie que les `hreflang` sont acceptés (rapport « Ciblage international »)
+   et que les données structurées passent.
+2. **Bing Webmaster Tools** : même chose ; l'import depuis Search Console évite
+   de refaire la vérification. Bing alimente aussi les réponses de ChatGPT.
+3. **Test des résultats enrichis** de Google et le validateur schema.org sur une
+   page de comptage, pour confirmer le JSON-LD côté Google.
+4. **Suivi GEO** : poser tous les mois les questions cibles à ChatGPT, Perplexity
+   et Google AI Overviews — « quel jeu jouer en ligne à 5 », « jeux navigateur
+   gratuits sans installation » — et regarder si le site est cité, et avec
+   quelles données. C'est la seule mesure qui existe aujourd'hui pour le GEO :
+   il n'y a pas de Search Console des moteurs génératifs.
+
+Le premier déploiement sur `main` est ce qui rend tout cela réel : tant que la
+branche n'est pas fusionnée, la production sert toujours la page vide.
 
 ## 4. Par où commencer
 

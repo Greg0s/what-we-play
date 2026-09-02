@@ -17,13 +17,22 @@
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!--
+      Only the weights the stylesheets actually apply: 600 and 700, with no
+      italic anywhere. The previous request pulled both variable axes across
+      100..900 and cost 133 kB of latin subsets against 79 kB for this one.
+    -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Honk&amp;family=Roboto:ital,wght@0,100..900;1,100..900&amp;family=Teko:wght@300..700&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Honk&amp;family=Roboto:wght@400..700&amp;family=Teko:wght@600&amp;display=swap"
     />
 
     <!-- Every game card pulls its favicon from this host. -->
     <link rel="preconnect" href="https://www.google.com" />
+
+    <!-- Replaced at build time with a preload for the banner, whose hashed
+         filename is only known once Vite has written the CSS. -->
+    <!--preload:banner-->
 
     <!-- Shared by every page. -->
     <meta property="og:type" content="website" />

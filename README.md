@@ -19,6 +19,11 @@ header, and their choice is remembered for the next visits.
   `src/i18n/config.ts`.
 - Copy `src/i18n/locales/en.ts` into `src/i18n/locales/<code>.ts`, translate the
   strings and register it in `src/i18n/locales/index.ts`.
+- Add the URL prefix and the player-count slug for the language to `ROUTING` in
+  `src/routes.ts`, and its Open Graph locale to `OG_LOCALES` in
+  `src/i18n/config.ts`. Both are typed per language, so the build fails until
+  they are there. The new language then gets its own pages, `hreflang`
+  annotations and sitemap entries automatically.
 
 `src/i18n/locales/en.ts` is the reference locale: the build fails if another
 locale misses one of its keys. Game descriptions live in the locale files (keyed

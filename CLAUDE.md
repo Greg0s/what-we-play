@@ -14,6 +14,7 @@ Front-end site listing online games (solo or multiplayer) to help quickly find s
 pnpm install      # install dependencies
 pnpm run dev      # dev server (http://localhost:5173)
 pnpm run build    # production build into dist/, prerendered (see Rendering)
+pnpm run check    # audit the built dist/ (canonical, hreflang, JSON-LD, sitemap)
 pnpm run lint     # ESLint
 pnpm run preview  # preview the build
 ```
@@ -32,6 +33,7 @@ No test suite in this repo.
 - `src/structuredData.ts` — the JSON-LD each page carries, built from `games.json` and the locales.
 - `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
 - `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
+- `scripts/check-seo.js` — reads the built `dist/` back and fails the build on a broken canonical, non-reciprocal `hreflang`, duplicate title, unparseable JSON-LD, page missing from the sitemap, or a page that rendered no games.
 - `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
 
 ## Rendering
@@ -41,7 +43,10 @@ runs three steps: the client build, an SSR build of `src/entry-server.tsx` into
 `dist-ssr/`, then `scripts/prerender.js`, which renders every route and writes it
 to `dist/<path>/index.html`, along with `sitemap.xml` and `llms.txt`. The build
 fails if a page's games do not reach its file, so an empty page cannot ship
-unnoticed.
+unnoticed, and then `scripts/check-seo.js` re-reads the output and fails on any
+broken SEO invariant. That check deliberately inspects the files rather than
+importing the code that wrote them: a check that re-derives its expectations
+from the generator agrees with it even when both are wrong.
 
 This matters because GitHub Pages serves files only, and crawlers that do not run
 JavaScript — every generative engine among them — would otherwise receive an empty
@@ -104,6 +109,24 @@ which is why the deploy workflow checks out with `fetch-depth: 0`.
 Claims in the copy and in the markup (`isAccessibleForFree`, "nothing to
 install") are the ones the README makes about the catalogue. If that stops being
 true of every game, both the FAQ answers and `isAccessibleForFree` have to change.
+
+## Performance
+
+Two things here are easy to undo by accident:
+
+- **The Google Fonts request lists only the weights the stylesheets apply** (600
+  and 700, no italic). Widening it back to `ital,wght@0,100..900;1,100..900`
+  costs 133 kB of latin subsets against 79 kB — measured, not estimated. Counter
+  to intuition, a narrow *variable* range (`400..700`) beats naming static
+  instances (`600;700`), which cost 121 kB.
+- **The banner is preloaded**, injected by `scripts/prerender.js`, which digs its
+  hashed filename out of the built CSS. It is a CSS background, so without the
+  preload the browser only discovers the largest thing on the page after the
+  stylesheet parses.
+
+Still open, both deliberate: the game card favicons come from Google's favicon
+service, 26 third-party requests carrying visitor data to a third party; and the
+banner is a 56 kB JPEG rather than WebP. See `docs/seo-geo-audit.md`.
 
 ## Internationalization (i18n)
 
