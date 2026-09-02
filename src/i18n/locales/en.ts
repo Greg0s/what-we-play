@@ -29,7 +29,7 @@ export const en = {
     "the-higher-lower-game": "Guess what gets Googled more.",
     "le-petit-bac":
       "Word game where you find words starting with the same letter.",
-    "connect-the-stars": "Find links betweens celebrities",
+    "connect-the-stars": "Find links between celebrities",
     "make-it-meme":
       "Compete to create the funniest memes from random templates.",
     "tier-list-maker":
