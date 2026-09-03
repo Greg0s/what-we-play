@@ -77,17 +77,6 @@ export function structuredData(
       description: t.meta.description,
       inLanguage: route.language,
     });
-
-    blocks.push({
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      inLanguage: route.language,
-      mainEntity: t.content.faq.map(({ question, answer }) => ({
-        "@type": "Question",
-        name: question,
-        acceptedAnswer: { "@type": "Answer", text: answer },
-      })),
-    });
   } else {
     blocks.push({
       "@context": "https://schema.org",

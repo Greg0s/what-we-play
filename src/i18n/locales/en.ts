@@ -28,40 +28,25 @@ export const en = {
     label: "Language",
   },
   content: {
-    homeIntro:
-      "Say how many of you there are and get a list of online games that work for that group. Every game here runs in a web browser and is free to play.",
-    countIntro: (games: number, players: number) =>
-      players === 1
-        ? `${games} games you can play on your own, straight from a web browser and free.`
-        : `${games} games that work with ${players} players, straight from a web browser and free.`,
     playerRange: (min: number, max: number) => {
       const label = (count: number) => (count === 1 ? "1 player" : `${count} players`);
       if (max === -1) return `${label(min)} or more`;
       if (min === max) return label(min);
       return `${min} to ${max} players`;
     },
-    faqTitle: "Questions",
-    faq: [
-      {
-        question: "Do these games cost anything?",
-        answer: "No. Every game listed here is free to play.",
-      },
-      {
-        question: "Do I need to install anything?",
-        answer:
-          "No. They all run in a web browser, on a computer or on a phone.",
-      },
-      {
-        question: "Can I play on my own?",
-        answer:
-          "Yes. Set the player count to 1 and the list keeps only the games that work solo.",
-      },
-      {
-        question: "How do I find a game for my group?",
-        answer:
-          "Enter how many of you there are: the list updates to the games that work with that many players.",
-      },
-    ],
+  },
+  howItWorks: {
+    trigger: "How it works",
+    title: "How it works",
+    paragraph1: {
+      before:
+        "What we play is a site that lists cool games to play with friends, hand-picked with love by ",
+      linkText: "a real human",
+      after: " who spent many hours discovering all of them!",
+    },
+    paragraph2:
+      "Every game is free, playable online from a browser, solo or with others: enter your number of players, browse the list, and have fun!",
+    close: "Close",
   },
   gameDescriptions: {
     "uwufufu": "Vote in tournaments about various subjects",
@@ -129,12 +114,18 @@ export type Translation = {
     label: string;
   };
   content: {
-    homeIntro: string;
-    countIntro: (games: number, players: number) => string;
     /** "2 to 16 players", with `-1` meaning no upper limit. */
     playerRange: (min: number, max: number) => string;
-    faqTitle: string;
-    faq: readonly { question: string; answer: string }[];
+  };
+  howItWorks: {
+    /** Label of the header button that opens the modal. */
+    trigger: string;
+    title: string;
+    /** Split around `linkText` so it can be rendered as a link to the portfolio. */
+    paragraph1: { before: string; linkText: string; after: string };
+    paragraph2: string;
+    /** Label of the modal's close button. */
+    close: string;
   };
   gameDescriptions: Record<GameId, string>;
 };

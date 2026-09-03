@@ -26,7 +26,7 @@ No test suite in this repo.
 - `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
 - `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, and the player-count filter. Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
-- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `PlayerCountNav` (links to the player-count pages), `Faq` (landing pages only).
+- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `HowItWorks` (header button opening the "how it works" modal).
 - `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
 - `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
 - `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
@@ -83,11 +83,10 @@ and the sitemap at once.
 
 In the browser, a prefixed URL states the language and wins outright. Only the
 unprefixed pages fall back to the visitor's own preference, and that redirect
-uses `replaceState` so Back does not bounce between `/` and `/fr/`. Player-count
-links are real anchors — they work without JavaScript and are what crawlers
-follow — upgraded to in-place navigation when JavaScript is available. The
-counter itself uses `replaceState`, since pushing one history entry per keystroke
-would make Back unusable.
+uses `replaceState` so Back does not bounce between `/` and `/fr/`. The counter
+itself uses `replaceState`, since pushing one history entry per keystroke would
+make Back unusable. There is no in-page nav between player-count pages;
+crawlers reach them through the sitemap.
 
 ## Structured data
 
@@ -98,8 +97,7 @@ runtime would be pointless.
 Each page gets a `CollectionPage` wrapping an `ItemList` of `VideoGame`. The
 vocabulary fits the data exactly: `numberOfPlayers` is a `QuantitativeValue`, and
 `maxPlayers: -1` is expressed by *omitting* `maxValue` rather than by inventing a
-number. Landing pages add `WebSite` and `FAQPage`; player-count pages add a
-`BreadcrumbList`.
+number. Landing pages add `WebSite`; player-count pages add a `BreadcrumbList`.
 
 `dateModified` comes from the last commit touching `src/games.json` or
 `src/i18n/locales` — not from the build clock, which would move on every deploy

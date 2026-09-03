@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.scss";
-import { Faq, Games, LanguageSwitcher, PlayerCountNav } from "./components/";
+import { Games, HowItWorks, LanguageSwitcher } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { buildPath, parseRoute, type Route } from "./routes";
-import { gamesForPlayerCount } from "./games";
 import { useDocumentMeta } from "./useDocumentMeta";
 
 function App({ route }: { route: Route }) {
@@ -80,15 +79,13 @@ function App({ route }: { route: Route }) {
     setIsHome(false);
   };
 
-  const goToPlayerCount = (value: number) => {
-    setPlayers(value);
-    setIsHome(false);
-  };
-
   return (
     <>
       <header>
-        <LanguageSwitcher />
+        <div className="header-actions">
+          <HowItWorks />
+          <LanguageSwitcher />
+        </div>
         <h1>{t.header.title}</h1>
         <div className="how-many">
           <div className="how-many__buttons">
@@ -119,26 +116,10 @@ function App({ route }: { route: Route }) {
           </div>
           <span className="how-many__label">{playersLabel(players)}</span>
         </div>
-        <PlayerCountNav
-          players={players}
-          isHome={isHome}
-          onNavigate={goToPlayerCount}
-        />
       </header>
 
       <main>
-        <p className="intro">
-          {isHome
-            ? t.content.homeIntro
-            : t.content.countIntro(
-                gamesForPlayerCount(players).length,
-                players,
-              )}
-        </p>
-
         <Games players={players} />
-
-        {isHome && <Faq />}
       </main>
     </>
   );
