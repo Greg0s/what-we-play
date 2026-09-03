@@ -21,7 +21,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
+        # Full history: the build reads the last commit touching the content to
+        # publish an honest dateModified. A shallow clone silently omits it.
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3

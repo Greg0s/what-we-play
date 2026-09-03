@@ -6,6 +6,14 @@ export const es: Translation = {
       "¿A qué jugamos? ¡Encuentra un juego para jugar en línea con tus amigos!",
     description:
       "Encuentra el mejor juego para jugar en línea con tus amigos según el número de jugadores.",
+    countTitle: (games: number, players: number) =>
+      players === 1
+        ? `${games} juegos en línea para jugar solo`
+        : `${games} juegos en línea para ${players} jugadores`,
+    countDescription: (games: number, players: number) =>
+      players === 1
+        ? `${games} juegos de navegador para jugar en solitario, todos gratis y sin instalar nada.`
+        : `${games} juegos de navegador para ${players} jugadores, todos gratis y sin instalar nada.`,
   },
   header: {
     title: "¿A qué jugamos?",
@@ -13,9 +21,47 @@ export const es: Translation = {
     addPlayer: "Añadir un jugador",
     removePlayer: "Quitar un jugador",
     players: { one: "jugador", other: "jugadores" },
+    byPlayerCount: "Juegos por número de jugadores",
   },
   language: {
     label: "Idioma",
+  },
+  content: {
+    homeIntro:
+      "Dinos cuántos sois y obtén la lista de juegos en línea que funcionan con ese grupo. Todos se juegan en un navegador y son gratis.",
+    countIntro: (games: number, players: number) =>
+      players === 1
+        ? `${games} juegos para jugar en solitario, directamente en un navegador y gratis.`
+        : `${games} juegos que funcionan con ${players} jugadores, directamente en un navegador y gratis.`,
+    playerRange: (min: number, max: number) => {
+      const label = (count: number) =>
+        count === 1 ? "1 jugador" : `${count} jugadores`;
+      if (max === -1) return `${label(min)} o más`;
+      if (min === max) return label(min);
+      return `${min} a ${max} jugadores`;
+    },
+    faqTitle: "Preguntas frecuentes",
+    faq: [
+      {
+        question: "¿Estos juegos son gratis?",
+        answer: "Sí. Todos los juegos que aparecen aquí son gratuitos.",
+      },
+      {
+        question: "¿Hay que instalar algo?",
+        answer:
+          "No. Todos funcionan en un navegador, tanto en ordenador como en móvil.",
+      },
+      {
+        question: "¿Se puede jugar en solitario?",
+        answer:
+          "Sí. Pon el contador en 1 y la lista se queda con los juegos que se pueden jugar solo.",
+      },
+      {
+        question: "¿Cómo encuentro un juego para mi grupo?",
+        answer:
+          "Indica cuántos sois: la lista se actualiza con los juegos que funcionan con ese número de jugadores.",
+      },
+    ],
   },
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",

@@ -1,5 +1,4 @@
 @use "./stylesheets/variables" as *;
-@import url("https://fonts.googleapis.com/css2?family=Honk&family=Roboto:ital,wght@0,100..900;1,100..900&family=Teko:wght@300..700&display=swap");
 
 /* Reset everything */
 *,
@@ -105,6 +104,21 @@ header {
 
 h2 {
   font-family: "Teko", sans-serif;
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.intro {
+  max-width: 58ch;
+  margin: 0 2rem 2rem;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  opacity: 0.75;
 }
 
 h1 {
