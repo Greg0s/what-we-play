@@ -7,8 +7,12 @@ export function LanguageSwitcher() {
 
   return (
     <div className="language-switcher">
-      <TbWorld className="language-switcher__icon" aria-hidden="true" />
+      <span className="language-switcher__display" aria-hidden="true">
+        <TbWorld className="language-switcher__icon" />
+        {LANGUAGE_NAMES[language]}
+      </span>
       <select
+        className="language-switcher__select"
         aria-label={t.language.label}
         value={language}
         onChange={(event) => {

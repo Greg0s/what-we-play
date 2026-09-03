@@ -37,7 +37,7 @@ function App({ route }: { route: Route }) {
     window.history.replaceState(
       null,
       "",
-      buildPath({ language: preferred, players, isHome })
+      buildPath({ language: preferred, players, isHome }),
     );
   }, [route.language, players, isHome, setLanguage]);
 
@@ -117,7 +117,7 @@ function App({ route }: { route: Route }) {
               <FaMinus />
             </button>
           </div>
-          {playersLabel(players)}
+          <span className="how-many__label">{playersLabel(players)}</span>
         </div>
         <PlayerCountNav
           players={players}
@@ -130,7 +130,10 @@ function App({ route }: { route: Route }) {
         <p className="intro">
           {isHome
             ? t.content.homeIntro
-            : t.content.countIntro(gamesForPlayerCount(players).length, players)}
+            : t.content.countIntro(
+                gamesForPlayerCount(players).length,
+                players,
+              )}
         </p>
 
         <Games players={players} />

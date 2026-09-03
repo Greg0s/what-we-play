@@ -91,7 +91,7 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 6rem 0;
+  padding: 6rem 0 1.5rem;
   background-image: url("./assets/banner.jpg");
   background-size: cover;
   background-position: center;
@@ -131,13 +131,14 @@ h1 {
 .how-many {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   color: white;
   width: fit-content;
   text-align: center;
   padding-top: 2rem;
-  cursor: pointer;
-  padding-bottom: 0.6rem; // no flickering on hover
+  padding-bottom: 0.6rem;
+  gap: 1.5rem;
 
   input[type="number"]::-webkit-outer-spin-button,
   input[type="number"]::-webkit-inner-spin-button {
@@ -154,60 +155,65 @@ h1 {
     text-align: center;
   }
 
-  &:hover {
-    button {
-      opacity: 1;
-    }
-
-    .how-many__buttons {
-      &__plus {
-        top: -2.4rem;
-      }
-      &__minus {
-        bottom: -2.5rem;
-      }
-    }
-  }
-
   &__buttons {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
+    display: contents;
 
     button {
-      position: absolute;
-      opacity: 0;
+      position: static;
+      opacity: 1;
       display: flex;
       justify-content: center;
-      border-radius: 1rem;
+      align-items: center;
+      border-radius: 50%;
       background-color: rgba(255, 255, 255, 0.3);
-      padding: 0.2rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      padding: 0;
       font-weight: 700;
-      width: 6rem;
+      font-size: 1.3rem;
       cursor: pointer;
 
-      transition: opacity 0.2s, top 0.2s, bottom 0.2s;
-    }
+      transition:
+        transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+        background-color 0.2s;
 
-    &__plus {
-      top: -3rem;
-      left: 50%;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.45);
+      }
+
+      &:active {
+        transform: scale(0.8);
+        background-color: rgba(255, 255, 255, 0.55);
+        transition:
+          transform 0.1s ease-out,
+          background-color 0.1s ease-out;
+      }
     }
 
     &__minus {
-      padding-top: 0.5rem;
-      bottom: -3rem;
-      left: 50%;
+      order: 1;
     }
+
+    input {
+      order: 2;
+    }
+
+    &__plus {
+      order: 3;
+    }
+  }
+
+  &__label {
+    order: 2;
   }
 }
 
-/* Show buttons on touch devices */
+@media (max-width: 640px) {
+  header {
+    padding-bottom: 10rem;
+  }
 
-@media (pointer: coarse), (hover: none) {
-  .how-many__buttons button {
-    opacity: 1;
+  header .player-count-nav {
+    display: none;
   }
 }
