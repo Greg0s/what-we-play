@@ -27,12 +27,6 @@ export const es: Translation = {
     label: "Idioma",
   },
   content: {
-    homeIntro:
-      "Dinos cuántos sois y obtén la lista de juegos en línea que funcionan con ese grupo. Todos se juegan en un navegador y son gratis.",
-    countIntro: (games: number, players: number) =>
-      players === 1
-        ? `${games} juegos para jugar en solitario, directamente en un navegador y gratis.`
-        : `${games} juegos que funcionan con ${players} jugadores, directamente en un navegador y gratis.`,
     playerRange: (min: number, max: number) => {
       const label = (count: number) =>
         count === 1 ? "1 jugador" : `${count} jugadores`;
@@ -40,28 +34,19 @@ export const es: Translation = {
       if (min === max) return label(min);
       return `${min} a ${max} jugadores`;
     },
-    faqTitle: "Preguntas frecuentes",
-    faq: [
-      {
-        question: "¿Estos juegos son gratis?",
-        answer: "Sí. Todos los juegos que aparecen aquí son gratuitos.",
-      },
-      {
-        question: "¿Hay que instalar algo?",
-        answer:
-          "No. Todos funcionan en un navegador, tanto en ordenador como en móvil.",
-      },
-      {
-        question: "¿Se puede jugar en solitario?",
-        answer:
-          "Sí. Pon el contador en 1 y la lista se queda con los juegos que se pueden jugar solo.",
-      },
-      {
-        question: "¿Cómo encuentro un juego para mi grupo?",
-        answer:
-          "Indica cuántos sois: la lista se actualiza con los juegos que funcionan con ese número de jugadores.",
-      },
-    ],
+  },
+  howItWorks: {
+    trigger: "Cómo funciona",
+    title: "Cómo funciona",
+    paragraph1: {
+      before:
+        "¿A qué jugamos? es un sitio que reúne juegos geniales para jugar con amigos, elegidos con cariño por ",
+      linkText: "una persona real",
+      after: " que ha pasado muchas horas descubriéndolos todos.",
+    },
+    paragraph2:
+      "Todos los juegos son gratis, se juegan en línea desde un navegador, en solitario o en grupo: indica cuántos sois, recorre la lista y ¡diviértete!",
+    close: "Cerrar",
   },
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",

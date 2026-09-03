@@ -26,12 +26,6 @@ export const fr: Translation = {
     label: "Langue",
   },
   content: {
-    homeIntro:
-      "Indique combien vous êtes et obtiens la liste des jeux en ligne qui fonctionnent à cet effectif. Tous se jouent dans un navigateur et sont gratuits.",
-    countIntro: (games: number, players: number) =>
-      players === 1
-        ? `${games} jeux à jouer en solo, directement dans un navigateur et gratuitement.`
-        : `Voici une liste de ${games} jeux qui fonctionnent à ${players} joueurs, directement dans un navigateur et gratuitement.`,
     playerRange: (min: number, max: number) => {
       const label = (count: number) =>
         count === 1 ? "1 joueur" : `${count} joueurs`;
@@ -39,28 +33,19 @@ export const fr: Translation = {
       if (min === max) return label(min);
       return `${min} à ${max} joueurs`;
     },
-    faqTitle: "Questions fréquentes",
-    faq: [
-      {
-        question: "Ces jeux sont-ils gratuits ?",
-        answer: "Oui. Tous les jeux référencés ici sont gratuits.",
-      },
-      {
-        question: "Faut-il installer quelque chose ?",
-        answer:
-          "Non. Ils se jouent tous dans un navigateur, sur ordinateur comme sur téléphone.",
-      },
-      {
-        question: "Peut-on jouer seul ?",
-        answer:
-          "Oui. Mets le compteur sur 1 et la liste ne garde que les jeux jouables en solo.",
-      },
-      {
-        question: "Comment trouver un jeu pour mon groupe ?",
-        answer:
-          "Indique votre nombre de joueurs : la liste se met à jour avec les jeux qui fonctionnent à cet effectif.",
-      },
-    ],
+  },
+  howItWorks: {
+    trigger: "Comment ça marche ?",
+    title: "Comment ça marche ?",
+    paragraph1: {
+      before:
+        "À quoi on joue, c'est un site qui référence des jeux cools à jouer entre amis, sélectionnés avec amour par ",
+      linkText: "un vrai humain",
+      after: ", qui a passé beaucoup d'heures à tous les découvrir !",
+    },
+    paragraph2:
+      "Tous les jeux sont gratuits, jouables en ligne depuis un navigateur, en solo ou à plusieurs : indique le nombre de joueurs, parcours la liste, et amuse-toi !",
+    close: "Fermer",
   },
   gameDescriptions: {
     uwufufu: "Vote dans des tournois sur des sujets variés.",
