@@ -10,7 +10,7 @@ export type PageMeta = { title: string; description: string };
  * than composing the strings twice.
  */
 export function pageMeta(route: Route): PageMeta {
-  const { meta } = translations[route.language];
+  const { meta, header } = translations[route.language];
 
   if (route.isHome) {
     return { title: meta.title, description: meta.description };
@@ -18,7 +18,7 @@ export function pageMeta(route: Route): PageMeta {
 
   const count = gamesForPlayerCount(route.players).length;
   return {
-    title: meta.countTitle(count, route.players),
+    title: `${header.title} — ${meta.countTitle(count, route.players)}`,
     description: meta.countDescription(count, route.players),
   };
 }
