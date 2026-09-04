@@ -27,6 +27,11 @@ export const en = {
   language: {
     label: "Language",
   },
+  theme: {
+    system: "Switch to system theme",
+    light: "Switch to light theme",
+    dark: "Switch to dark theme",
+  },
   content: {
     playerRange: (min: number, max: number) => {
       const label = (count: number) => (count === 1 ? "1 player" : `${count} players`);
@@ -138,6 +143,12 @@ export type Translation = {
   };
   language: {
     label: string;
+  };
+  theme: {
+    /** Label of the switcher when clicking it would select this mode. */
+    system: string;
+    light: string;
+    dark: string;
   };
   content: {
     /** "2 to 16 players", with `-1` meaning no upper limit. */

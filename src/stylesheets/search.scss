@@ -5,15 +5,15 @@
   align-items: center;
   gap: 0.8rem;
   padding: 0.95rem 1.3rem;
-  border: 2px solid $light-grey;
+  border: 2px solid var(--color-border);
   border-radius: 1rem;
-  background: white;
+  background: var(--color-surface);
   cursor: text;
   transition: border-color 0.2s;
 
   &:hover,
   &:focus-within {
-    border-color: #000;
+    border-color: var(--color-text);
   }
 
   &__icon {
@@ -36,12 +36,12 @@
     width: 1.9rem;
     height: 1.9rem;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.06);
+    background: var(--color-overlay);
     cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-      background: rgba(0, 0, 0, 0.12);
+      background: var(--color-overlay-hover);
     }
 
     svg {
@@ -73,9 +73,9 @@
   align-items: center;
   gap: 0.45rem;
   padding: 0.55rem 0.95rem;
-  border: 2px solid $light-grey;
+  border: 2px solid var(--color-border);
   border-radius: 1rem;
-  background: white;
+  background: var(--color-surface);
   font-size: 0.9rem;
   white-space: nowrap;
   cursor: pointer;
@@ -87,16 +87,16 @@
   }
 
   &:hover {
-    border-color: #000;
+    border-color: var(--color-text);
   }
 
   &--active {
-    border-color: #000;
-    background: #000;
-    color: white;
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
 
     &:hover {
-      border-color: #000;
+      border-color: var(--color-text);
     }
 
     .filter-chip__clear {
@@ -116,8 +116,8 @@
   max-width: 80vw;
   padding: 0.8rem 1rem;
   border-radius: 1rem;
-  background: #000;
-  color: white;
+  background: var(--color-tooltip-bg);
+  color: var(--color-tooltip-text);
   text-align: left;
   font-size: 0.85rem;
   font-weight: 600;
@@ -135,9 +135,9 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1rem;
-  border: 2px solid $light-grey;
+  border: 2px solid var(--color-border);
   border-radius: 1rem;
-  background: white;
+  background: var(--color-surface);
   font-size: 0.95rem;
   cursor: pointer;
 
@@ -147,9 +147,9 @@
   }
 
   &--active {
-    border-color: #000;
-    background: #000;
-    color: white;
+    border-color: var(--color-text);
+    background: var(--color-text);
+    color: var(--color-bg);
   }
 
   &__count {
@@ -160,8 +160,8 @@
     height: 1.4rem;
     padding: 0 0.35rem;
     border-radius: 1rem;
-    background: white;
-    color: #000;
+    background: var(--color-bg);
+    color: var(--color-text);
     font-size: 0.75rem;
     font-weight: 700;
   }
@@ -173,7 +173,7 @@
   font-size: 0.78rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  opacity: 0.55;
+  opacity: var(--opacity-meta);
 }
 
 .query-banner {
@@ -181,7 +181,7 @@
   align-items: center;
   gap: 0.6rem;
   padding: 0.7rem 1rem;
-  border: 2px solid #000;
+  border: 2px solid var(--color-text);
   border-radius: 1rem;
   text-align: left;
 
@@ -196,8 +196,8 @@
     flex-shrink: 0;
     padding: 0.4rem 0.8rem;
     border-radius: 1rem;
-    background: #000;
-    color: white;
+    background: var(--color-text);
+    color: var(--color-bg);
     font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;

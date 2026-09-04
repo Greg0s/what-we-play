@@ -1,6 +1,7 @@
 import { renderToString } from "react-dom/server";
 import App from "./App";
 import { LanguageProvider } from "./i18n";
+import { ThemeProvider } from "./theme";
 import { LANGUAGES, OG_LOCALES } from "./i18n/config";
 import { games, gamesForPlayerCount } from "./games";
 import { en } from "./i18n/locales/en";
@@ -72,9 +73,11 @@ export type RenderOptions = { dateModified?: string };
 
 export function renderPage(route: Route, options: RenderOptions = {}): RenderedPage {
   const html = renderToString(
-    <LanguageProvider initialLanguage={route.language}>
-      <App route={route} />
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider initialLanguage={route.language}>
+        <App route={route} />
+      </LanguageProvider>
+    </ThemeProvider>
   );
 
   return {
