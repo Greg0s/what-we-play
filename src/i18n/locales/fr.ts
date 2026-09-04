@@ -47,6 +47,33 @@ export const fr: Translation = {
       "Tous les jeux sont gratuits, jouables en ligne depuis un navigateur, en solo ou à plusieurs : indique le nombre de joueurs, parcours la liste, et amuse-toi !",
     close: "Fermer",
   },
+  catalogue: {
+    searchPlaceholder: "Cherche un jeu par nom, tag ou mot-clé",
+    clearSearch: "Effacer la recherche",
+    searchingWholeCatalogue:
+      "Recherche dans tout le catalogue — le nombre de joueurs est ignoré pendant que tu cherches.",
+    backTo: (players: number) =>
+      `Retour à ${players} ${players === 1 ? "joueur" : "joueurs"}`,
+    resultCount: (count: number) => (count === 1 ? "1 jeu" : `${count} jeux`),
+    scopeForPlayers: (players: number) =>
+      players === 1 ? "pour 1 joueur" : `pour ${players} joueurs`,
+    scopeAll: (total: number) => `sur les ${total} jeux`,
+    emptyTitle: (query: string) => `Aucun résultat pour « ${query} »`,
+    emptyHint:
+      "Essaie un nom de jeu, un mot-clé comme « dessin » ou « musique », ou un tag comme « solo ».",
+    filtersButton: "Filtres",
+    screenShareLabel: "Partage d'écran",
+    screenShareDescription:
+      "Une seule personne doit avoir le jeu ouvert : partage ton écran en appel et tout le monde joue depuis la même fenêtre. Pas de salon, pas de lien à envoyer.",
+    mobileFriendly: "Adapté au mobile",
+    noAccountNeeded: "Sans compte nécessaire",
+    showResults: (count: number) =>
+      count === 1 ? "Afficher 1 jeu" : `Afficher ${count} jeux`,
+    tagSolo: "Jouable en solo",
+    tagSoloWithStrangers: "Solo contre des inconnus en ligne",
+    tagMultiplayer: "Multijoueur avec des gens que tu connais",
+    tagScreenShare: "Jouable en partage d'écran",
+  },
   gameDescriptions: {
     uwufufu: "Vote dans des tournois sur des sujets variés.",
     "wikipedia-speedruns":

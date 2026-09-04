@@ -23,10 +23,10 @@ No test suite in this repo.
 
 ## Structure
 
-- `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`.
-- `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, and the player-count filter. Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
+- `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`, the tag booleans `solo`, `soloWithStrangers`, `multiplayer`, `screenShare`, and the filter booleans `mobileFriendly`, `accountNeeded`. The tag booleans currently mirror what `minPlayers`/`maxPlayers` imply — a stand-in until each game gets a real editorial pass — but the fields themselves are real and can be hand-corrected without touching code. `mobileFriendly`/`accountNeeded` are already a real editorial call, not derived. The "no account needed" filter chip shows games where `accountNeeded` is `false` — the UI negates the field so the filter reads as an opt-in ("skip the sign-up") rather than an opt-out.
+- `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, the player-count filter, and `playerRangeShort` (the numeric-only "1–20"/"3+" label used on the card's tag). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
-- `src/components/` — `Game` (a game's card), `Games` (list filtered by player count), `LanguageSwitcher` (language selector), `HowItWorks` (header button opening the "how it works" modal).
+- `src/components/` — `Game` (a game's card, with its player-count and tag icons), `Games` (search plus the screen-share/mobile-friendly/no-account-needed filters, and the list filtered by player count or query), `FilterSheet` (mobile bottom sheet for the same filters), `LanguageSwitcher` (language selector), `HowItWorks` (header button opening the "how it works" modal).
 - `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
 - `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
 - `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
@@ -144,6 +144,5 @@ Automatic via [.github/workflows/deploy.yml](.github/workflows/deploy.yml): ever
 
 ## Planned features (see README)
 
-- Filters (mobile friendly / free / no download)
 - Game images
 - Adding new games

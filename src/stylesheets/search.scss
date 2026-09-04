@@ -1,0 +1,215 @@
+@use "./variables" as *;
+
+.search {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.95rem 1.3rem;
+  border: 2px solid $light-grey;
+  border-radius: 1rem;
+  background: white;
+  cursor: text;
+  transition: border-color 0.2s;
+
+  &:hover,
+  &:focus-within {
+    border-color: #000;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    width: 1.1rem;
+    height: 1.1rem;
+    opacity: 0.45;
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__clear {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.12);
+    }
+
+    svg {
+      width: 0.8rem;
+      height: 0.8rem;
+    }
+  }
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  text-align: left;
+}
+
+.filter-chip-wrap {
+  position: relative;
+  display: flex;
+
+  &:hover .filter-tooltip {
+    opacity: 1;
+  }
+}
+
+.filter-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.95rem;
+  border: 2px solid $light-grey;
+  border-radius: 1rem;
+  background: white;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &:hover {
+    border-color: #000;
+  }
+
+  &--active {
+    border-color: #000;
+    background: #000;
+    color: white;
+
+    &:hover {
+      border-color: #000;
+    }
+
+    .filter-chip__clear {
+      width: 0.7rem;
+      height: 0.7rem;
+      opacity: 0.7;
+    }
+  }
+}
+
+.filter-tooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  z-index: 5;
+  width: 22rem;
+  max-width: 80vw;
+  padding: 0.8rem 1rem;
+  border-radius: 1rem;
+  background: #000;
+  color: white;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.55;
+  opacity: 0;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.filters-button {
+  display: none;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1rem;
+  border: 2px solid $light-grey;
+  border-radius: 1rem;
+  background: white;
+  font-size: 0.95rem;
+  cursor: pointer;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  &--active {
+    border-color: #000;
+    background: #000;
+    color: white;
+  }
+
+  &__count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.4rem;
+    height: 1.4rem;
+    padding: 0 0.35rem;
+    border-radius: 1rem;
+    background: white;
+    color: #000;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+}
+
+.result-line {
+  margin: 0;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+}
+
+.query-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border: 2px solid #000;
+  border-radius: 1rem;
+  text-align: left;
+
+  p {
+    flex: 1;
+    margin: 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  button {
+    flex-shrink: 0;
+    padding: 0.4rem 0.8rem;
+    border-radius: 1rem;
+    background: #000;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 640px) {
+  .toolbar {
+    display: none;
+  }
+
+  .filters-button {
+    display: flex;
+  }
+}
