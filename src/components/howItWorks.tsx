@@ -50,9 +50,10 @@ export function HowItWorks() {
         type="button"
         className="how-it-works-trigger"
         onClick={show}
+        aria-label={t.howItWorks.trigger}
       >
         <FaCircleQuestion className="how-it-works-trigger__icon" />
-        {t.howItWorks.trigger}
+        <span className="how-it-works-trigger__label">{t.howItWorks.trigger}</span>
       </button>
 
       {rendered && (

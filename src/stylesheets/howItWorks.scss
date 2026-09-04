@@ -36,6 +36,16 @@
   }
 }
 
+@media (max-width: 640px) {
+  .how-it-works-trigger {
+    padding: 0.4rem;
+
+    &__label {
+      display: none;
+    }
+  }
+}
+
 .how-it-works-overlay {
   position: fixed;
   inset: 0;
