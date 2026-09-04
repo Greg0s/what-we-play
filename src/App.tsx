@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.scss";
-import { Games, HowItWorks, LanguageSwitcher } from "./components/";
+import { Games, HowItWorks, LanguageSwitcher, ThemeSwitcher } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
@@ -83,6 +83,7 @@ function App({ route }: { route: Route }) {
     <>
       <header>
         <div className="header-actions">
+          <ThemeSwitcher />
           <HowItWorks />
           <LanguageSwitcher />
         </div>

@@ -1,0 +1,24 @@
+// The header controls always sit on the banner photo, so — like the "How it
+// works" and language buttons next to it — this stays white-on-veil rather
+// than following the page's own light/dark colors.
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.45);
+  }
+
+  &__icon {
+    width: 1.05rem;
+    height: 1.05rem;
+  }
+}

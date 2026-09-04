@@ -10,6 +10,33 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!--
+      Sets `data-theme` before the first paint so there is nothing to flash:
+      by the time the stylesheet is parsed, the dark CSS variables are already
+      in effect if that's what the visitor last chose (or their OS prefers).
+      The storage key is duplicated from src/theme/config.ts — this script runs
+      before React, and before any bundle, so it cannot import it.
+    -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("what-we-play:theme");
+          var mode =
+            stored === "light" || stored === "dark" || stored === "system"
+              ? stored
+              : "system";
+          var dark =
+            mode === "dark" ||
+            (mode === "system" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches);
+          if (dark) document.documentElement.setAttribute("data-theme", "dark");
+        } catch (e) {
+          // localStorage/matchMedia can be unavailable (private mode, blocked
+          // cookies) — falling back to light is not worth failing the page for.
+        }
+      })();
+    </script>
+
+    <!--
       Fonts are linked here rather than @import-ed from App.scss: an @import
       makes the browser wait for our CSS before it even discovers the Google
       stylesheet, which in turn hides the font files behind a third request.

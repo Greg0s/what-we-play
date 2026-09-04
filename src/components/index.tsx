@@ -5,3 +5,4 @@ export { Games } from "./games";
 export { FilterSheet } from "./filterSheet";
 export { LanguageSwitcher } from "./languageSwitcher";
 export { HowItWorks } from "./howItWorks";
+export { ThemeSwitcher } from "./themeSwitcher";

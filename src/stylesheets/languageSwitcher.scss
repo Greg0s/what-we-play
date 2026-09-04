@@ -54,8 +54,8 @@
 
     // The options are rendered by the OS: keep them readable.
     option {
-      color: #000;
-      background-color: white;
+      color: var(--color-text);
+      background-color: var(--color-surface);
     }
   }
 }

@@ -70,8 +70,8 @@
 
   padding: 3rem 2.5rem 2.5rem;
   border-radius: $border-radius;
-  background-color: $background-color;
-  color: #000;
+  background-color: var(--color-surface);
+  color: var(--color-text);
   text-align: left;
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
 
@@ -90,7 +90,7 @@
   p {
     font-size: 1.05rem;
     line-height: 1.6;
-    opacity: 0.8;
+    opacity: var(--opacity-body);
   }
 
   p + p {
@@ -114,12 +114,12 @@
     height: 2.5rem;
     border-radius: 50%;
 
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: var(--color-overlay);
     cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.12);
+      background-color: var(--color-overlay-hover);
     }
   }
 }

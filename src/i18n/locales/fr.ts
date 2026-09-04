@@ -25,6 +25,11 @@ export const fr: Translation = {
   language: {
     label: "Langue",
   },
+  theme: {
+    system: "Passer au thème du système",
+    light: "Passer au thème clair",
+    dark: "Passer au thème sombre",
+  },
   content: {
     playerRange: (min: number, max: number) => {
       const label = (count: number) =>

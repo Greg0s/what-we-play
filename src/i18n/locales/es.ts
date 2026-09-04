@@ -26,6 +26,11 @@ export const es: Translation = {
   language: {
     label: "Idioma",
   },
+  theme: {
+    system: "Cambiar al tema del sistema",
+    light: "Cambiar a tema claro",
+    dark: "Cambiar a tema oscuro",
+  },
   content: {
     playerRange: (min: number, max: number) => {
       const label = (count: number) =>

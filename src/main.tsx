@@ -3,6 +3,7 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { LanguageProvider } from "./i18n";
 import { parseRoute } from "./routes";
+import { ThemeProvider } from "./theme";
 
 const container = document.getElementById("root")!;
 
@@ -12,9 +13,11 @@ const route = parseRoute(window.location.pathname);
 
 const app = (
   <StrictMode>
-    <LanguageProvider initialLanguage={route.language}>
-      <App route={route} />
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider initialLanguage={route.language}>
+        <App route={route} />
+      </LanguageProvider>
+    </ThemeProvider>
   </StrictMode>
 );
 
