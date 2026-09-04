@@ -4,181 +4,337 @@
     "name": "UwUFUFU",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://www.uwufufu.com/"
+    "link": "https://www.uwufufu.com/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "wikipedia-speedruns",
     "name": "Wikipedia Speedruns!",
     "minPlayers": 1,
     "maxPlayers": -1,
-    "link": "https://wikispeedruns.com/"
+    "link": "https://wikispeedruns.com/",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": true
   },
   {
     "id": "more-or-less-game",
     "name": "More or Less game",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://moreorless.io/games"
+    "link": "https://moreorless.io/games",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "damn-dog",
     "name": "DAMN DOG",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://damn.dog/"
+    "link": "https://damn.dog/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "framed",
     "name": "Framed",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://framed.wtf/"
+    "link": "https://framed.wtf/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "the-higher-lower-game",
     "name": "The Higher Lower Game",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "http://www.higherlowergame.com/"
+    "link": "http://www.higherlowergame.com/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "le-petit-bac",
     "name": "Le Petit Bac",
     "minPlayers": 2,
     "maxPlayers": 45,
-    "link": "https://petitbac.net/"
+    "link": "https://petitbac.net/",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": true
   },
   {
     "id": "connect-the-stars",
     "name": "Connect the stars",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://connectthestars.xyz/"
+    "link": "https://connectthestars.xyz/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "make-it-meme",
     "name": "Make it Meme",
     "minPlayers": 2,
     "maxPlayers": 30,
-    "link": "https://makeitmeme.com"
+    "link": "https://makeitmeme.com",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "tier-list-maker",
     "name": "Tier List Maker",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://tiermaker.com/"
+    "link": "https://tiermaker.com/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "guess-the-game",
     "name": "Guess The.Game",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://guessthe.game/"
+    "link": "https://guessthe.game/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "tixid",
     "name": "Tixid",
     "minPlayers": 3,
     "maxPlayers": 8,
-    "link": "https://play-tixid.online/en/login"
+    "link": "https://play-tixid.online/en/login",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "bombparty",
     "name": "BombParty",
     "minPlayers": 2,
     "maxPlayers": 16,
-    "link": "https://jklm.fun/"
+    "link": "https://jklm.fun/",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "popsauce",
     "name": "PopSauce",
     "minPlayers": 2,
     "maxPlayers": 30,
-    "link": "https://jklm.fun/"
+    "link": "https://jklm.fun/",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "rentguessr",
     "name": "rentguessr",
     "minPlayers": 1,
     "maxPlayers": -1,
-    "link": "https://www.rentguessr.fun/game"
+    "link": "https://www.rentguessr.fun/game",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "openguessr",
     "name": "OpenGuessr",
     "minPlayers": 1,
     "maxPlayers": -1,
-    "link": "https://openguessr.com/"
+    "link": "https://openguessr.com/",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "squiz",
     "name": "sQuiz",
     "minPlayers": 1,
     "maxPlayers": 200,
-    "link": "https://squiz.gg/"
+    "link": "https://squiz.gg/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": true
   },
   {
     "id": "codenames",
     "name": "Codenames",
     "minPlayers": 4,
     "maxPlayers": 4,
-    "link": "https://codenames.game/"
+    "link": "https://codenames.game/",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "skribbl-io",
     "name": "skribbl.io",
     "minPlayers": 1,
     "maxPlayers": 20,
-    "link": "https://skribbl.io/"
+    "link": "https://skribbl.io/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": false,
+    "accountNeeded": false
   },
   {
     "id": "gartic-phone",
     "name": "Gartic Phone",
     "minPlayers": 2,
     "maxPlayers": 50,
-    "link": "https://garticphone.com/"
+    "link": "https://garticphone.com/",
+    "solo": false,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "linkterpol",
     "name": "Linkterpol",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://linkterpol.fr/"
+    "link": "https://linkterpol.fr/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "pedantix",
     "name": "Pédantix",
     "minPlayers": 1,
     "maxPlayers": -1,
-    "link": "https://pedantix.certitudes.org/"
+    "link": "https://pedantix.certitudes.org/",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "cemantix",
     "name": "Cémantix",
     "minPlayers": 1,
     "maxPlayers": -1,
-    "link": "https://cemantix.certitudes.org/"
+    "link": "https://cemantix.certitudes.org/",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "brandcolorgame",
     "name": "brandcolorgame",
     "minPlayers": 1,
     "maxPlayers": 1,
-    "link": "https://brandcolorgame.com/"
+    "link": "https://brandcolorgame.com/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "blindtest-gg",
     "name": "Blindtest.gg",
     "minPlayers": 1,
     "maxPlayers": 15,
-    "link": "https://blindtest.gg/"
+    "link": "https://blindtest.gg/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   },
   {
     "id": "what-the-tune",
     "name": "What the Tune",
     "minPlayers": 1,
     "maxPlayers": 10,
-    "link": "https://whatthetune.com/"
+    "link": "https://whatthetune.com/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]

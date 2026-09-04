@@ -48,6 +48,32 @@ export const en = {
       "Every game is free, playable online from a browser, solo or with others: enter your number of players, browse the list, and have fun!",
     close: "Close",
   },
+  catalogue: {
+    searchPlaceholder: "Search a game by name, tag or keyword",
+    clearSearch: "Clear search",
+    searchingWholeCatalogue:
+      "Searching the whole catalogue — the player count is ignored while you search.",
+    backTo: (players: number) =>
+      `Back to ${players} ${players === 1 ? "player" : "players"}`,
+    resultCount: (count: number) => (count === 1 ? "1 game" : `${count} games`),
+    scopeForPlayers: (players: number) =>
+      players === 1 ? "for 1 player" : `for ${players} players`,
+    scopeAll: (total: number) => `in all ${total} games`,
+    emptyTitle: (query: string) => `Nothing matches “${query}”`,
+    emptyHint:
+      "Try a game name, a keyword like “draw” or “music”, or a tag like “solo”.",
+    filtersButton: "Filters",
+    screenShareLabel: "Screen share",
+    screenShareDescription:
+      "Only one person needs the game open: share your screen on a call and everyone plays from the same window. No lobby, no link to send.",
+    mobileFriendly: "Mobile friendly",
+    noAccountNeeded: "No account needed",
+    showResults: (count: number) => (count === 1 ? "Show 1 game" : `Show ${count} games`),
+    tagSolo: "Playable solo",
+    tagSoloWithStrangers: "Solo against strangers online",
+    tagMultiplayer: "Multiplayer with people you know",
+    tagScreenShare: "Playable over screen share",
+  },
   gameDescriptions: {
     "uwufufu": "Vote in tournaments about various subjects",
     "wikipedia-speedruns":
@@ -126,6 +152,27 @@ export type Translation = {
     paragraph2: string;
     /** Label of the modal's close button. */
     close: string;
+  };
+  catalogue: {
+    searchPlaceholder: string;
+    clearSearch: string;
+    searchingWholeCatalogue: string;
+    backTo: (players: number) => string;
+    resultCount: (count: number) => string;
+    scopeForPlayers: (players: number) => string;
+    scopeAll: (total: number) => string;
+    emptyTitle: (query: string) => string;
+    emptyHint: string;
+    filtersButton: string;
+    screenShareLabel: string;
+    screenShareDescription: string;
+    mobileFriendly: string;
+    noAccountNeeded: string;
+    showResults: (count: number) => string;
+    tagSolo: string;
+    tagSoloWithStrangers: string;
+    tagMultiplayer: string;
+    tagScreenShare: string;
   };
   gameDescriptions: Record<GameId, string>;
 };

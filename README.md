@@ -32,6 +32,5 @@ translation is missing.
 
 ## Planned features
 
-- Add filters (mobile friendly/free/need download): for now all games are free and without download
 - Add game images
 - Add new games
