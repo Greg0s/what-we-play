@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   FaDisplay,
   FaMagnifyingGlass,
@@ -23,13 +23,16 @@ function buildTags(game: GameData, t: Translation): GameTag[] {
   const tags: GameTag[] = [];
   if (game.solo) tags.push({ icon: FaUser, label: t.catalogue.tagSolo });
   if (game.soloWithStrangers) {
-    tags.push({ icon: FaUserSecret, label: t.catalogue.tagSoloWithStrangers });
+    tags.push({ icon: FaPeopleGroup, label: t.catalogue.tagSoloWithStrangers });
   }
   if (game.multiplayer) {
-    tags.push({ icon: FaPeopleGroup, label: t.catalogue.tagMultiplayer });
+    tags.push({ icon: FaUserSecret, label: t.catalogue.tagMultiplayer });
   }
   if (game.screenShare) {
     tags.push({ icon: FaDisplay, label: t.catalogue.tagScreenShare });
+  }
+  if (game.mobileFriendly) {
+    tags.push({ icon: FaMobileScreenButton, label: t.catalogue.mobileFriendly });
   }
   return tags;
 }
@@ -42,21 +45,67 @@ function matchesQuery(game: GameData, description: string, t: Translation, query
     game.soloWithStrangers ? t.catalogue.tagSoloWithStrangers : "",
     game.multiplayer ? t.catalogue.tagMultiplayer : "",
     game.screenShare ? t.catalogue.tagScreenShare : "",
+    game.mobileFriendly ? t.catalogue.mobileFriendly : "",
   ]
     .join(" ")
     .toLowerCase();
   return haystack.includes(query);
 }
 
-export function Games({ players }: { players: number }) {
+type GamesProps = {
+  players: number;
+  onPlayersChange: (players: number) => void;
+};
+
+export function Games({ players, onPlayersChange }: GamesProps) {
   const { gameDescription, t } = useTranslation();
   const [query, setQuery] = useState("");
+  const [solo, setSolo] = useState(false);
+  const [soloWithStrangers, setSoloWithStrangers] = useState(false);
+  const [multiplayer, setMultiplayer] = useState(false);
   const [screenShare, setScreenShare] = useState(false);
   const [mobileFriendly, setMobileFriendly] = useState(false);
   const [noAccountNeeded, setNoAccountNeeded] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
+  // Player count to restore when the solo filter is turned back off.
+  const previousPlayers = useRef<number | null>(null);
+
+  const toggleSolo = () => {
+    if (solo) {
+      setSolo(false);
+      if (previousPlayers.current !== null) {
+        onPlayersChange(previousPlayers.current);
+        previousPlayers.current = null;
+      }
+    } else {
+      previousPlayers.current = players;
+      setSolo(true);
+      onPlayersChange(1);
+    }
+  };
 
   const filters: FilterDefinition[] = [
+    {
+      key: "solo",
+      label: t.catalogue.tagSolo,
+      icon: FaUser,
+      active: solo,
+      onToggle: toggleSolo,
+    },
+    {
+      key: "soloWithStrangers",
+      label: t.catalogue.tagSoloWithStrangers,
+      icon: FaPeopleGroup,
+      active: soloWithStrangers,
+      onToggle: () => setSoloWithStrangers((value) => !value),
+    },
+    {
+      key: "multiplayer",
+      label: t.catalogue.tagMultiplayer,
+      icon: FaUserSecret,
+      active: multiplayer,
+      onToggle: () => setMultiplayer((value) => !value),
+    },
     {
       key: "screenShare",
       label: t.catalogue.screenShareLabel,
@@ -94,6 +143,9 @@ export function Games({ players }: { players: number }) {
   if (hasQuery) {
     list = list.filter((game) => matchesQuery(game, gameDescription(game.id), t, trimmedQuery));
   }
+  if (solo) list = list.filter((game) => game.solo);
+  if (soloWithStrangers) list = list.filter((game) => game.soloWithStrangers);
+  if (multiplayer) list = list.filter((game) => game.multiplayer);
   if (screenShare) list = list.filter((game) => game.screenShare);
   if (mobileFriendly) list = list.filter((game) => game.mobileFriendly);
   if (noAccountNeeded) list = list.filter((game) => !game.accountNeeded);

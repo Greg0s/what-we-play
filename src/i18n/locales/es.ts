@@ -43,14 +43,15 @@ export const es: Translation = {
   howItWorks: {
     trigger: "Cómo funciona",
     title: "Cómo funciona",
+    intro:
+      "¿A qué jugamos? es un sitio que reúne juegos en línea geniales para vuestras mejores noches con amigos y familia.",
     paragraph1: {
-      before:
-        "¿A qué jugamos? es un sitio que reúne juegos geniales para jugar con amigos, elegidos con cariño por ",
+      before: "Los juegos están elegidos con 💖 por ",
       linkText: "una persona real",
       after: " que ha pasado muchas horas descubriéndolos todos.",
     },
     paragraph2:
-      "Todos los juegos son gratis, se juegan en línea desde un navegador, en solitario o en grupo: indica cuántos sois, recorre la lista y ¡diviértete!",
+      "Todos los juegos son gratis, fácilmente accesibles desde un navegador en cualquier dispositivo (ordenador, teléfono, tableta, nevera conectada), jugables en solitario o en grupo: indica cuántos sois, tus filtros, recorre la lista y ¡diviértete!",
     close: "Cerrar",
   },
   catalogue: {
@@ -70,14 +71,14 @@ export const es: Translation = {
     filtersButton: "Filtros",
     screenShareLabel: "Pantalla compartida",
     screenShareDescription:
-      "Solo una persona necesita tener el juego abierto: comparte tu pantalla en una llamada y todos juegan desde la misma ventana. Sin sala, sin enlace que enviar.",
+      "Juegos que técnicamente no son multijugador, pero son divertidos jugados en grupo por pantalla compartida.",
     mobileFriendly: "Apto para móvil",
     noAccountNeeded: "No requiere cuenta",
     showResults: (count: number) =>
       count === 1 ? "Mostrar 1 juego" : `Mostrar ${count} juegos`,
     tagSolo: "Jugable en solitario",
-    tagSoloWithStrangers: "Solo contra desconocidos en línea",
-    tagMultiplayer: "Multijugador con gente que conoces",
+    tagSoloWithStrangers: "Jugable con desconocidos",
+    tagMultiplayer: "Partida privada posible",
     tagScreenShare: "Jugable por pantalla compartida",
   },
   gameDescriptions: {

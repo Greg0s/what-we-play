@@ -43,14 +43,15 @@ export const en = {
   howItWorks: {
     trigger: "How it works",
     title: "How it works",
+    intro:
+      "What we play? is a site that lists cool online games for your best nights in with friends and family.",
     paragraph1: {
-      before:
-        "What we play is a site that lists cool games to play with friends, hand-picked with love by ",
+      before: "The games are hand-picked with 💖 by ",
       linkText: "a real human",
       after: " who spent many hours discovering all of them!",
     },
     paragraph2:
-      "Every game is free, playable online from a browser, solo or with others: enter your number of players, browse the list, and have fun!",
+      "Every game is free, easily accessible from a browser on any device (computer, phone, tablet, smart fridge), playable solo or with others: enter your number of players, your filters, browse the list, and have fun!",
     close: "Close",
   },
   catalogue: {
@@ -70,13 +71,13 @@ export const en = {
     filtersButton: "Filters",
     screenShareLabel: "Screen share",
     screenShareDescription:
-      "Only one person needs the game open: share your screen on a call and everyone plays from the same window. No lobby, no link to send.",
+      "Games that aren't technically multiplayer, but are fun to play together over screen share.",
     mobileFriendly: "Mobile friendly",
     noAccountNeeded: "No account needed",
     showResults: (count: number) => (count === 1 ? "Show 1 game" : `Show ${count} games`),
     tagSolo: "Playable solo",
-    tagSoloWithStrangers: "Solo against strangers online",
-    tagMultiplayer: "Multiplayer with people you know",
+    tagSoloWithStrangers: "Playable with strangers",
+    tagMultiplayer: "Private game possible",
     tagScreenShare: "Playable over screen share",
   },
   gameDescriptions: {
@@ -158,6 +159,7 @@ export type Translation = {
     /** Label of the header button that opens the modal. */
     trigger: string;
     title: string;
+    intro: string;
     /** Split around `linkText` so it can be rendered as a link to the portfolio. */
     paragraph1: { before: string; linkText: string; after: string };
     paragraph2: string;
