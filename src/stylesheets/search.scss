@@ -16,6 +16,10 @@
     border-color: var(--color-text);
   }
 
+  input:focus-visible {
+    outline: none;
+  }
+
   &__icon {
     flex-shrink: 0;
     width: 1.1rem;
