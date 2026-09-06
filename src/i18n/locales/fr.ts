@@ -42,14 +42,15 @@ export const fr: Translation = {
   howItWorks: {
     trigger: "Comment ça marche ?",
     title: "Comment ça marche ?",
+    intro:
+      "À quoi on joue ?, c'est un site qui référence des jeux en ligne cools pour vos meilleures soirées avec vos amis et proches.",
     paragraph1: {
-      before:
-        "À quoi on joue, c'est un site qui référence des jeux cools à jouer entre amis, sélectionnés avec amour par ",
+      before: "Les jeux sont sélectionnés avec 💖 par ",
       linkText: "un vrai humain",
-      after: ", qui a passé beaucoup d'heures à tous les découvrir !",
+      after: " qui a passé beaucoup d'heures à tous les découvrir !",
     },
     paragraph2:
-      "Tous les jeux sont gratuits, jouables en ligne depuis un navigateur, en solo ou à plusieurs : indique le nombre de joueurs, parcours la liste, et amuse-toi !",
+      "Tous les jeux sont gratuits, facilement accessibles depuis un navigateur depuis n'importe quel support (ordinateur, téléphone, tablette, frigo connecté), jouable en solo ou à plusieurs : indique le nombre de joueur, tes filtres, parcours la liste, et amuse-toi !",
     close: "Fermer",
   },
   catalogue: {
@@ -69,14 +70,14 @@ export const fr: Translation = {
     filtersButton: "Filtres",
     screenShareLabel: "Partage d'écran",
     screenShareDescription:
-      "Une seule personne doit avoir le jeu ouvert : partage ton écran en appel et tout le monde joue depuis la même fenêtre. Pas de salon, pas de lien à envoyer.",
-    mobileFriendly: "Adapté au mobile",
-    noAccountNeeded: "Sans compte nécessaire",
+      "Jeux qui ne sont techniquement pas multijoueur, mais qui sont fun à plusieurs en partage d'écran.",
+    mobileFriendly: "Jouable sur tel",
+    noAccountNeeded: "Pas besoin de compte",
     showResults: (count: number) =>
       count === 1 ? "Afficher 1 jeu" : `Afficher ${count} jeux`,
     tagSolo: "Jouable en solo",
-    tagSoloWithStrangers: "Solo contre des inconnus en ligne",
-    tagMultiplayer: "Multijoueur avec des gens que tu connais",
+    tagSoloWithStrangers: "Jouable avec des inconnus",
+    tagMultiplayer: "Partie privée possible",
     tagScreenShare: "Jouable en partage d'écran",
   },
   gameDescriptions: {

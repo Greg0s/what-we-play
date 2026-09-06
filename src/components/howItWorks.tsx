@@ -78,6 +78,7 @@ export function HowItWorks() {
               <FaXmark />
             </button>
             <h2 id="how-it-works-title">{t.howItWorks.title}</h2>
+            <p>{t.howItWorks.intro}</p>
             <p>
               {t.howItWorks.paragraph1.before}
               <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">

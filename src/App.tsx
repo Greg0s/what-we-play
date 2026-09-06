@@ -120,7 +120,7 @@ function App({ route }: { route: Route }) {
       </header>
 
       <main>
-        <Games players={players} />
+        <Games players={players} onPlayersChange={handleChange} />
       </main>
     </>
   );
