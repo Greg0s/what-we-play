@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import "./App.scss";
 import { Games, HowItWorks, LanguageSwitcher, ThemeSwitcher } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
@@ -7,6 +7,7 @@ import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { buildPath, parseRoute, type Route } from "./routes";
 import { useDocumentMeta } from "./useDocumentMeta";
+import { DEFAULT_PLAYERS } from "./games";
 
 function App({ route }: { route: Route }) {
   const [players, setPlayers] = useState(route.players);
@@ -79,6 +80,23 @@ function App({ route }: { route: Route }) {
     setIsHome(false);
   };
 
+  // Clicking the title always returns to the language's own landing page —
+  // no player count, no filters — rather than wherever the click happened.
+  const homeRoute: Route = { language, players: DEFAULT_PLAYERS, isHome: true };
+  const handleTitleClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    historyMode.current = "pushState";
+    setPlayers(DEFAULT_PLAYERS);
+    setIsHome(true);
+  };
+
+  // The final "?" gets its own element so it alone can carry the load
+  // animation.
+  const title = t.header.title;
+  const titleMain = title.slice(0, -1);
+  const titleMark = title.slice(-1);
+
   return (
     <>
       <header>
@@ -87,7 +105,12 @@ function App({ route }: { route: Route }) {
           <HowItWorks />
           <LanguageSwitcher />
         </div>
-        <h1>{t.header.title}</h1>
+        <h1>
+          <a className="site-title" href={buildPath(homeRoute)} onClick={handleTitleClick}>
+            {titleMain}
+            <span className="site-title__mark">{titleMark}</span>
+          </a>
+        </h1>
         <div className="how-many">
           <div className="how-many__buttons">
             <button
