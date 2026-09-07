@@ -10,6 +10,7 @@ import {
   FaUserSlash,
   FaXmark,
 } from "react-icons/fa6";
+import { TbFilterOff } from "react-icons/tb";
 import { Game, type GameTag } from "./game";
 import { FilterSheet, type FilterDefinition } from "./filterSheet";
 import { games, gamesForPlayerCount, playerRangeShort, type Game as GameData } from "../games";
@@ -241,9 +242,14 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
           ),
         )}
         {activeFilters.length > 0 && (
-          <button type="button" className="filters-reset" onClick={resetFilters}>
-            <FaXmark />
-            {t.catalogue.resetFilters}
+          <button
+            type="button"
+            className="filters-reset"
+            onClick={resetFilters}
+            aria-label={t.catalogue.resetFilters}
+            title={t.catalogue.resetFilters}
+          >
+            <TbFilterOff />
           </button>
         )}
       </div>

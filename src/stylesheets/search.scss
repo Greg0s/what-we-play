@@ -114,24 +114,22 @@
 .filters-reset {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.55rem 0.2rem;
-  border: none;
-  background: none;
-  color: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  opacity: 0.6;
+  justify-content: center;
+  padding: 0.55rem;
+  border: 2px solid var(--color-text);
+  border-radius: 1rem;
+  background: var(--color-text);
+  color: var(--color-bg);
   cursor: pointer;
   transition: opacity 0.2s;
 
   svg {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 1rem;
+    height: 1rem;
   }
 
   &:hover {
-    opacity: 1;
+    opacity: 0.85;
   }
 }
 
