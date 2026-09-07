@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   FaDisplay,
   FaMagnifyingGlass,
@@ -55,9 +55,12 @@ function matchesQuery(game: GameData, description: string, t: Translation, query
 type GamesProps = {
   players: number;
   onPlayersChange: (players: number) => void;
+  // Bumped whenever the site title is clicked, so filters clear along with
+  // the player count the title click already resets in App.
+  resetSignal: number;
 };
 
-export function Games({ players, onPlayersChange }: GamesProps) {
+export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
   const { gameDescription, t } = useTranslation();
   const [query, setQuery] = useState("");
   const [solo, setSolo] = useState(false);
@@ -69,6 +72,22 @@ export function Games({ players, onPlayersChange }: GamesProps) {
   const [sheetOpen, setSheetOpen] = useState(false);
   // Player count to restore when the solo filter is turned back off.
   const previousPlayers = useRef<number | null>(null);
+
+  const isFirstRender = useRef(true);
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    setQuery("");
+    setSolo(false);
+    setSoloWithStrangers(false);
+    setMultiplayer(false);
+    setScreenShare(false);
+    setMobileFriendly(false);
+    setNoAccountNeeded(false);
+    previousPlayers.current = null;
+  }, [resetSignal]);
 
   const toggleSolo = () => {
     if (solo) {

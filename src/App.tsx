@@ -82,13 +82,17 @@ function App({ route }: { route: Route }) {
 
   // Clicking the title always returns to the language's own landing page —
   // no player count, no filters — rather than wherever the click happened.
+  // The same click count also replays the "?" drop animation and tells
+  // Games to clear its filters, since both are keyed off it below.
   const homeRoute: Route = { language, players: DEFAULT_PLAYERS, isHome: true };
+  const [titleClickCount, setTitleClickCount] = useState(0);
   const handleTitleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     e.preventDefault();
     historyMode.current = "pushState";
     setPlayers(DEFAULT_PLAYERS);
     setIsHome(true);
+    setTitleClickCount((count) => count + 1);
   };
 
   // The final "?" gets its own element so it alone can carry the load
@@ -108,7 +112,9 @@ function App({ route }: { route: Route }) {
         <h1>
           <a className="site-title" href={buildPath(homeRoute)} onClick={handleTitleClick}>
             {titleMain}
-            <span className="site-title__mark">{titleMark}</span>
+            <span key={titleClickCount} className="site-title__mark">
+              {titleMark}
+            </span>
           </a>
         </h1>
         <div className="how-many">
@@ -143,7 +149,7 @@ function App({ route }: { route: Route }) {
       </header>
 
       <main>
-        <Games players={players} onPlayersChange={handleChange} />
+        <Games players={players} onPlayersChange={handleChange} resetSignal={titleClickCount} />
       </main>
     </>
   );
