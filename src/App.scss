@@ -201,6 +201,35 @@ h1 {
   color: white;
 }
 
+.site-title {
+  color: inherit;
+  cursor: pointer;
+}
+
+.site-title__mark {
+  display: inline-block;
+  transform-origin: 50% 65%;
+  // Loads once, on page load: a full turn that reads as a drop rather than a
+  // spin — near-frozen at the ends, all its motion spent in the middle.
+  animation: site-title-mark-fall 900ms cubic-bezier(0.85, 0, 0.15, 1);
+}
+
+@keyframes site-title-mark-fall {
+  from {
+    transform: translateY(-0.35em) rotate(0deg);
+  }
+
+  to {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-title__mark {
+    animation: none;
+  }
+}
+
 .how-many {
   display: flex;
   align-items: center;
