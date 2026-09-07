@@ -69,6 +69,7 @@ export const en = {
     emptyHint:
       "Try a game name, a keyword like “draw” or “music”, or a tag like “solo”.",
     filtersButton: "Filters",
+    resetFilters: "Reset filters",
     screenShareLabel: "Screen share",
     screenShareDescription:
       "Games that aren't technically multiplayer, but are fun to play together over screen share.",
@@ -177,6 +178,7 @@ export type Translation = {
     emptyTitle: (query: string) => string;
     emptyHint: string;
     filtersButton: string;
+    resetFilters: string;
     screenShareLabel: string;
     screenShareDescription: string;
     mobileFriendly: string;
