@@ -22,10 +22,12 @@ type FilterSheetProps = {
   onClose: () => void;
   filters: FilterDefinition[];
   resultCount: number;
+  onReset: () => void;
 };
 
-export function FilterSheet({ open, onClose, filters, resultCount }: FilterSheetProps) {
+export function FilterSheet({ open, onClose, filters, resultCount, onReset }: FilterSheetProps) {
   const { t } = useTranslation();
+  const hasActiveFilters = filters.some((filter) => filter.active);
   const [rendered, setRendered] = useState(false);
   const [animatedOpen, setAnimatedOpen] = useState(false);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -74,15 +76,22 @@ export function FilterSheet({ open, onClose, filters, resultCount }: FilterSheet
         <div className="filter-sheet__handle" aria-hidden="true" />
         <div className="filter-sheet__header">
           <h2>{t.catalogue.filtersButton}</h2>
-          <button
-            ref={closeButtonRef}
-            type="button"
-            aria-label={t.howItWorks.close}
-            className="filter-sheet__close"
-            onClick={onClose}
-          >
-            <FaXmark />
-          </button>
+          <div className="filter-sheet__header-actions">
+            {hasActiveFilters && (
+              <button type="button" className="filter-sheet__reset" onClick={onReset}>
+                {t.catalogue.resetFilters}
+              </button>
+            )}
+            <button
+              ref={closeButtonRef}
+              type="button"
+              aria-label={t.howItWorks.close}
+              className="filter-sheet__close"
+              onClick={onClose}
+            >
+              <FaXmark />
+            </button>
+          </div>
         </div>
 
         {filters.map(({ key, label, description, icon: Icon, active, onToggle }) => (

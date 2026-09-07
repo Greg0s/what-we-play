@@ -103,6 +103,21 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
     }
   };
 
+  const resetFilters = () => {
+    if (solo) {
+      setSolo(false);
+      if (previousPlayers.current !== null) {
+        onPlayersChange(previousPlayers.current);
+        previousPlayers.current = null;
+      }
+    }
+    setSoloWithStrangers(false);
+    setMultiplayer(false);
+    setScreenShare(false);
+    setMobileFriendly(false);
+    setNoAccountNeeded(false);
+  };
+
   const filters: FilterDefinition[] = [
     {
       key: "solo",
@@ -225,6 +240,12 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
             </button>
           ),
         )}
+        {activeFilters.length > 0 && (
+          <button type="button" className="filters-reset" onClick={resetFilters}>
+            <FaXmark />
+            {t.catalogue.resetFilters}
+          </button>
+        )}
       </div>
 
       <button
@@ -275,6 +296,7 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
         onClose={() => setSheetOpen(false)}
         filters={filters}
         resultCount={list.length}
+        onReset={resetFilters}
       />
     </div>
   );

@@ -69,6 +69,7 @@ export const es: Translation = {
     emptyHint:
       "Prueba el nombre de un juego, una palabra clave como «dibujo» o «música», o una etiqueta como «solo».",
     filtersButton: "Filtros",
+    resetFilters: "Restablecer filtros",
     screenShareLabel: "Pantalla compartida",
     screenShareDescription:
       "Juegos que técnicamente no son multijugador, pero son divertidos jugados en grupo por pantalla compartida.",
