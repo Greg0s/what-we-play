@@ -209,17 +209,24 @@ h1 {
 .site-title__mark {
   display: inline-block;
   transform-origin: 50% 65%;
-  // Loads once, on page load: a full turn that reads as a drop rather than a
-  // spin — near-frozen at the ends, all its motion spent in the middle.
-  animation: site-title-mark-fall 900ms cubic-bezier(0.85, 0, 0.15, 1);
+  // Plays once, on page load and again on every title click (see App.tsx,
+  // which remounts this span to retrigger it). The keyframes start and end
+  // at the mark's own resting position, so retriggering never has to jump
+  // from "resting" to "already risen" before the animation can take over —
+  // the rise itself is part of the animated loop, not a precondition of it.
+  animation: site-title-mark-fall 900ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 @keyframes site-title-mark-fall {
-  from {
-    transform: translateY(-0.35em) rotate(0deg);
+  0% {
+    transform: translateY(0) rotate(0deg);
   }
 
-  to {
+  40% {
+    transform: translateY(-0.35em) rotate(180deg);
+  }
+
+  100% {
     transform: translateY(0) rotate(360deg);
   }
 }
