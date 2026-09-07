@@ -28,14 +28,14 @@
 }
 
 :root[data-theme="dark"] {
-  --color-bg: #1b1a20;
-  --color-surface: #242230;
-  --color-border: #3d3a46;
-  --color-text: #ecebef;
-  --color-tooltip-bg: #2d2b38;
-  --color-tooltip-text: #ecebef;
-  --color-overlay: rgba(255, 255, 255, 0.08);
-  --color-overlay-hover: rgba(255, 255, 255, 0.16);
+  --color-bg: oklch(25% 0.01 55);
+  --color-surface: oklch(31% 0.012 55);
+  --color-border: oklch(43% 0.016 55);
+  --color-text: oklch(95% 0.005 60);
+  --color-tooltip-bg: oklch(34% 0.014 55);
+  --color-tooltip-text: oklch(95% 0.005 60);
+  --color-overlay: rgba(255, 255, 255, 0.07);
+  --color-overlay-hover: rgba(255, 255, 255, 0.14);
   --color-banner-veil: rgba(0, 0, 0, 0.55);
   --color-hover-gradient: linear-gradient(
     to bottom,
