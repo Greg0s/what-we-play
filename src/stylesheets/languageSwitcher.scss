@@ -1,41 +1,36 @@
+@use "./variables" as *;
+
 .language-switcher {
   position: relative;
 
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-
-  padding: 0.4rem 0.7rem;
-  border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.3);
-  color: white;
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s,
-    transform 0.15s ease-out;
-
-  &:hover,
-  &:focus-within {
-    background-color: rgba(255, 255, 255, 0.45);
-  }
-
-  &:active {
-    transform: scale(0.98);
-    background-color: rgba(255, 255, 255, 0.4);
-    transition:
-      transform 0.05s ease-out,
-      background-color 0.05s ease-out;
-  }
-
-  &__display {
+  &__trigger {
     display: flex;
     align-items: center;
     gap: 0.4rem;
+
+    padding: 0.4rem 0.7rem;
+    border-radius: 1rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
     font-size: 0.9rem;
     font-weight: 600;
-    // Purely decorative: the real select sits on top and handles clicks.
-    pointer-events: none;
+    cursor: pointer;
+
+    transition:
+      background-color 0.2s,
+      transform 0.15s ease-out;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.45);
+    }
+
+    &:active {
+      transform: scale(0.98);
+      background-color: rgba(255, 255, 255, 0.4);
+      transition:
+        transform 0.05s ease-out,
+        background-color 0.05s ease-out;
+    }
   }
 
   &__icon {
@@ -44,18 +39,83 @@
     flex-shrink: 0;
   }
 
-  &__select {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
+  &__chevron {
+    width: 0.8rem;
+    height: 0.8rem;
+    flex-shrink: 0;
+    transition: transform 0.2s ease-out;
+  }
 
-    // The options are rendered by the OS: keep them readable.
-    option {
-      color: var(--color-text);
-      background-color: var(--color-surface);
+  &__trigger[aria-expanded="true"] &__chevron {
+    transform: rotate(180deg);
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    z-index: 10;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 9.5rem;
+
+    padding: 0.4rem;
+    border-radius: 1rem;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.25);
+
+    transform-origin: top right;
+    transform: scale(0.9) translateY(-0.4rem);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+      opacity 0.18s ease;
+
+    &.is-open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: auto;
     }
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+
+    padding: 0.55rem 0.7rem;
+    border-radius: 0.6rem;
+    text-align: left;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-overlay);
+    }
+
+    &.is-selected {
+      color: $accent-color;
+    }
+  }
+
+  &__check {
+    width: 0.8rem;
+    height: 0.8rem;
+    flex-shrink: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .language-switcher__menu,
+  .language-switcher__chevron {
+    transition: none;
   }
 }
