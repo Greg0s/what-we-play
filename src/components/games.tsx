@@ -242,14 +242,9 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
           ),
         )}
         {activeFilters.length > 0 && (
-          <button
-            type="button"
-            className="filters-reset"
-            onClick={resetFilters}
-            aria-label={t.catalogue.resetFilters}
-            title={t.catalogue.resetFilters}
-          >
+          <button type="button" className="filters-reset" onClick={resetFilters}>
             <TbFilterOff />
+            {t.catalogue.resetFilters}
           </button>
         )}
       </div>
