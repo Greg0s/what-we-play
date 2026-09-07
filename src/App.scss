@@ -68,6 +68,29 @@ body {
   background-color: var(--color-bg);
 }
 
+/*
+ * Theme colors are CSS variables, so switching `data-theme` already repaints
+ * every element that reads one — this only makes that repaint fade instead of
+ * snap. Scoped to color/border properties so it can't interfere with the
+ * transform/opacity transitions components declare for their own hover and
+ * active states.
+ */
+html,
+html * {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    fill 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  html * {
+    transition: none;
+  }
+}
+
 body {
   font-size: 16px;
 }

@@ -31,5 +31,27 @@
   &__icon {
     width: 1.05rem;
     height: 1.05rem;
+    // Each mode change swaps in a different icon component, so this plays as
+    // a mount animation rather than a transition (there is no "from" state to
+    // transition out of — the old icon is simply gone).
+    animation: theme-switcher-icon-in 0.3s ease;
+  }
+}
+
+@keyframes theme-switcher-icon-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-switcher__icon {
+    animation: none;
   }
 }
