@@ -1,4 +1,4 @@
-import gamesData from "./games.json";
+import gamesData from "./games.json" with { type: "json" };
 
 export type Game = {
   id: string;
