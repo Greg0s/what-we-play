@@ -1,12 +1,10 @@
 import { createContext } from "react";
-import type { ResolvedTheme, ThemeMode } from "./config";
+import type { ThemeMode } from "./config";
 
 export type ThemeContextValue = {
-  /** What the user chose: "system" follows the OS preference. */
+  /** What the user chose (or, on a first visit, the OS preference). */
   mode: ThemeMode;
-  /** "system" resolved against the OS preference, otherwise the mode itself. */
-  resolvedTheme: ResolvedTheme;
-  /** Advances the mode: system → light → dark → system. */
+  /** Advances the mode: light → dark → light. */
   cycleTheme: () => void;
 };
 

@@ -28,7 +28,6 @@ export const en = {
     label: "Language",
   },
   theme: {
-    system: "Switch to system theme",
     light: "Switch to light theme",
     dark: "Switch to dark theme",
   },
@@ -148,7 +147,6 @@ export type Translation = {
   };
   theme: {
     /** Label of the switcher when clicking it would select this mode. */
-    system: string;
     light: string;
     dark: string;
   };

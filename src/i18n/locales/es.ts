@@ -27,7 +27,6 @@ export const es: Translation = {
     label: "Idioma",
   },
   theme: {
-    system: "Cambiar al tema del sistema",
     light: "Cambiar a tema claro",
     dark: "Cambiar a tema oscuro",
   },

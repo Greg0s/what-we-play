@@ -12,21 +12,20 @@
     <!--
       Sets `data-theme` before the first paint so there is nothing to flash:
       by the time the stylesheet is parsed, the dark CSS variables are already
-      in effect if that's what the visitor last chose (or their OS prefers).
-      The storage key is duplicated from src/theme/config.ts — this script runs
-      before React, and before any bundle, so it cannot import it.
+      in effect if that's what the visitor last chose (or, absent a choice,
+      what their OS prefers). The storage key is duplicated from
+      src/theme/config.ts — this script runs before React, and before any
+      bundle, so it cannot import it. A stored "system" is a leftover from
+      before the system option was removed and falls back to the OS
+      preference, same as no stored value at all.
     -->
     <script>
       (function () {
         try {
           var stored = localStorage.getItem("what-we-play:theme");
-          var mode =
-            stored === "light" || stored === "dark" || stored === "system"
-              ? stored
-              : "system";
           var dark =
-            mode === "dark" ||
-            (mode === "system" &&
+            stored === "dark" ||
+            (stored !== "light" &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
           if (dark) document.documentElement.setAttribute("data-theme", "dark");
         } catch (e) {
