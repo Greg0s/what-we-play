@@ -2,6 +2,14 @@
 
 Front-end site listing online games (solo or multiplayer) to help quickly find something to play based on the number of players. Deployed on GitHub Pages: https://whatweplay.gregoiretinn.es/
 
+## Keeping this file up to date
+
+This file must stay accurate. Whenever a change to the project makes any statement
+here incorrect or incomplete — a new file or module, a renamed script, a changed
+command, a moved piece of logic, a workflow that no longer works as described —
+update the relevant section in the same change. Treat an outdated `CLAUDE.md` as
+a bug in the change that caused it, not a separate cleanup task.
+
 ## Stack
 
 - React 19 + TypeScript + Vite
