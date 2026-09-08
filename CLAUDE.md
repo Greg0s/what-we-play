@@ -6,6 +6,7 @@ Front-end site listing online games (solo or multiplayer) to help quickly find s
 
 - React 19 + TypeScript + Vite
 - Sass (`sass-embedded`) for styling
+- `react-icons` (the `fa6` set, plus a couple of `tb` icons in the language switcher) for every icon — no custom SVGs
 - **Package manager: pnpm** (not npm/yarn — the lockfile is `pnpm-lock.yaml`)
 
 ## Commands
@@ -26,27 +27,30 @@ No test suite in this repo.
 - `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`, the tag booleans `solo`, `soloWithStrangers`, `multiplayer`, `screenShare`, and the filter booleans `mobileFriendly`, `accountNeeded`. The tag booleans currently mirror what `minPlayers`/`maxPlayers` imply — a stand-in until each game gets a real editorial pass — but the fields themselves are real and can be hand-corrected without touching code. `mobileFriendly`/`accountNeeded` are already a real editorial call, not derived. The "no account needed" filter chip shows games where `accountNeeded` is `false` — the UI negates the field so the filter reads as an opt-in ("skip the sign-up") rather than an opt-out.
 - `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, the player-count filter, and `playerRangeShort` (the numeric-only "1–20"/"3+" label used on the card's tag). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see dedicated section below).
-- `src/components/` — `Game` (a game's card, with its player-count and tag icons), `Games` (search plus the screen-share/mobile-friendly/no-account-needed filters, and the list filtered by player count or query), `FilterSheet` (mobile bottom sheet for the same filters), `LanguageSwitcher` (language selector), `HowItWorks` (header button opening the "how it works" modal).
+- `src/theme/` — light/dark mode: `ThemeProvider`, `useTheme`, the persisted choice and the OS-preference default (see Theming below).
+- `src/components/` — `Game` (a game's card, with its player-count and tag icons), `Games` (search plus one filter chip per tag/filter boolean — solo, solo-with-strangers, multiplayer, screen-share, mobile-friendly, no-account-needed — and the list filtered by player count or query), `FilterSheet` (mobile bottom sheet for the same filters), `LanguageSwitcher` (language selector), `ThemeSwitcher` (light/dark toggle, see Theming), `HowItWorks` (header button opening the "how it works" modal). `howMany.tsx` and `title.tsx` are also exported from `index.tsx` but unused — `App.tsx` builds the header inline instead.
 - `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
+- `src/App.scss` — global reset, the banner/header/title styles, and the `--color-*` custom properties both themes read (light values at `:root`, dark under `:root[data-theme="dark"]`).
 - `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
 - `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
 - `src/structuredData.ts` — the JSON-LD each page carries, built from `games.json` and the locales.
 - `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
 - `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
 - `scripts/check-seo.js` — reads the built `dist/` back and fails the build on a broken canonical, non-reciprocal `hreflang`, duplicate title, unparseable JSON-LD, page missing from the sitemap, or a page that rendered no games.
-- `src/stylesheets/` — shared Sass styles (variables, game styles, language switcher styles).
+- `src/stylesheets/` — the rest of the Sass, roughly one file per feature (`games`, `search`, `filterSheet`, `howItWorks`, `languageSwitcher`, `themeSwitcher`) plus `_variables.scss`, which only holds a handful of build-time constants now — the actual theme colors are the custom properties in `App.scss`, not here.
 
 ## Rendering
 
 The site is prerendered at build time and hydrated in the browser. `pnpm run build`
-runs three steps: the client build, an SSR build of `src/entry-server.tsx` into
-`dist-ssr/`, then `scripts/prerender.js`, which renders every route and writes it
-to `dist/<path>/index.html`, along with `sitemap.xml` and `llms.txt`. The build
-fails if a page's games do not reach its file, so an empty page cannot ship
-unnoticed, and then `scripts/check-seo.js` re-reads the output and fails on any
-broken SEO invariant. That check deliberately inspects the files rather than
-importing the code that wrote them: a check that re-derives its expectations
-from the generator agrees with it even when both are wrong.
+chains `tsc -b` to typecheck, the client build, an SSR build of
+`src/entry-server.tsx` into `dist-ssr/`, then `scripts/prerender.js`, which renders
+every route and writes it to `dist/<path>/index.html`, along with `sitemap.xml` and
+`llms.txt` (`robots.txt` is static in `public/` and ships unchanged — Vite copies
+`public/` verbatim). The build fails if a page's games do not reach its file, so an
+empty page cannot ship unnoticed, and finally `scripts/check-seo.js` re-reads the
+output and fails on any broken SEO invariant. That check deliberately inspects the
+files rather than importing the code that wrote them: a check that re-derives its
+expectations from the generator agrees with it even when both are wrong.
 
 This matters because GitHub Pages serves files only, and crawlers that do not run
 JavaScript — every generative engine among them — would otherwise receive an empty
@@ -57,7 +61,8 @@ Two constraints follow, and breaking either is silent:
 - **Nothing browser-only during render.** `navigator`, `window` and `localStorage`
   do not exist at build time, and reading them while rendering makes the client
   disagree with the prerendered HTML. Put that work in an effect, the way
-  `LanguageProvider` detects the language.
+  `LanguageProvider` detects the language and `ThemeProvider` detects the OS color
+  scheme.
 - **The first client render must reproduce the page's URL.** `main.tsx` parses
   the path and passes the route down; anything that makes the browser start from
   a different state than the build used will break hydration.
@@ -106,7 +111,9 @@ which is why the deploy workflow checks out with `fetch-depth: 0`.
 
 Claims in the copy and in the markup (`isAccessibleForFree`, "nothing to
 install") are the ones the README makes about the catalogue. If that stops being
-true of every game, both the FAQ answers and `isAccessibleForFree` have to change.
+true of every game, `meta.countDescription` in every locale, the intro line in
+`buildLlmsTxt` (`src/entry-server.tsx`), and `isAccessibleForFree` all have to
+change together.
 
 ## Performance
 
@@ -131,6 +138,27 @@ banner is a 56 kB JPEG rather than WebP. See `docs/seo-geo-audit.md`.
 The site is available in **English**, **French** and **Spanish** (`src/i18n/locales/`). `en.ts` is the reference locale: **the build fails** if another locale is missing a key. Game descriptions live in the locale files (keyed by the game's `id` in `games.json`) and fall back to English when a translation is missing.
 
 To add a language: see the "Adding a language" section of the [README](README.md).
+
+## Theming
+
+Light and dark, via `src/theme/` (`ThemeProvider`, `useTheme`) and the
+`ThemeSwitcher` button. The mode lives as `data-theme="dark"` on `<html>` — light
+is the attribute's absence, since `:root` already holds the light values — and
+every themed color is a `--color-*` custom property in `App.scss`, redefined under
+`:root[data-theme="dark"]`.
+
+Persistence and first-visit detection mirror the language switcher: the choice is
+stored in `localStorage` (`what-we-play:theme`) once the visitor picks one, and
+before that their OS preference (`prefers-color-scheme`) decides — resolved in
+`ThemeProvider`'s layout effect, the same mechanism and the same reason as
+`LanguageProvider` (see Rendering).
+
+`index.html` carries an inline script that re-implements that same lookup before
+`<head>` finishes parsing, since it runs before React and cannot import
+`src/theme/config.ts`. Without it, every dark-mode visit would render light first
+and flip after hydration — a visible flash. If the storage key or the default
+logic in `src/theme/config.ts` ever changes, update the inline script by hand to
+match.
 
 ## Git Workflow
 
