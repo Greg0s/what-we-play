@@ -18,9 +18,8 @@ pnpm run build    # production build into dist/, prerendered (see Rendering)
 pnpm run check    # audit the built dist/ (canonical, hreflang, JSON-LD, sitemap)
 pnpm run lint     # ESLint
 pnpm run preview  # preview the build
+pnpm run test:e2e # Playwright, against the built dist/ — run `pnpm run build` first
 ```
-
-No test suite in this repo.
 
 ## Structure
 
@@ -37,6 +36,7 @@ No test suite in this repo.
 - `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
 - `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
 - `scripts/check-seo.js` — reads the built `dist/` back and fails the build on a broken canonical, non-reciprocal `hreflang`, duplicate title, unparseable JSON-LD, page missing from the sitemap, or a page that rendered no games.
+- `e2e/` — Playwright end-to-end tests against the built `dist/`, served by `vite preview` (see Testing below); `playwright.config.ts` at the repo root configures them.
 - `src/stylesheets/` — the rest of the Sass, roughly one file per feature (`games`, `search`, `filterSheet`, `howItWorks`, `languageSwitcher`, `themeSwitcher`) plus `_variables.scss`, which only holds a handful of build-time constants now — the actual theme colors are the custom properties in `App.scss`, not here.
 
 ## Rendering
@@ -66,6 +66,31 @@ Two constraints follow, and breaking either is silent:
 - **The first client render must reproduce the page's URL.** `main.tsx` parses
   the path and passes the route down; anything that makes the browser start from
   a different state than the build used will break hydration.
+
+## Testing
+
+Playwright end-to-end tests in `e2e/`, run with `pnpm run test:e2e`. They exercise
+the built `dist/` through `vite preview` (see `playwright.config.ts`), not the dev
+server: hydration, lazy-loaded favicons and the per-page SEO tags only exist in
+that output, so testing the dev server would miss regressions in exactly the
+things Rendering above warns are silent. Run `pnpm run build` first — the
+config's `webServer` serves the existing `dist/`, it does not build it.
+
+Coverage: games render for the default player count, the language and theme
+switchers (including the OS-preference default and `localStorage` persistence),
+search, a few filter chips (the solo ↔ player-count interaction and the inverted
+no-account-needed logic are the interesting ones), the player-count control, that
+every game card's favicon actually loads, and — for a few representative pages —
+the title, canonical, `hreflang` and JSON-LD a served page carries. That last one
+is a light, served-page smoke test; the exhaustive audit across all 33 pages is
+still `scripts/check-seo.js`, which stays the one that gates the build (see
+Rendering above).
+
+Tests import shared logic and copy straight from `src/` (`gamesForPlayerCount`,
+`matchesPlayerCount`, the locale files, `pageMeta`) instead of hardcoding
+expected counts or strings — the same reasoning as `src/games.ts` in Structure
+above — so a test only breaks when behavior actually changes, not when a
+translation or a game in `games.json` does.
 
 ## URLs
 
@@ -168,7 +193,7 @@ match.
 
 Automatic via [.github/workflows/deploy.yml](.github/workflows/deploy.yml): every push to `main` triggers a build and deployment to GitHub Pages via pnpm/Node 24. No review/preview branch — `main` is deployed directly.
 
-[.github/workflows/ci.yml](.github/workflows/ci.yml) runs lint and the full build — prerender and `check-seo` included — on every pull request, so a broken build is caught before it reaches `main` rather than during the deploy.
+[.github/workflows/ci.yml](.github/workflows/ci.yml) runs lint, the full build — prerender and `check-seo` included — and the Playwright suite against that build, on every pull request, so a broken build or a broken user-facing flow is caught before it reaches `main` rather than during the deploy.
 
 ## Planned features (see README)
 
