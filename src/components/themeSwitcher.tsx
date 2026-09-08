@@ -1,11 +1,10 @@
-import { FaCircleHalfStroke, FaMoon, FaSun } from "react-icons/fa6";
+import { FaMoon, FaSun } from "react-icons/fa6";
 import "../stylesheets/themeSwitcher.scss";
 import { useTranslation } from "../i18n";
 import { nextThemeMode, useTheme, type ThemeMode } from "../theme";
 
 /** The icon shows the mode that's currently active. */
 const MODE_ICON: Record<ThemeMode, typeof FaMoon> = {
-  system: FaCircleHalfStroke,
   light: FaSun,
   dark: FaMoon,
 };

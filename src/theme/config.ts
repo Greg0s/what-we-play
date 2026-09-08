@@ -1,8 +1,6 @@
-export const THEME_MODES = ["system", "light", "dark"] as const;
+export const THEME_MODES = ["light", "dark"] as const;
 
 export type ThemeMode = (typeof THEME_MODES)[number];
-
-export type ResolvedTheme = "light" | "dark";
 
 /**
  * Must match the literal used by the anti-flash script in `index.html`: that
@@ -14,9 +12,9 @@ export function isThemeMode(value: string): value is ThemeMode {
   return (THEME_MODES as readonly string[]).includes(value);
 }
 
-/** The mode a click on the switcher moves to: system → light → dark → system. */
+/** The mode a click on the switcher moves to: light → dark → light. */
 export function nextThemeMode(mode: ThemeMode): ThemeMode {
-  return THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length];
+  return mode === "light" ? "dark" : "light";
 }
 
 /** Reads the theme previously chosen by the user, if any. */
@@ -38,14 +36,14 @@ export function storeThemeMode(mode: ThemeMode) {
   }
 }
 
-export function prefersDark(): boolean {
+function prefersDark(): boolean {
   return (
     typeof window !== "undefined" &&
     window.matchMedia("(prefers-color-scheme: dark)").matches
   );
 }
 
-export function resolveTheme(mode: ThemeMode): ResolvedTheme {
-  if (mode === "system") return prefersDark() ? "dark" : "light";
-  return mode;
+/** The mode to use on a first visit, before anything was ever stored. */
+export function systemThemeMode(): ThemeMode {
+  return prefersDark() ? "dark" : "light";
 }

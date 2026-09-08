@@ -1,16 +1,15 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { useIsomorphicLayoutEffect } from "../i18n/useIsomorphicLayoutEffect";
 import {
   getStoredThemeMode,
   nextThemeMode,
-  resolveTheme,
   storeThemeMode,
-  type ResolvedTheme,
+  systemThemeMode,
   type ThemeMode,
 } from "./config";
 import { ThemeContext, type ThemeContextValue } from "./context";
 
-function applyTheme(theme: ResolvedTheme) {
+function applyTheme(theme: ThemeMode) {
   // Light has no attribute at all — the CSS variables at `:root` already are
   // the light values, and `[data-theme="dark"]` only needs to exist to override
   // them.
@@ -26,37 +25,26 @@ function applyTheme(theme: ResolvedTheme) {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [mode, setModeState] = useState<ThemeMode>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("light");
+  const [mode, setModeState] = useState<ThemeMode>("light");
 
   // The inline script in index.html already set `data-theme` before the first
   // paint, so there is no flash to avoid here — this only brings React's own
-  // state (the switcher's icon) in step with whichever mode the user chose on
-  // a previous visit.
+  // state (the switcher's icon) in step with it. On a first visit nothing is
+  // stored yet, so the OS preference is used and immediately remembered, the
+  // same way the inline script resolved it for that first paint.
   useIsomorphicLayoutEffect(() => {
-    const stored = getStoredThemeMode() ?? "system";
-    setModeState(stored);
-    setResolvedTheme(resolveTheme(stored));
+    const stored = getStoredThemeMode();
+    const initial = stored ?? systemThemeMode();
+    setModeState(initial);
+    if (stored === null) storeThemeMode(initial);
   }, []);
 
   useIsomorphicLayoutEffect(() => {
-    applyTheme(resolvedTheme);
-  }, [resolvedTheme]);
-
-  // Only "system" needs to keep watching: an explicit light/dark choice should
-  // not move just because the OS preference changes underneath it.
-  useEffect(() => {
-    if (mode !== "system") return;
-
-    const query = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => setResolvedTheme(resolveTheme("system"));
-    query.addEventListener("change", onChange);
-    return () => query.removeEventListener("change", onChange);
+    applyTheme(mode);
   }, [mode]);
 
   const setMode = useCallback((next: ThemeMode) => {
     setModeState(next);
-    setResolvedTheme(resolveTheme(next));
     storeThemeMode(next);
   }, []);
 
@@ -65,8 +53,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [mode, setMode]);
 
   const value = useMemo<ThemeContextValue>(
-    () => ({ mode, resolvedTheme, cycleTheme }),
-    [mode, resolvedTheme, cycleTheme],
+    () => ({ mode, cycleTheme }),
+    [mode, cycleTheme],
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
