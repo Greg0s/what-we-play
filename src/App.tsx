@@ -82,8 +82,9 @@ function App({ route }: { route: Route }) {
 
   // Clicking the title always returns to the language's own landing page —
   // no player count, no filters — rather than wherever the click happened.
-  // The same click count also replays the "?" drop animation and tells
-  // Games to clear its filters, since both are keyed off it below.
+  // The same click count also replays the "?" drop animation (starting at 0
+  // means no click has happened yet, so the page load itself never plays it)
+  // and tells Games to clear its filters, since both are keyed off it below.
   const homeRoute: Route = { language, players: DEFAULT_PLAYERS, isHome: true };
   const [titleClickCount, setTitleClickCount] = useState(0);
   const handleTitleClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -112,7 +113,12 @@ function App({ route }: { route: Route }) {
         <h1>
           <a className="site-title" href={buildPath(homeRoute)} onClick={handleTitleClick}>
             {titleMain}
-            <span key={titleClickCount} className="site-title__mark">
+            <span
+              key={titleClickCount}
+              className={
+                titleClickCount > 0 ? "site-title__mark site-title__mark--animate" : "site-title__mark"
+              }
+            >
               {titleMark}
             </span>
           </a>

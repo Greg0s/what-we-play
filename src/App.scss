@@ -209,11 +209,15 @@ h1 {
 .site-title__mark {
   display: inline-block;
   transform-origin: 50% 65%;
-  // Plays once, on page load and again on every title click (see App.tsx,
-  // which remounts this span to retrigger it). The keyframes start and end
-  // at the mark's own resting position, so retriggering never has to jump
-  // from "resting" to "already risen" before the animation can take over —
-  // the rise itself is part of the animated loop, not a precondition of it.
+}
+
+.site-title__mark--animate {
+  // Plays on every title click, never on page load (see App.tsx, which only
+  // adds this modifier once titleClickCount is greater than 0 and remounts
+  // the span on each click to retrigger it). The keyframes start and end at
+  // the mark's own resting position, so retriggering never has to jump from
+  // "resting" to "already risen" before the animation can take over — the
+  // rise itself is part of the animated loop, not a precondition of it.
   animation: site-title-mark-fall 900ms cubic-bezier(0.65, 0, 0.35, 1);
 }
 
@@ -232,7 +236,7 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-title__mark {
+  .site-title__mark--animate {
     animation: none;
   }
 }
