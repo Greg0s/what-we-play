@@ -31,10 +31,15 @@
   &__icon {
     width: 1.05rem;
     height: 1.05rem;
+
     // Each mode change swaps in a different icon component, so this plays as
     // a mount animation rather than a transition (there is no "from" state to
-    // transition out of — the old icon is simply gone).
-    animation: theme-switcher-icon-in 0.3s ease;
+    // transition out of — the old icon is simply gone). The class is only
+    // applied after a click (see themeSwitcher.tsx), so the initial icon
+    // never animates in on page load.
+    &--animate {
+      animation: theme-switcher-icon-in 0.3s ease;
+    }
   }
 }
 
@@ -51,7 +56,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .theme-switcher__icon {
+  .theme-switcher__icon--animate {
     animation: none;
   }
 }
