@@ -115,6 +115,10 @@
     background: var(--color-surface);
     text-align: left;
     cursor: pointer;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s,
+      color 0.2s;
 
     & + & {
       margin-top: 0.6rem;
@@ -142,6 +146,7 @@
       font-size: 0.8rem;
       line-height: 1.5;
       opacity: 0.6;
+      transition: opacity 0.2s;
     }
 
     // Only a row with a two-line label + description needs its icon pinned to
@@ -180,6 +185,10 @@
     height: 1.4rem;
     border: 2px solid var(--color-border);
     border-radius: 0.4rem;
+    transition:
+      border-color 0.2s,
+      background-color 0.2s,
+      color 0.2s;
 
     svg {
       width: 0.8rem;
