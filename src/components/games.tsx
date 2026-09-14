@@ -221,7 +221,7 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
               >
                 <Icon />
                 {label}
-                {active && <FaXmark className="filter-chip__clear" />}
+                <FaXmark className="filter-chip__clear" />
               </button>
               <span role="tooltip" className="filter-tooltip">
                 {description}
@@ -236,16 +236,20 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
             >
               <Icon />
               {label}
-              {active && <FaXmark className="filter-chip__clear" />}
+              <FaXmark className="filter-chip__clear" />
             </button>
           ),
         )}
-        {activeFilters.length > 0 && (
-          <button type="button" className="filters-reset" onClick={resetFilters}>
-            <FaXmark />
-            {t.catalogue.resetFilters}
-          </button>
-        )}
+        <button
+          type="button"
+          className={`filters-reset${activeFilters.length > 0 ? " filters-reset--visible" : ""}`}
+          onClick={resetFilters}
+          aria-hidden={activeFilters.length === 0}
+          tabIndex={activeFilters.length > 0 ? 0 : -1}
+        >
+          <FaXmark />
+          {t.catalogue.resetFilters}
+        </button>
       </div>
 
       <button
