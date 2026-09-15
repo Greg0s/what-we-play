@@ -119,6 +119,8 @@ export const en = {
       "Guess songs faster than everyone else in a music blind test.",
     "what-the-tune":
       "Music blind test: guess the song from a short audio clip.",
+    "ethnoguessr":
+      "Guess a person's ethnic or geographic origin from an averaged face, then place your answer on the map.",
   },
 } as const;
 

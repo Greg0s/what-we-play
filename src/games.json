@@ -147,7 +147,7 @@
     "name": "Tixid",
     "minPlayers": 3,
     "maxPlayers": 8,
-    "link": "https://play-tixid.online/en/login",
+    "link": "https://play-tixid.online/",
     "solo": false,
     "soloWithStrangers": false,
     "multiplayer": true,
@@ -334,6 +334,19 @@
     "soloWithStrangers": false,
     "multiplayer": true,
     "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
+    "id": "ethnoguessr",
+    "name": "EthnoGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://hbd.gg/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
     "mobileFriendly": true,
     "accountNeeded": false
   }
