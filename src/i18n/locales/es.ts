@@ -122,5 +122,7 @@ export const es: Translation = {
       "Adivina las canciones más rápido que nadie en un blind test musical.",
     "what-the-tune":
       "Blind test musical: adivina la canción a partir de un breve fragmento de audio.",
+    "ethnoguessr":
+      "Adivina el origen étnico o geográfico de un rostro promediado y coloca tu respuesta en el mapa.",
   },
 };
