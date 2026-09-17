@@ -4,206 +4,140 @@ Front-end site listing online games (solo or multiplayer) to help quickly find s
 
 ## Keeping this file up to date
 
-This file must stay accurate. Whenever a change to the project makes any statement
-here incorrect or incomplete — a new file or module, a renamed script, a changed
-command, a moved piece of logic, a workflow that no longer works as described —
-update the relevant section in the same change. Treat an outdated `CLAUDE.md` as
-a bug in the change that caused it, not a separate cleanup task.
+This file must stay accurate. Whenever a change makes any statement here
+incorrect or incomplete, update the relevant section in the same change —
+treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
-## Stack
+## Stack & structure
 
-- React 19 + TypeScript + Vite
-- Sass (`sass-embedded`) for styling
+- React 19 + TypeScript + Vite, Sass (`sass-embedded`) for styling
 - `react-icons` (the `fa6` set, plus a couple of `tb` icons in the language switcher) for every icon — no custom SVGs
 - **Package manager: pnpm** (not npm/yarn — the lockfile is `pnpm-lock.yaml`)
 
-## Commands
+Structure:
+
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link`, tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code.
+- `src/games.ts` — typed access to that data (the `Game` type, the player-count filter, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
+- `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below).
+- `src/components/` — `Game` (card), `Games` (search + one filter chip per tag/filter boolean), `FilterSheet` (mobile bottom sheet, same filters), `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal). `howMany.tsx`/`title.tsx` are exported but unused — `App.tsx` builds the header inline instead.
+- `src/App.tsx` — wires everything together, holds the route state (player count, landing or not) and keeps the URL in step with it.
+- `src/routes.ts` — the URL scheme (see URLs below). `src/pageMeta.ts` — per-page title/description. `src/structuredData.ts` — per-page JSON-LD.
+- `src/entry-server.tsx` + `scripts/prerender.js` — build-time render into `dist/<path>/index.html`, `sitemap.xml`, `llms.txt`. `scripts/check-seo.js` — audits the built `dist/` (see Rendering below).
+- `e2e/` — Playwright tests against the built `dist/` (`playwright.config.ts` at the repo root). `src/stylesheets/` — the rest of the Sass, roughly one file per feature.
+
+## Working on this project
 
 ```bash
 pnpm install      # install dependencies
 pnpm run dev      # dev server (http://localhost:5173)
-pnpm run build    # production build into dist/, prerendered (see Rendering)
-pnpm run check    # audit the built dist/ (canonical, hreflang, JSON-LD, sitemap)
-pnpm run lint     # ESLint
-pnpm run preview  # preview the build
-pnpm run test:e2e # Playwright, against the built dist/ — run `pnpm run build` first
+pnpm run build    # typecheck, client + SSR build, prerender, then check-seo (see Rendering)
+pnpm run check    # re-run just the check-seo audit against an existing dist/
+pnpm run lint     # ESLint, config in eslint.config.js
+pnpm run preview  # serve the built dist/ (also what e2e tests run against)
+pnpm run test:e2e # Playwright — run `pnpm run build` first, it does not build for you
 ```
-
-## Structure
-
-- `src/games.json` — the list of games (data source), with no translatable text. Each entry: `id`, `name`, `minPlayers`, `maxPlayers` (`-1` = no max), `link`, the tag booleans `solo`, `soloWithStrangers`, `multiplayer`, `screenShare`, and the filter booleans `mobileFriendly`, `accountNeeded`. The tag booleans currently mirror what `minPlayers`/`maxPlayers` imply — a stand-in until each game gets a real editorial pass — but the fields themselves are real and can be hand-corrected without touching code. `mobileFriendly`/`accountNeeded` are already a real editorial call, not derived. The "no account needed" filter chip shows games where `accountNeeded` is `false` — the UI negates the field so the filter reads as an opt-in ("skip the sign-up") rather than an opt-out.
-- `src/games.ts` — typed access to that data: the `Game` type, `DEFAULT_PLAYERS`, the player-count filter, and `playerRangeShort` (the numeric-only "1–20"/"3+" label used on the card's tag). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
-- `src/i18n/` — internationalization (see dedicated section below).
-- `src/theme/` — light/dark mode: `ThemeProvider`, `useTheme`, the persisted choice and the OS-preference default (see Theming below).
-- `src/components/` — `Game` (a game's card, with its player-count and tag icons), `Games` (search plus one filter chip per tag/filter boolean — solo, solo-with-strangers, multiplayer, screen-share, mobile-friendly, no-account-needed — and the list filtered by player count or query), `FilterSheet` (mobile bottom sheet for the same filters), `LanguageSwitcher` (language selector), `ThemeSwitcher` (light/dark toggle, see Theming), `HowItWorks` (header button opening the "how it works" modal). `howMany.tsx` and `title.tsx` are also exported from `index.tsx` but unused — `App.tsx` builds the header inline instead.
-- `src/App.tsx` — wires everything together, holds the route state (player count and whether this is a landing page) and keeps the URL in step with it.
-- `src/App.scss` — global reset, the banner/header/title styles, and the `--color-*` custom properties both themes read (light values at `:root`, dark under `:root[data-theme="dark"]`).
-- `src/routes.ts` — the URL scheme: which path each language and player count gets, how to parse one back, and the full list the build generates.
-- `src/pageMeta.ts` — title and description of a page, used by both the build and the browser so they cannot drift.
-- `src/structuredData.ts` — the JSON-LD each page carries, built from `games.json` and the locales.
-- `src/entry-server.tsx` — build-time entry point: renders the app to HTML.
-- `scripts/prerender.js` — injects that HTML into `dist/index.html` after `vite build`.
-- `scripts/check-seo.js` — reads the built `dist/` back and fails the build on a broken canonical, non-reciprocal `hreflang`, duplicate title, unparseable JSON-LD, page missing from the sitemap, or a page that rendered no games.
-- `e2e/` — Playwright end-to-end tests against the built `dist/`, served by `vite preview` (see Testing below); `playwright.config.ts` at the repo root configures them.
-- `src/stylesheets/` — the rest of the Sass, roughly one file per feature (`games`, `search`, `filterSheet`, `howItWorks`, `languageSwitcher`, `themeSwitcher`) plus `_variables.scss`, which only holds a handful of build-time constants now — the actual theme colors are the custom properties in `App.scss`, not here.
 
 ## Rendering
 
-The site is prerendered at build time and hydrated in the browser. `pnpm run build`
-chains `tsc -b` to typecheck, the client build, an SSR build of
-`src/entry-server.tsx` into `dist-ssr/`, then `scripts/prerender.js`, which renders
-every route and writes it to `dist/<path>/index.html`, along with `sitemap.xml` and
-`llms.txt` (`robots.txt` is static in `public/` and ships unchanged — Vite copies
-`public/` verbatim). The build fails if a page's games do not reach its file, so an
-empty page cannot ship unnoticed, and finally `scripts/check-seo.js` re-reads the
-output and fails on any broken SEO invariant. That check deliberately inspects the
-files rather than importing the code that wrote them: a check that re-derives its
-expectations from the generator agrees with it even when both are wrong.
-
-This matters because GitHub Pages serves files only, and crawlers that do not run
-JavaScript — every generative engine among them — would otherwise receive an empty
-`<div id="root">`. See [docs/seo-geo-audit.md](docs/seo-geo-audit.md).
+The site is prerendered at build time and hydrated in the browser, because
+GitHub Pages serves files only and crawlers that don't run JavaScript —
+every generative engine among them — would otherwise get an empty
+`<div id="root">`. `scripts/check-seo.js` re-reads the built `dist/` after
+prerendering and fails the build on a broken canonical, non-reciprocal
+`hreflang`, duplicate title, unparseable JSON-LD, or a page with no games —
+deliberately by inspecting the output files rather than importing the code
+that wrote them. See [docs/seo-geo-audit.md](docs/seo-geo-audit.md).
 
 Two constraints follow, and breaking either is silent:
 
-- **Nothing browser-only during render.** `navigator`, `window` and `localStorage`
-  do not exist at build time, and reading them while rendering makes the client
-  disagree with the prerendered HTML. Put that work in an effect, the way
-  `LanguageProvider` detects the language and `ThemeProvider` detects the OS color
-  scheme.
-- **The first client render must reproduce the page's URL.** `main.tsx` parses
-  the path and passes the route down; anything that makes the browser start from
-  a different state than the build used will break hydration.
+- **Nothing browser-only during render.** `navigator`, `window` and
+  `localStorage` don't exist at build time — do that detection in an effect,
+  the way `LanguageProvider` and `ThemeProvider` do.
+- **The first client render must reproduce the page's URL.** `main.tsx`
+  parses the path and passes the route down; anything that starts the
+  browser from a different state than the build used breaks hydration.
 
 ## Testing
 
-Playwright end-to-end tests in `e2e/`, run with `pnpm run test:e2e`. They exercise
-the built `dist/` through `vite preview` (see `playwright.config.ts`), not the dev
-server: hydration, lazy-loaded favicons and the per-page SEO tags only exist in
-that output, so testing the dev server would miss regressions in exactly the
-things Rendering above warns are silent. Run `pnpm run build` first — the
-config's `webServer` serves the existing `dist/`, it does not build it.
-
-Coverage: games render for the default player count, the language and theme
-switchers (including the OS-preference default and `localStorage` persistence),
-search, a few filter chips (the solo ↔ player-count interaction and the inverted
-no-account-needed logic are the interesting ones), the player-count control, that
-every game card's favicon actually loads, and — for a few representative pages —
-the title, canonical, `hreflang` and JSON-LD a served page carries. That last one
-is a light, served-page smoke test; the exhaustive audit across all 33 pages is
-still `scripts/check-seo.js`, which stays the one that gates the build (see
-Rendering above).
-
-Tests import shared logic and copy straight from `src/` (`gamesForPlayerCount`,
-`matchesPlayerCount`, the locale files, `pageMeta`) instead of hardcoding
-expected counts or strings — the same reasoning as `src/games.ts` in Structure
-above — so a test only breaks when behavior actually changes, not when a
-translation or a game in `games.json` does.
+Playwright e2e tests (`e2e/`, run with `pnpm run test:e2e`) exercise the
+built `dist/` through `vite preview`, not the dev server: hydration, lazy
+favicons and per-page SEO tags only exist in that output. The exhaustive
+SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
+the build — the e2e suite only smoke-tests a few representative pages.
+Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
+`pageMeta`) instead of hardcoding expected counts or strings, so a test only
+breaks when behavior actually changes.
 
 ## URLs
 
-One page per language and per player count — 33 in all, listed by `allRoutes()`
-in `src/routes.ts`:
-
-| Language | Landing | Player count |
-| --- | --- | --- |
-| English | `/` | `/games-for-4-players/` |
-| French | `/fr/` | `/fr/jeux-a-4-joueurs/` |
-| Spanish | `/es/` | `/es/juegos-para-4-jugadores/` |
-
-English is unprefixed and is the `x-default` target. Each page carries a
-self-referencing canonical and reciprocal `hreflang` annotations, both generated
-from `src/routes.ts`, so adding a language or a player count updates every page
-and the sitemap at once.
-
-`vite.config.ts` therefore sets `base: "/"`: a relative base would resolve
-`./assets/…` against `/fr/` and 404.
-
-In the browser, a prefixed URL states the language and wins outright. Only the
-unprefixed pages fall back to the visitor's own preference, and that redirect
-uses `replaceState` so Back does not bounce between `/` and `/fr/`. The counter
-itself uses `replaceState`, since pushing one history entry per keystroke would
-make Back unusable. There is no in-page nav between player-count pages;
-crawlers reach them through the sitemap.
+One page per language × player count — 33 in all, listed by `allRoutes()` in
+`src/routes.ts`: landing at `/`, `/fr/`, `/es/`; player-count pages at e.g.
+`/games-for-4-players/`, `/fr/jeux-a-4-joueurs/`. English is unprefixed and
+is the `x-default`. Canonical and reciprocal `hreflang` on every page are
+generated from `routes.ts`, so adding a language or a player count updates
+every page and the sitemap at once. `vite.config.ts` sets `base: "/"` for
+this reason — a relative base would resolve `./assets/…` against `/fr/` and
+404. In the browser, a prefixed URL wins outright; only unprefixed pages
+fall back to the visitor's preference, via `replaceState` (also used by the
+player-count control) so Back doesn't fill up with one entry per change.
 
 ## Structured data
 
-Every page carries JSON-LD from `src/structuredData.ts`, written into the static
-HTML — the engines it is meant for do not run JavaScript, so injecting it at
-runtime would be pointless.
+Every page carries JSON-LD from `src/structuredData.ts`, written into the
+static HTML. `maxPlayers: -1` is expressed by *omitting* `maxValue`, never
+by inventing a number. `dateModified` comes from the last commit touching
+`src/games.json` or `src/i18n/locales`, not the build clock — this is why
+the deploy workflow checks out with `fetch-depth: 0`.
 
-Each page gets a `CollectionPage` wrapping an `ItemList` of `VideoGame`. The
-vocabulary fits the data exactly: `numberOfPlayers` is a `QuantitativeValue`, and
-`maxPlayers: -1` is expressed by *omitting* `maxValue` rather than by inventing a
-number. Landing pages add `WebSite`; player-count pages add a `BreadcrumbList`.
-
-`dateModified` comes from the last commit touching `src/games.json` or
-`src/i18n/locales` — not from the build clock, which would move on every deploy
-and mean nothing. If git cannot answer, the field is omitted rather than guessed,
-which is why the deploy workflow checks out with `fetch-depth: 0`.
-
-Claims in the copy and in the markup (`isAccessibleForFree`, "nothing to
-install") are the ones the README makes about the catalogue. If that stops being
-true of every game, `meta.countDescription` in every locale, the intro line in
-`buildLlmsTxt` (`src/entry-server.tsx`), and `isAccessibleForFree` all have to
-change together.
+Claims in the copy and markup (`isAccessibleForFree`, "nothing to install")
+mirror what the README says about the catalogue. If that stops being true
+of every game, `meta.countDescription` (every locale), the intro line in
+`buildLlmsTxt` (`src/entry-server.tsx`), and `isAccessibleForFree` all have
+to change together.
 
 ## Performance
 
-Two things here are easy to undo by accident:
+Two things here are easy to undo by accident — see `docs/seo-geo-audit.md`
+for the measurements:
 
-- **The Google Fonts request lists only the weights the stylesheets apply** (600
-  and 700, no italic). Widening it back to `ital,wght@0,100..900;1,100..900`
-  costs 133 kB of latin subsets against 79 kB — measured, not estimated. Counter
-  to intuition, a narrow *variable* range (`400..700`) beats naming static
-  instances (`600;700`), which cost 121 kB.
-- **The banner is preloaded**, injected by `scripts/prerender.js`, which digs its
-  hashed filename out of the built CSS. It is a CSS background, so without the
-  preload the browser only discovers the largest thing on the page after the
-  stylesheet parses.
+- The Google Fonts request lists only the weights the stylesheets apply
+  (600 and 700, no italic); widening it costs real, measured kilobytes.
+- The banner is preloaded by `scripts/prerender.js`, which digs its hashed
+  filename out of the built CSS — it's a CSS background image, so without
+  the preload the browser only discovers it after the stylesheet parses.
 
-Still open, both deliberate: the game card favicons come from Google's favicon
-service, 26 third-party requests carrying visitor data to a third party; and the
-banner is a 56 kB JPEG rather than WebP. See `docs/seo-geo-audit.md`.
+## Internationalization
 
-## Internationalization (i18n)
-
-The site is available in **English**, **French** and **Spanish** (`src/i18n/locales/`). `en.ts` is the reference locale: **the build fails** if another locale is missing a key. Game descriptions live in the locale files (keyed by the game's `id` in `games.json`) and fall back to English when a translation is missing.
-
-To add a language: see the "Adding a language" section of the [README](README.md).
+English, French, Spanish (`src/i18n/locales/`). `en.ts` is the reference
+locale: **the build fails** if another locale is missing a key. Game
+descriptions live in the locale files, keyed by the game's `id`, and fall
+back to English when a translation is missing. To add a language, see the
+"Adding a language" section of the [README](README.md).
 
 ## Theming
 
-Light and dark, via `src/theme/` (`ThemeProvider`, `useTheme`) and the
-`ThemeSwitcher` button. The mode lives as `data-theme="dark"` on `<html>` — light
-is the attribute's absence, since `:root` already holds the light values — and
-every themed color is a `--color-*` custom property in `App.scss`, redefined under
-`:root[data-theme="dark"]`.
+Light/dark via `src/theme/` (`ThemeProvider`, `useTheme`) and
+`ThemeSwitcher`. The mode lives as `data-theme="dark"` on `<html>` (light is
+the attribute's absence); every themed color is a `--color-*` custom
+property in `App.scss`. Persistence and first-visit detection mirror the
+language switcher: `localStorage` (`what-we-play:theme`) once chosen,
+`prefers-color-scheme` before that. `index.html` carries an inline script
+that re-implements that same lookup before `<head>` finishes parsing, since
+it runs before React and can't import `src/theme/config.ts` — without it,
+dark mode would flash light before hydration. If the storage key or default
+logic in `src/theme/config.ts` changes, update that inline script by hand.
 
-Persistence and first-visit detection mirror the language switcher: the choice is
-stored in `localStorage` (`what-we-play:theme`) once the visitor picks one, and
-before that their OS preference (`prefers-color-scheme`) decides — resolved in
-`ThemeProvider`'s layout effect, the same mechanism and the same reason as
-`LanguageProvider` (see Rendering).
+## Git workflow & deployment
 
-`index.html` carries an inline script that re-implements that same lookup before
-`<head>` finishes parsing, since it runs before React and cannot import
-`src/theme/config.ts`. Without it, every dark-mode visit would render light first
-and flip after hydration — a visible flash. If the storage key or the default
-logic in `src/theme/config.ts` ever changes, update the inline script by hand to
-match.
+`main` deploys automatically to GitHub Pages on every push
+([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) — no
+preview environment. Work is always done on a feature branch with a Pull
+Request before merging. [.github/workflows/ci.yml](.github/workflows/ci.yml)
+runs lint, the full build (prerender + `check-seo`) and the Playwright suite
+on every PR, so a broken build or user-facing flow is caught before `main`.
 
-## Git Workflow
+## Reference docs
 
-`main` deploys automatically to production (no preview). Work is therefore always done on a feature branch, with a Pull Request before merging into `main`.
-
-## Deployment
-
-Automatic via [.github/workflows/deploy.yml](.github/workflows/deploy.yml): every push to `main` triggers a build and deployment to GitHub Pages via pnpm/Node 24. No review/preview branch — `main` is deployed directly.
-
-[.github/workflows/ci.yml](.github/workflows/ci.yml) runs lint, the full build — prerender and `check-seo` included — and the Playwright suite against that build, on every pull request, so a broken build or a broken user-facing flow is caught before it reaches `main` rather than during the deploy.
-
-## Planned features (see README)
-
-- Game images
-- Adding new games
+- [docs/seo-geo-audit.md](docs/seo-geo-audit.md) — the SEO/GEO audit behind
+  the Rendering, URLs, Structured data and Performance choices above.
+- [README.md](README.md) — adding a language, planned features.
