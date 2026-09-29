@@ -122,5 +122,6 @@ export const fr: Translation = {
       "Blind test musical : devine la chanson à partir d'un court extrait audio.",
     "ethnoguessr":
       "Devine l'origine ethnique ou géographique d'un visage moyen, puis place ta réponse sur la carte.",
+    "spotle-movies": "Devine le film du jour en faisant des propositions.",
   },
 };
