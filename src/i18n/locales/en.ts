@@ -122,6 +122,7 @@ export const en = {
     "ethnoguessr":
       "Guess a person's ethnic or geographic origin from an averaged face, then place your answer on the map.",
     "spotle-movies": "Guess the movie of the day by making guesses.",
+    "spotle-music": "Guess the music artist of the day by making guesses.",
   },
 } as const;
 

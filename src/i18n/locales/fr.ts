@@ -123,5 +123,6 @@ export const fr: Translation = {
     "ethnoguessr":
       "Devine l'origine ethnique ou géographique d'un visage moyen, puis place ta réponse sur la carte.",
     "spotle-movies": "Devine le film du jour en faisant des propositions.",
+    "spotle-music": "Devine l'artiste de musique du jour en faisant des propositions.",
   },
 };
