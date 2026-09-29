@@ -121,6 +121,7 @@ export const en = {
       "Music blind test: guess the song from a short audio clip.",
     "ethnoguessr":
       "Guess a person's ethnic or geographic origin from an averaged face, then place your answer on the map.",
+    "spotle-movies": "Guess the movie of the day by making guesses.",
   },
 } as const;
 

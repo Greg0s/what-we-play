@@ -124,5 +124,6 @@ export const es: Translation = {
       "Blind test musical: adivina la canción a partir de un breve fragmento de audio.",
     "ethnoguessr":
       "Adivina el origen étnico o geográfico de un rostro promediado y coloca tu respuesta en el mapa.",
+    "spotle-movies": "Adivina la película del día haciendo propuestas.",
   },
 };
