@@ -126,4 +126,62 @@ export const es: Translation = {
       "Adivina el origen étnico o geográfico de un rostro promediado y coloca tu respuesta en el mapa.",
     "spotle-movies": "Adivina la película del día haciendo propuestas.",
   },
+  gameKeywords: {
+    "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
+    "wikipedia-speedruns": [
+      "wiki", "carrera", "enlaces", "cultura", "conocimientos", "velocidad",
+    ],
+    "more-or-less-game": [
+      "más o menos", "comparación", "números", "estimación", "estadísticas",
+    ],
+    "damn-dog": ["wikihow", "imágenes", "gracioso", "ilustración", "tutorial", "absurdo"],
+    "framed": ["películas", "cine", "diario", "fotograma", "wordle", "cultura"],
+    "the-higher-lower-game": [
+      "google", "búsquedas", "tendencias", "comparación", "popularidad", "más o menos",
+    ],
+    "le-petit-bac": [
+      "tutti frutti", "basta", "stop", "palabras", "categorías", "letras", "vocabulario",
+    ],
+    "connect-the-stars": [
+      "famosos", "celebridades", "películas", "actores", "vínculos", "cine", "cultura",
+    ],
+    "make-it-meme": ["meme", "humor", "gracioso", "votar", "creatividad", "fiesta"],
+    "tier-list-maker": ["clasificación", "ranking", "tier list", "debate", "opinión"],
+    "guess-the-game": ["videojuegos", "gaming", "captura", "diario", "wordle", "cultura"],
+    "tixid": [
+      "dixit", "cartas", "historias", "farol", "imaginación", "ilustraciones", "creatividad", "juego de mesa",
+    ],
+    "bombparty": [
+      "palabras", "mecanografía", "teclado", "ortografía", "sílabas", "velocidad", "vocabulario",
+    ],
+    "popsauce": [
+      "trivia", "preguntas", "cultura pop", "imágenes", "velocidad", "cultura general",
+    ],
+    "rentguessr": [
+      "inmobiliaria", "vivienda", "piso", "alquiler", "precio", "estimación", "geografía",
+    ],
+    "openguessr": [
+      "geoguessr", "geografía", "mapa", "street view", "viajes", "países", "mundo",
+    ],
+    "squiz": [
+      "quiz", "trivia", "cultura general", "preguntas", "conocimientos", "kahoot",
+    ],
+    "codenames": [
+      "palabras", "pistas", "equipos", "asociación", "espías", "juego de mesa", "deducción",
+    ],
+    "skribbl-io": ["dibujo", "pictionary", "boceto", "adivinar", "palabras", "fiesta"],
+    "gartic-phone": [
+      "dibujo", "teléfono descompuesto", "teléfono escacharrado", "boceto", "gracioso", "fiesta",
+    ],
+    "linkterpol": ["linkedin", "interpol", "caras", "retratos", "criminales", "gracioso"],
+    "pedantix": ["palabras", "semántica", "diario", "acertijo", "cultura", "francés"],
+    "cemantix": ["palabras", "semántica", "diario", "acertijo", "vocabulario", "francés"],
+    "brandcolorgame": ["logos", "marcas", "colores", "diseño", "marketing", "memoria"],
+    "blindtest-gg": [
+      "música", "canciones", "blind test", "quiz", "artistas", "velocidad",
+    ],
+    "what-the-tune": ["música", "canciones", "blind test", "quiz", "heardle", "audio"],
+    "ethnoguessr": ["caras", "geografía", "mapa", "orígenes", "países", "mundo"],
+    "spotle-movies": ["películas", "cine", "diario", "wordle", "actores", "pistas"],
+  },
 };

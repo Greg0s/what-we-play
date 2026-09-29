@@ -11,6 +11,8 @@ export type LanguageContextValue = {
   t: Translation;
   /** Description of a game, falling back to English when untranslated. */
   gameDescription: (gameId: string) => string;
+  /** Search keywords of a game, falling back to English when untranslated. */
+  gameKeywords: (gameId: string) => readonly string[];
   /** "player"/"players", using the plural rules of the current language. */
   playersLabel: (count: number) => string;
 };
