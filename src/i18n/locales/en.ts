@@ -123,6 +123,7 @@ export const en = {
       "Guess a person's ethnic or geographic origin from an averaged face, then place your answer on the map.",
     "spotle-movies": "Guess the movie of the day by making guesses.",
     "spotle-music": "Guess the music artist of the day by making guesses.",
+    "fermi": "Estimate the answer to three impossible questions every day, as close as you can.",
   },
   gameKeywords: {
     "uwufufu": [
@@ -183,6 +184,8 @@ export const en = {
     ],
     "ethnoguessr": ["faces", "geography", "map", "origins", "countries", "world"],
     "spotle-movies": ["movies", "film", "cinema", "daily", "wordle", "actors", "clues"],
+    "spotle-music": ["music", "artist", "singer", "daily", "wordle", "clues"],
+    "fermi": ["estimation", "math", "numbers", "daily", "trivia", "guess", "puzzle"],
   },
 } as const;
 

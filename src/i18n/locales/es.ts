@@ -126,6 +126,7 @@ export const es: Translation = {
       "Adivina el origen étnico o geográfico de un rostro promediado y coloca tu respuesta en el mapa.",
     "spotle-movies": "Adivina la película del día haciendo propuestas.",
     "spotle-music": "Adivina el artista musical del día haciendo propuestas.",
+    "fermi": "Estima lo más cerca posible la respuesta a tres preguntas imposibles cada día.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -184,5 +185,7 @@ export const es: Translation = {
     "what-the-tune": ["música", "canciones", "blind test", "quiz", "heardle", "audio"],
     "ethnoguessr": ["caras", "geografía", "mapa", "orígenes", "países", "mundo"],
     "spotle-movies": ["películas", "cine", "diario", "wordle", "actores", "pistas"],
+    "spotle-music": ["música", "artista", "cantante", "diario", "wordle", "pistas"],
+    "fermi": ["estimación", "cálculo", "matemáticas", "números", "diario", "cultura general", "rompecabezas"],
   },
 };
