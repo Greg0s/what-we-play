@@ -26,9 +26,12 @@ header, and their choice is remembered for the next visits.
   annotations and sitemap entries automatically.
 
 `src/i18n/locales/en.ts` is the reference locale: the build fails if another
-locale misses one of its keys. Game descriptions live in the locale files (keyed
-by the game `id` from `src/games.json`) and fall back to English when a
-translation is missing.
+locale misses one of its keys. Game descriptions and search keywords
+(`gameDescriptions`, `gameKeywords`) live in the locale files (keyed by the game
+`id` from `src/games.json`) and fall back to English when a translation is
+missing. Keywords are what lets the search find a game by a word its name and
+description don't contain (“drawing”, “quiz”, “bluff”…); pick them in each
+language's own terms rather than translating word for word.
 
 ## Planned features
 
