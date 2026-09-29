@@ -123,6 +123,8 @@ export const fr: Translation = {
     "ethnoguessr":
       "Devine l'origine ethnique ou géographique d'un visage moyen, puis place ta réponse sur la carte.",
     "spotle-movies": "Devine le film du jour en faisant des propositions.",
+    "spotle-music": "Devine l'artiste de musique du jour en faisant des propositions.",
+    "fermi": "Estime au plus juste la réponse à trois questions impossibles chaque jour.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
@@ -179,5 +181,7 @@ export const fr: Translation = {
     "what-the-tune": ["musique", "chansons", "blind test", "quiz", "heardle", "extrait"],
     "ethnoguessr": ["visages", "géographie", "carte", "origines", "pays", "monde"],
     "spotle-movies": ["films", "cinéma", "quotidien", "wordle", "acteurs", "indices"],
+    "spotle-music": ["musique", "artiste", "chanteur", "quotidien", "wordle", "indices"],
+    "fermi": ["estimation", "calcul", "maths", "chiffres", "quotidien", "culture générale", "casse-tête"],
   },
 };

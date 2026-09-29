@@ -362,5 +362,31 @@
     "screenShare": true,
     "mobileFriendly": true,
     "accountNeeded": false
+  },
+  {
+    "id": "spotle-music",
+    "name": "Spotle Music",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://spotle.io/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
+    "id": "fermi",
+    "name": "Fermi",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://fermi.gg/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]
