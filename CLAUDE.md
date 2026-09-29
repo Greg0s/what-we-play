@@ -110,8 +110,11 @@ for the measurements:
 
 English, French, Spanish (`src/i18n/locales/`). `en.ts` is the reference
 locale: **the build fails** if another locale is missing a key. Game
-descriptions live in the locale files, keyed by the game's `id`, and fall
-back to English when a translation is missing. To add a language, see the
+descriptions and search keywords (`gameDescriptions`, `gameKeywords`) live in
+the locale files, keyed by the game's `id`, and fall back to English when a
+translation is missing. Keywords are never displayed: the search in `Games`
+matches name, description, keywords and tag labels, ignoring case and
+accents — adding a game means giving it keywords in every locale. To add a language, see the
 "Adding a language" section of the [README](README.md).
 
 ## Theming

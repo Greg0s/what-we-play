@@ -37,6 +37,10 @@ export function LanguageProvider({
         t.gameDescriptions[gameId as GameId] ??
         en.gameDescriptions[gameId as GameId] ??
         "",
+      gameKeywords: (gameId) =>
+        t.gameKeywords[gameId as GameId] ??
+        en.gameKeywords[gameId as GameId] ??
+        [],
       playersLabel: (count) =>
         pluralRules.select(count) === "one"
           ? t.header.players.one

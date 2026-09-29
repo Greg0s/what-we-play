@@ -37,18 +37,30 @@ function buildTags(game: GameData, t: Translation): GameTag[] {
   return tags;
 }
 
-function matchesQuery(game: GameData, description: string, t: Translation, query: string): boolean {
-  const haystack = [
-    game.name,
-    description,
-    game.solo ? t.catalogue.tagSolo : "",
-    game.soloWithStrangers ? t.catalogue.tagSoloWithStrangers : "",
-    game.multiplayer ? t.catalogue.tagMultiplayer : "",
-    game.screenShare ? t.catalogue.tagScreenShare : "",
-    game.mobileFriendly ? t.catalogue.mobileFriendly : "",
-  ]
-    .join(" ")
-    .toLowerCase();
+/** Lowercases and strips accents, so "cinema" finds "Cinéma" and vice versa. */
+function normalizeForSearch(text: string): string {
+  return text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}
+
+function matchesQuery(
+  game: GameData,
+  description: string,
+  keywords: readonly string[],
+  t: Translation,
+  query: string,
+): boolean {
+  const haystack = normalizeForSearch(
+    [
+      game.name,
+      description,
+      ...keywords,
+      game.solo ? t.catalogue.tagSolo : "",
+      game.soloWithStrangers ? t.catalogue.tagSoloWithStrangers : "",
+      game.multiplayer ? t.catalogue.tagMultiplayer : "",
+      game.screenShare ? t.catalogue.tagScreenShare : "",
+      game.mobileFriendly ? t.catalogue.mobileFriendly : "",
+    ].join(" "),
+  );
   return haystack.includes(query);
 }
 
@@ -61,7 +73,7 @@ type GamesProps = {
 };
 
 export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
-  const { gameDescription, t } = useTranslation();
+  const { gameDescription, gameKeywords, t } = useTranslation();
   const [query, setQuery] = useState("");
   const [solo, setSolo] = useState(false);
   const [soloWithStrangers, setSoloWithStrangers] = useState(false);
@@ -165,7 +177,7 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
   ];
   const activeFilters = filters.filter((filter) => filter.active);
 
-  const trimmedQuery = query.trim().toLowerCase();
+  const trimmedQuery = normalizeForSearch(query.trim());
   const hasQuery = trimmedQuery.length > 0;
   // Screen share is meant to surface games you wouldn't otherwise see at this
   // player count (one person hosts, everyone else just watches), so — like
@@ -175,7 +187,9 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
 
   let list = ignoresPlayerCount ? games : gamesForPlayerCount(players);
   if (hasQuery) {
-    list = list.filter((game) => matchesQuery(game, gameDescription(game.id), t, trimmedQuery));
+    list = list.filter((game) =>
+      matchesQuery(game, gameDescription(game.id), gameKeywords(game.id), t, trimmedQuery),
+    );
   }
   if (solo) list = list.filter((game) => game.solo);
   if (soloWithStrangers) list = list.filter((game) => game.soloWithStrangers);

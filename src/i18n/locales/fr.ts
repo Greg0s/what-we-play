@@ -124,4 +124,60 @@ export const fr: Translation = {
       "Devine l'origine ethnique ou géographique d'un visage moyen, puis place ta réponse sur la carte.",
     "spotle-movies": "Devine le film du jour en faisant des propositions.",
   },
+  gameKeywords: {
+    "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
+    "wikipedia-speedruns": [
+      "wikipédia", "wiki", "course", "liens", "culture", "rapidité",
+    ],
+    "more-or-less-game": [
+      "plus ou moins", "comparaison", "chiffres", "estimation", "statistiques", "culture",
+    ],
+    "damn-dog": ["wikihow", "images", "drôle", "illustration", "tutoriel", "absurde"],
+    "framed": ["films", "cinéma", "quotidien", "image", "wordle", "culture"],
+    "the-higher-lower-game": [
+      "google", "recherche", "tendances", "comparaison", "popularité", "plus ou moins",
+    ],
+    "le-petit-bac": ["mots", "catégories", "lettres", "vocabulaire", "orthographe"],
+    "connect-the-stars": [
+      "célébrités", "stars", "films", "acteurs", "liens", "cinéma", "culture",
+    ],
+    "make-it-meme": [
+      "meme", "humour", "drôle", "légende", "vote", "créativité", "soirée",
+    ],
+    "tier-list-maker": ["classement", "tier list", "débat", "opinion", "vote"],
+    "guess-the-game": [
+      "jeux vidéo", "gaming", "capture d'écran", "quotidien", "wordle", "culture",
+    ],
+    "tixid": [
+      "dixit", "cartes", "histoire", "bluff", "imagination", "illustrations", "créativité", "jeu de société",
+    ],
+    "bombparty": [
+      "mots", "frappe", "clavier", "orthographe", "syllabes", "rapidité", "vocabulaire",
+    ],
+    "popsauce": [
+      "quiz", "culture générale", "pop culture", "images", "rapidité", "questions",
+    ],
+    "rentguessr": [
+      "immobilier", "logement", "appartement", "loyer", "prix", "estimation", "géographie",
+    ],
+    "openguessr": [
+      "geoguessr", "géographie", "carte", "street view", "voyage", "pays", "monde",
+    ],
+    "squiz": ["quiz", "culture générale", "questions", "connaissances", "kahoot"],
+    "codenames": [
+      "mots", "indices", "équipes", "association", "espions", "jeu de société", "déduction",
+    ],
+    "skribbl-io": ["dessin", "pictionary", "croquis", "deviner", "mots", "soirée"],
+    "gartic-phone": [
+      "dessin", "téléphone arabe", "croquis", "drôle", "soirée", "créativité",
+    ],
+    "linkterpol": ["linkedin", "interpol", "visages", "portraits", "criminels", "drôle"],
+    "pedantix": ["wikipédia", "mots", "sémantique", "quotidien", "énigme", "culture"],
+    "cemantix": ["mots", "sémantique", "quotidien", "énigme", "vocabulaire"],
+    "brandcolorgame": ["logos", "marques", "couleurs", "design", "marketing", "mémoire"],
+    "blindtest-gg": ["musique", "chansons", "blind test", "quiz", "artistes", "rapidité"],
+    "what-the-tune": ["musique", "chansons", "blind test", "quiz", "heardle", "extrait"],
+    "ethnoguessr": ["visages", "géographie", "carte", "origines", "pays", "monde"],
+    "spotle-movies": ["films", "cinéma", "quotidien", "wordle", "acteurs", "indices"],
+  },
 };

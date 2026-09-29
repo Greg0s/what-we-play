@@ -123,6 +123,66 @@ export const en = {
       "Guess a person's ethnic or geographic origin from an averaged face, then place your answer on the map.",
     "spotle-movies": "Guess the movie of the day by making guesses.",
   },
+  gameKeywords: {
+    "uwufufu": [
+      "tournament", "vote", "bracket", "favorite", "ranking", "opinion", "debate",
+    ],
+    "wikipedia-speedruns": ["wiki", "race", "links", "culture", "knowledge", "speed"],
+    "more-or-less-game": [
+      "higher or lower", "comparison", "numbers", "estimate", "stats", "trivia",
+    ],
+    "damn-dog": ["wikihow", "images", "funny", "illustration", "tutorial", "absurd"],
+    "framed": ["movies", "film", "cinema", "daily", "screenshot", "wordle"],
+    "the-higher-lower-game": [
+      "google", "search", "trends", "comparison", "popularity", "estimate",
+    ],
+    "le-petit-bac": [
+      "scattergories", "words", "categories", "letters", "vocabulary", "spelling",
+    ],
+    "connect-the-stars": [
+      "celebrities", "famous", "movies", "actors", "links", "cinema", "culture",
+    ],
+    "make-it-meme": ["meme", "humor", "funny", "caption", "vote", "creativity", "party"],
+    "tier-list-maker": ["ranking", "tier list", "debate", "opinion", "vote"],
+    "guess-the-game": [
+      "video games", "gaming", "screenshot", "daily", "wordle", "culture",
+    ],
+    "tixid": [
+      "dixit", "cards", "storytelling", "bluff", "imagination", "illustrations", "creativity", "board game",
+    ],
+    "bombparty": [
+      "words", "typing", "keyboard", "spelling", "syllables", "speed", "vocabulary",
+    ],
+    "popsauce": ["trivia", "quiz", "pop culture", "images", "speed", "questions"],
+    "rentguessr": [
+      "real estate", "housing", "apartment", "rent", "price", "estimate", "geography",
+    ],
+    "openguessr": [
+      "geoguessr", "geography", "map", "street view", "travel", "countries", "world",
+    ],
+    "squiz": ["quiz", "trivia", "general knowledge", "questions", "culture", "kahoot"],
+    "codenames": [
+      "words", "clues", "teams", "association", "spies", "board game", "deduction",
+    ],
+    "skribbl-io": ["drawing", "pictionary", "sketch", "guess", "words", "party"],
+    "gartic-phone": [
+      "drawing", "telephone", "chinese whispers", "sketch", "funny", "party", "creativity",
+    ],
+    "linkterpol": ["linkedin", "interpol", "faces", "portraits", "criminals", "funny"],
+    "pedantix": [
+      "wikipedia", "words", "semantic", "daily", "riddle", "culture", "french",
+    ],
+    "cemantix": [
+      "words", "semantic", "semantle", "daily", "riddle", "vocabulary", "french",
+    ],
+    "brandcolorgame": ["logos", "brands", "colors", "design", "marketing", "memory"],
+    "blindtest-gg": ["music", "songs", "blind test", "name that tune", "quiz", "artists"],
+    "what-the-tune": [
+      "music", "songs", "blind test", "name that tune", "quiz", "heardle",
+    ],
+    "ethnoguessr": ["faces", "geography", "map", "origins", "countries", "world"],
+    "spotle-movies": ["movies", "film", "cinema", "daily", "wordle", "actors", "clues"],
+  },
 } as const;
 
 /** Ids of the games we have a description for. */
@@ -191,4 +251,9 @@ export type Translation = {
     tagScreenShare: string;
   };
   gameDescriptions: Record<GameId, string>;
+  /**
+   * Extra search terms per game, for what its name and description don't say
+   * ("drawing", "quiz"…). Never displayed, only matched by the search.
+   */
+  gameKeywords: Record<GameId, readonly string[]>;
 };
