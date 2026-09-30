@@ -1,4 +1,5 @@
-import { gamesForPlayerCount, type Game } from "./games";
+import { gameLink, gamesForPlayerCount, type Game } from "./games";
+import type { Language } from "./i18n/config";
 import { translations } from "./i18n/locales";
 import { pageMeta } from "./pageMeta";
 import { SITE_URL, buildUrl, type Route } from "./routes";
@@ -14,12 +15,12 @@ import { SITE_URL, buildUrl, type Route } from "./routes";
 
 type JsonLd = Record<string, unknown>;
 
-function videoGame(game: Game, description: string): JsonLd {
+function videoGame(game: Game, description: string, language: Language): JsonLd {
   return {
     "@type": "VideoGame",
     name: game.name,
     description,
-    url: game.link,
+    url: gameLink(game, language),
     gamePlatform: "Web browser",
     applicationCategory: "GameApplication",
     playMode: game.maxPlayers === 1 ? "SinglePlayer" : "MultiPlayer",
@@ -60,7 +61,11 @@ export function structuredData(
       itemListElement: games.map((game, index) => ({
         "@type": "ListItem",
         position: index + 1,
-        item: videoGame(game, t.gameDescriptions[game.id as keyof typeof t.gameDescriptions]),
+        item: videoGame(
+          game,
+          t.gameDescriptions[game.id as keyof typeof t.gameDescriptions],
+          route.language
+        ),
       })),
     },
   };

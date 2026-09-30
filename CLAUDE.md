@@ -16,8 +16,8 @@ treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
 Structure:
 
-- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link`, tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code.
-- `src/games.ts` — typed access to that data (the `Game` type, the player-count filter, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code.
+- `src/games.ts` — typed access to that data (the `Game` type, the player-count filter, `gameLink`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below).
 - `src/components/` — `Game` (card), `Games` (search + one filter chip per tag/filter boolean), `FilterSheet` (mobile bottom sheet, same filters), `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal). `howMany.tsx`/`title.tsx` are exported but unused — `App.tsx` builds the header inline instead.
 - `src/App.tsx` — wires everything together, holds the route state (player count, landing or not) and keeps the URL in step with it.

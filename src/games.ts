@@ -1,4 +1,5 @@
 import gamesData from "./games.json" with { type: "json" };
+import type { Language } from "./i18n/config";
 
 export type Game = {
   id: string;
@@ -7,6 +8,11 @@ export type Game = {
   /** `-1` means the game has no upper limit. */
   maxPlayers: number;
   link: string;
+  /**
+   * The game's own page in a given language, for the few sites that address
+   * their translations by URL. Languages missing here use `link`.
+   */
+  localizedLinks?: Partial<Record<Language, string>>;
   /** Playable with just yourself. */
   solo: boolean;
   /** Playable solo against strangers matched online. */
@@ -25,6 +31,11 @@ export const games: Game[] = gamesData;
 
 /** Player count the site opens on, and the one the home page is prerendered at. */
 export const DEFAULT_PLAYERS = 4;
+
+/** Where to send someone reading the site in `language`. */
+export function gameLink(game: Game, language: Language): string {
+  return game.localizedLinks?.[language] ?? game.link;
+}
 
 export function matchesPlayerCount(game: Game, players: number): boolean {
   return (
