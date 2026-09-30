@@ -396,5 +396,18 @@
     "screenShare": true,
     "mobileFriendly": true,
     "accountNeeded": false
+  },
+  {
+    "id": "gamedle",
+    "name": "Gamedle",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://www.gamedle.wtf/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]

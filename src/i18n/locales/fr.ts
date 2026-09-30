@@ -125,6 +125,7 @@ export const fr: Translation = {
     "spotle-movies": "Devine le film du jour en faisant des propositions.",
     "spotle-music": "Devine l'artiste de musique du jour en faisant des propositions.",
     "fermi": "Estime au plus juste la réponse à trois questions impossibles chaque jour.",
+    "gamedle": "Devine le jeu vidéo à partir d'une capture pixelisée, de sa jaquette, d'un personnage ou de mots-clés.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
@@ -183,5 +184,6 @@ export const fr: Translation = {
     "spotle-movies": ["films", "cinéma", "quotidien", "wordle", "acteurs", "indices"],
     "spotle-music": ["musique", "artiste", "chanteur", "quotidien", "wordle", "indices"],
     "fermi": ["estimation", "calcul", "maths", "chiffres", "quotidien", "culture générale", "casse-tête"],
+    "gamedle": ["jeu vidéo", "quiz", "quotidien", "wordle", "deviner", "culture"],
   },
 };
