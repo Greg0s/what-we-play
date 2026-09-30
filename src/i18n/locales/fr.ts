@@ -126,6 +126,8 @@ export const fr: Translation = {
     "spotle-music": "Devine l'artiste de musique du jour en faisant des propositions.",
     "fermi": "Estime au plus juste la réponse à trois questions impossibles chaque jour.",
     "gamedle": "Devine le jeu vidéo à partir d'une capture pixelisée, de sa jaquette, d'un personnage ou de mots-clés.",
+    "doggoguessr": "Devine d'où vient une race de chien sur une carte du monde.",
+    "movieguessr": "Devine le film à partir d'un plan pris au hasard. Défi du jour, solo ou salons jusqu'à 50 joueurs.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
@@ -185,5 +187,7 @@ export const fr: Translation = {
     "spotle-music": ["musique", "artiste", "chanteur", "quotidien", "wordle", "indices"],
     "fermi": ["estimation", "calcul", "maths", "chiffres", "quotidien", "culture générale", "casse-tête"],
     "gamedle": ["jeu vidéo", "quiz", "quotidien", "wordle", "deviner", "culture"],
+    "doggoguessr": ["chien", "race", "géographie", "carte", "quotidien", "deviner"],
+    "movieguessr": ["film", "cinéma", "quiz", "quotidien", "deviner", "culture"],
   },
 };

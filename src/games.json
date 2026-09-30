@@ -413,5 +413,31 @@
     "screenShare": true,
     "mobileFriendly": true,
     "accountNeeded": false
+  },
+  {
+    "id": "doggoguessr",
+    "name": "DoggoGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://hbd.gg/doggoguessr/play/",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
+    "id": "movieguessr",
+    "name": "MovieGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 50,
+    "link": "https://movieguessr.fr/",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": true
   }
 ]
