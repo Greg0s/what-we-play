@@ -34,9 +34,9 @@ description don't contain (“drawing”, “quiz”, “bluff”…); pick them
 language's own terms rather than translating word for word.
 
 When a game's site serves a translation at its own URL (e.g.
-`garticphone.com/fr`), list it under `localizedLinks` in `src/games.json`:
-the card then opens that page for visitors reading What we play? in that
-language, and `link` everywhere else. Sites that pick their language from the
+`garticphone.com/fr` or `gamedle.wtf/?lang=fr`), list it under
+`localizedLinks` in `src/games.json`: the card then opens that page for
+visitors reading What we play? in that language, and `link` everywhere else. Sites that pick their language from the
 browser or an in-game setting need nothing.
 
 ## Planned features

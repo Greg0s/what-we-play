@@ -403,6 +403,10 @@
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://www.gamedle.wtf/",
+    "localizedLinks": {
+      "fr": "https://www.gamedle.wtf/?lang=fr",
+      "es": "https://www.gamedle.wtf/?lang=es"
+    },
     "solo": true,
     "soloWithStrangers": false,
     "multiplayer": false,
