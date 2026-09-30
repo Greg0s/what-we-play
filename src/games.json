@@ -109,6 +109,10 @@
     "minPlayers": 2,
     "maxPlayers": 30,
     "link": "https://makeitmeme.com",
+    "localizedLinks": {
+      "fr": "https://makeitmeme.com/fr/",
+      "es": "https://makeitmeme.com/es/"
+    },
     "solo": false,
     "soloWithStrangers": false,
     "multiplayer": true,
@@ -252,6 +256,10 @@
     "minPlayers": 2,
     "maxPlayers": 50,
     "link": "https://garticphone.com/",
+    "localizedLinks": {
+      "fr": "https://garticphone.com/fr",
+      "es": "https://garticphone.com/es"
+    },
     "solo": false,
     "soloWithStrangers": false,
     "multiplayer": true,
@@ -395,6 +403,10 @@
     "minPlayers": 1,
     "maxPlayers": 1,
     "link": "https://www.gamedle.wtf/",
+    "localizedLinks": {
+      "fr": "https://www.gamedle.wtf/?lang=fr",
+      "es": "https://www.gamedle.wtf/?lang=es"
+    },
     "solo": true,
     "soloWithStrangers": false,
     "multiplayer": false,

@@ -12,7 +12,13 @@ import {
 } from "react-icons/fa6";
 import { Game, type GameTag } from "./game";
 import { FilterSheet, type FilterDefinition } from "./filterSheet";
-import { games, gamesForPlayerCount, playerRangeShort, type Game as GameData } from "../games";
+import {
+  gameLink,
+  games,
+  gamesForPlayerCount,
+  playerRangeShort,
+  type Game as GameData,
+} from "../games";
 import "../App.scss";
 import "../stylesheets/games.scss";
 import "../stylesheets/search.scss";
@@ -73,7 +79,7 @@ type GamesProps = {
 };
 
 export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
-  const { gameDescription, gameKeywords, t } = useTranslation();
+  const { gameDescription, gameKeywords, language, t } = useTranslation();
   const [query, setQuery] = useState("");
   const [solo, setSolo] = useState(false);
   const [soloWithStrangers, setSoloWithStrangers] = useState(false);
@@ -295,7 +301,7 @@ export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
             key={game.id}
             name={game.name}
             description={gameDescription(game.id)}
-            playLink={game.link}
+            playLink={gameLink(game, language)}
             playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
             playerRangeShort={playerRangeShort(game.minPlayers, game.maxPlayers)}
             tags={buildTags(game, t)}
