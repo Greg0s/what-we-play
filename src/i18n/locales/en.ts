@@ -124,6 +124,7 @@ export const en = {
     "spotle-movies": "Guess the movie of the day by making guesses.",
     "spotle-music": "Guess the music artist of the day by making guesses.",
     "fermi": "Estimate the answer to three impossible questions every day, as close as you can.",
+    "gamedle": "Guess the video game from a pixelated screenshot, its cover, a character or keywords.",
   },
   gameKeywords: {
     "uwufufu": [
@@ -186,6 +187,7 @@ export const en = {
     "spotle-movies": ["movies", "film", "cinema", "daily", "wordle", "actors", "clues"],
     "spotle-music": ["music", "artist", "singer", "daily", "wordle", "clues"],
     "fermi": ["estimation", "math", "numbers", "daily", "trivia", "guess", "puzzle"],
+    "gamedle": ["video game", "quiz", "daily", "wordle", "guess", "trivia"],
   },
 } as const;
 
