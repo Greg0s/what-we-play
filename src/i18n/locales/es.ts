@@ -128,6 +128,8 @@ export const es: Translation = {
     "spotle-music": "Adivina el artista musical del día haciendo propuestas.",
     "fermi": "Estima lo más cerca posible la respuesta a tres preguntas imposibles cada día.",
     "gamedle": "Adivina el videojuego a partir de una captura pixelada, su portada, un personaje o palabras clave.",
+    "doggoguessr": "Adivina de dónde viene una raza de perro en un mapa del mundo.",
+    "movieguessr": "Adivina la película a partir de un plano al azar. Reto diario, solo o salas de hasta 50 jugadores.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -189,5 +191,7 @@ export const es: Translation = {
     "spotle-music": ["música", "artista", "cantante", "diario", "wordle", "pistas"],
     "fermi": ["estimación", "cálculo", "matemáticas", "números", "diario", "cultura general", "rompecabezas"],
     "gamedle": ["videojuego", "quiz", "diario", "wordle", "adivinar", "trivia"],
+    "doggoguessr": ["perro", "raza", "geografía", "mapa", "diario", "adivinar"],
+    "movieguessr": ["película", "cine", "quiz", "diario", "adivinar", "trivia"],
   },
 };
