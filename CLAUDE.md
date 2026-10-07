@@ -130,6 +130,16 @@ it runs before React and can't import `src/theme/config.ts` — without it,
 dark mode would flash light before hydration. If the storage key or default
 logic in `src/theme/config.ts` changes, update that inline script by hand.
 
+## Load animation
+
+`src/stylesheets/intro.scss` staggers the header text, search bar and cards
+in on page load — CSS only, so it plays from the prerendered HTML's first
+paint. It must not replay when cards mount later (filters, player count), so
+`App.tsx` sets `data-intro="done"` on `<html>` after `INTRO_DURATION_MS` and
+every intro rule is scoped to `:root:not([data-intro="done"])`. If the
+sequence gets longer, raise that constant with it. The banner itself stays
+static on purpose (largest paint, holds the layout).
+
 ## Git workflow & deployment
 
 `main` deploys automatically to GitHub Pages on every push

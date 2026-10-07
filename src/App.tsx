@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import "./App.scss";
+import "./stylesheets/intro.scss";
 import { Games, HowItWorks, LanguageSwitcher, ThemeSwitcher } from "./components/";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { useTranslation } from "./i18n";
@@ -8,6 +9,14 @@ import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { buildPath, parseRoute, type Route } from "./routes";
 import { useDocumentMeta } from "./useDocumentMeta";
 import { DEFAULT_PLAYERS } from "./games";
+
+/**
+ * Comfortably past the end of the page-load entrance in intro.scss (its last
+ * card finishes about 1.1s after first paint, and first paint always comes
+ * before this effect runs). After it, cards that mount because of a filter or
+ * a player-count change appear without replaying the entrance.
+ */
+const INTRO_DURATION_MS = 1500;
 
 function App({ route }: { route: Route }) {
   const [players, setPlayers] = useState(route.players);
@@ -20,6 +29,13 @@ function App({ route }: { route: Route }) {
   const historyMode = useRef<"pushState" | "replaceState">("pushState");
 
   useDocumentMeta({ language, players, isHome });
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      document.documentElement.dataset.intro = "done";
+    }, INTRO_DURATION_MS);
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   // A prefixed URL states the language outright, so it wins. Only the
   // unprefixed entry points fall back to the visitor's own preference, and the
