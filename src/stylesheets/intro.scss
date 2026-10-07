@@ -1,0 +1,94 @@
+/*
+ * Page-load entrance: the header text, then the search bar and filters, then
+ * the cards settle in one after another. Pure CSS, so it starts with the
+ * prerendered HTML's first paint rather than waiting for JavaScript, and
+ * hydration leaves it alone (React reuses those DOM nodes instead of
+ * remounting them).
+ *
+ * Load only. A card that mounts later — a filter, the player count, a search —
+ * would replay its own animation, so App.tsx sets `data-intro="done"` on
+ * <html> once the sequence is over and every rule below stops matching.
+ *
+ * The banner itself never animates: it is the page's largest paint and holds
+ * the layout in place while its contents arrive. Motion uses the individual
+ * `translate` property, not `transform`, so it composes with the cards' own
+ * hover lift instead of overriding it, and `backwards` fill leaves nothing
+ * behind once each animation has played.
+ */
+
+$ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+$card-start: 240ms;
+$card-step: 40ms;
+// Past this many cards, the rest share the last delay: they are below the fold
+// on most screens, and a longer queue would only make the bottom wait.
+$card-stagger-limit: 12;
+
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-intro="done"]) {
+    h1 {
+      animation: intro-rise 450ms $ease-out backwards;
+    }
+
+    .how-many {
+      animation: intro-rise 450ms $ease-out 90ms backwards;
+    }
+
+    .header-actions {
+      animation: intro-fade 450ms $ease-out 180ms backwards;
+    }
+
+    .search,
+    .toolbar,
+    .filters-button,
+    .result-line {
+      animation: intro-rise 450ms $ease-out 160ms backwards;
+    }
+
+    .grid > .game {
+      animation: intro-rise-small 400ms $ease-out backwards;
+      animation-delay: $card-start + $card-step * ($card-stagger-limit - 1);
+
+      @for $i from 1 through $card-stagger-limit - 1 {
+        &:nth-child(#{$i}) {
+          animation-delay: $card-start + $card-step * ($i - 1);
+        }
+      }
+    }
+  }
+}
+
+/* No travel, no queue: everything just fades in together. */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-intro="done"]) {
+    h1,
+    .how-many,
+    .header-actions,
+    .search,
+    .toolbar,
+    .filters-button,
+    .result-line,
+    .grid > .game {
+      animation: intro-fade 300ms ease backwards;
+    }
+  }
+}
+
+@keyframes intro-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes intro-rise-small {
+  from {
+    opacity: 0;
+    translate: 0 8px;
+  }
+}
+
+@keyframes intro-fade {
+  from {
+    opacity: 0;
+  }
+}
