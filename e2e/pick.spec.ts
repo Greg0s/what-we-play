@@ -61,11 +61,16 @@ test.describe("Pick for us — phones", () => {
     await expect(screen.locator("#pick-say")).toHaveText(en.pick.firstLine(4));
     // The slot stays empty while the reels spin: no ticket before it ejects.
     await expect(screen.locator(".fl-move")).toHaveClass(/is-wait/);
+    // A waiting screen holds the empty slot meanwhile…
+    const loader = screen.locator(".ps-loader");
+    await expect(loader).toBeVisible();
     // Nor a reroll before the first game is out.
     const reroll = screen.locator(".reroll");
     await expect(reroll).toBeHidden();
     await expect(screen.getByRole("heading", { level: 2 })).toBeVisible();
     await expect(reroll).toBeVisible();
+    // …and is gone once the ticket is out, and stays gone.
+    await expect(loader).toHaveCount(0);
     expect(names).toContain(await screen.getByRole("heading", { level: 2 }).textContent());
     expect(page.url()).toBe(before);
 

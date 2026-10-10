@@ -109,6 +109,11 @@ export const es: Translation = {
     launch: "Empezar a jugar",
     newTab: "se abre en una pestaña nueva",
     reroll: "Otra vez",
+    loading: {
+      shuffle: "Barajando los disquetes…",
+      read: "Leyendo el disquete…",
+      dice: "Tirando los dados…",
+    },
     note: (count: number, players: number | null) =>
       `Sorteado entre ${count === 1 ? "1 juego" : `${count} juegos`}${
         players === null ? "" : players === 1 ? " para 1 jugador" : ` para ${players} jugadores`

@@ -169,7 +169,10 @@ pops out of its slot into a drawer under the banner, the TV says a line in a
 bubble above it, and a yellow sticker closes it (the floppy goes back in
 first). Below 640 px the keypad's Enter key gives way to a floating button
 that opens `PickScreen`, a full-screen overlay where the TV keeps changing
-expressions between draws. The floppy's flight is measured from the TV's slot
+expressions between draws. On its first draw only, while the slot is still
+empty, a waiting screen picked at random on opening (shuffled floppies, a
+disk being read, keypad keys rolling dice — `PickLoader`) holds the slot and
+fades as the ticket flies out over it. The floppy's flight is measured from the TV's slot
 at run time, so it holds at every width.
 
 ## Load animation
