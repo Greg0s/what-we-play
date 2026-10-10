@@ -1,62 +1,57 @@
-import { test, expect } from "@playwright/test";
-import { games, matchesPlayerCount } from "../src/games";
+import { test, expect, type Page } from "@playwright/test";
+import { games, gamesForPlayerCount, matchesPlayerCount } from "../src/games";
 import { en } from "../src/i18n/locales/en";
 
-test.describe("Filters", () => {
-  test("the solo filter narrows to solo games and switches to 1 player", async ({ page }) => {
-    await page.goto("/"); // default player count is 4
+const cards = (page: Page) => page.locator(".grid .game");
 
-    const soloChip = page.getByRole("button", { name: en.catalogue.tagSolo, exact: true });
-    await soloChip.click();
-
-    await expect(page.getByLabel(en.header.playerCount)).toHaveValue("1");
-    await expect(page).toHaveURL(/\/games-for-1-player\/$/);
-
-    const soloAtOne = games.filter((game) => game.solo && matchesPlayerCount(game, 1));
-    await expect(page.locator(".grid .game")).toHaveCount(soloAtOne.length);
-
-    // Turning it back off restores the player count that was active before.
-    await soloChip.click();
-    await expect(page.getByLabel(en.header.playerCount)).toHaveValue("4");
-    await expect(page).toHaveURL(/\/games-for-4-players\/$/);
-    await expect(page.locator(".grid .game")).toHaveCount(
-      games.filter((game) => matchesPlayerCount(game, 4)).length,
-    );
-  });
-
-  test("the no-account filter shows only games playable without signing up", async ({ page }) => {
+test.describe("Options and genres", () => {
+  test("the no-account option keeps only games playable without signing up", async ({ page }) => {
     await page.goto("/");
 
-    await page
-      .getByRole("button", { name: en.catalogue.noAccountNeeded, exact: true })
-      .click();
+    const noAccount = page.getByRole("button", { name: en.catalogue.noAccountNeeded, exact: true });
+    await noAccount.click();
+    await expect(noAccount).toHaveAttribute("aria-pressed", "true");
 
-    const expected = games.filter(
-      (game) => !game.accountNeeded && matchesPlayerCount(game, 4),
-    );
-    await expect(page.locator(".grid .game")).toHaveCount(expected.length);
+    const expected = gamesForPlayerCount(4).filter((game) => !game.accountNeeded);
+    await expect(cards(page)).toHaveCount(expected.length);
 
     await page.getByRole("button", { name: en.catalogue.resetFilters }).click();
-    await expect(page.locator(".grid .game")).toHaveCount(
-      games.filter((game) => matchesPlayerCount(game, 4)).length,
-    );
+    await expect(cards(page)).toHaveCount(gamesForPlayerCount(4).length);
   });
 
-  test("combining filters narrows further, and the active count is shown", async ({ page }) => {
+  test("combining options narrows further", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: en.catalogue.tagMultiplayer, exact: true }).click();
-    await page
-      .getByRole("button", { name: en.catalogue.mobileFriendly, exact: true })
-      .click();
+    await page.getByRole("button", { name: en.catalogue.strangers, exact: true }).click();
+    await page.getByRole("button", { name: en.catalogue.mobileFriendly, exact: true }).click();
 
-    const expected = games.filter(
-      (game) => game.multiplayer && game.mobileFriendly && matchesPlayerCount(game, 4),
-    );
-    await expect(page.locator(".grid .game")).toHaveCount(expected.length);
+    const expected = gamesForPlayerCount(4).filter((game) => game.soloWithStrangers && game.mobileFriendly);
+    await expect(cards(page)).toHaveCount(expected.length);
+  });
 
-    // Scoped by class rather than role name: "Reset filters" also matches the
-    // accessible-name substring "filters" once it appears alongside it.
-    await expect(page.locator(".filters-button")).toContainText("2");
+  test("screen share looks across the whole catalogue, whatever the player count", async ({ page }) => {
+    await page.goto("/");
+
+    await page.getByRole("button", { name: en.catalogue.screenShare, exact: true }).click();
+
+    await expect(cards(page)).toHaveCount(games.filter((game) => game.screenShare).length);
+    await expect(page.getByText(en.catalogue.scopeScreenShare)).toBeVisible();
+  });
+
+  test("a genre narrows the list, and « All » brings it back", async ({ page }) => {
+    await page.goto("/");
+
+    const music = page.locator(".genre", { hasText: en.genres.music.chip });
+    await music.click();
+    await expect(music).toHaveAttribute("aria-pressed", "true");
+
+    const expected = games.filter((game) => game.genre === "music" && matchesPlayerCount(game, 4));
+    await expect(cards(page)).toHaveCount(expected.length);
+    for (const card of await cards(page).all()) {
+      await expect(card.locator(".game__genre")).toHaveText(en.genres.music.band);
+    }
+
+    await page.locator(".genre", { hasText: en.catalogue.allGenres }).click();
+    await expect(cards(page)).toHaveCount(gamesForPlayerCount(4).length);
   });
 });

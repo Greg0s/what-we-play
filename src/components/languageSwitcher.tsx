@@ -72,7 +72,7 @@ export function LanguageSwitcher() {
       <button
         ref={triggerRef}
         type="button"
-        className="language-switcher__trigger"
+        className="b-btn language-switcher__trigger"
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t.language.label}

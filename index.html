@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!--
-      Sets `data-theme` before the first paint so there is nothing to flash:
+      Sets `data-theme` (and `data-relief`) before the first paint so there is nothing to flash:
       by the time the stylesheet is parsed, the dark CSS variables are already
       in effect if that's what the visitor last chose (or, absent a choice,
       what their OS prefers). The storage key is duplicated from
@@ -28,6 +28,10 @@
             (stored !== "light" &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
           if (dark) document.documentElement.setAttribute("data-theme", "dark");
+          // Same for the TV: in 3D, show the Mac rather than the flat TV from the
+          // first paint. Key duplicated from src/relief/config.ts; 2D is the default.
+          if (localStorage.getItem("what-we-play:relief") === "3d")
+            document.documentElement.setAttribute("data-relief", "3d");
         } catch (e) {
           // localStorage/matchMedia can be unavailable (private mode, blocked
           // cookies) — falling back to light is not worth failing the page for.
@@ -44,21 +48,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!--
-      Only the weights the stylesheets actually apply: 600 and 700, with no
-      italic anywhere. The previous request pulled both variable axes across
-      100..900 and cost 133 kB of latin subsets against 79 kB for this one.
+      Archivo is a variable font: one file per subset covers every width
+      (62..125) and weight (400..900) the stylesheets use, so asking for the
+      ranges costs nothing more than a single instance. No italic anywhere.
+      Honk is the TV's voice: the H1 and the « 3D » tag.
     -->
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Honk&amp;family=Roboto:wght@400..700&amp;family=Teko:wght@600&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=Honk&amp;display=swap"
     />
 
     <!-- Every game card pulls its favicon from this host. -->
     <link rel="preconnect" href="https://www.google.com" />
-
-    <!-- Replaced at build time with a preload for the banner, whose hashed
-         filename is only known once Vite has written the CSS. -->
-    <!--preload:banner-->
 
     <!-- Shared by every page. -->
     <meta property="og:type" content="website" />

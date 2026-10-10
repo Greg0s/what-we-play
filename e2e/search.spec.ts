@@ -13,18 +13,18 @@ test.describe("Search", () => {
     await page.goto("/"); // default player count is 4
 
     // UwUFUFU is a 1-player-only game, so it is not part of the 4-player list.
-    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 2 })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 3 })).toHaveCount(0);
 
     const search = page.getByPlaceholder(en.catalogue.searchPlaceholder);
     await search.fill("uwufufu");
 
     await expect(page.locator(".grid .game")).toHaveCount(1);
-    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 2 })).toBeVisible();
-    await expect(page.getByText(en.catalogue.searchingWholeCatalogue)).toBeVisible();
+    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 3 })).toBeVisible();
+    await expect(page.getByText(en.catalogue.scopeSearch("uwufufu"))).toBeVisible();
 
     await page.getByRole("button", { name: en.catalogue.clearSearch }).click();
     await expect(search).toHaveValue("");
-    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 2 })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "UwUFUFU", level: 3 })).toHaveCount(0);
   });
 
   test("shows an empty state when nothing matches", async ({ page }) => {
@@ -51,7 +51,7 @@ test.describe("Search", () => {
 
     await expect(page.locator(".grid .game")).toHaveCount(expected.length);
     for (const name of expected) {
-      await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible();
+      await expect(page.getByRole("heading", { name, level: 3 })).toBeVisible();
     }
   });
 
@@ -65,7 +65,7 @@ test.describe("Search", () => {
     await page.getByPlaceholder(fr.catalogue.searchPlaceholder).fill("cinema");
 
     for (const name of expected) {
-      await expect(page.getByRole("heading", { name, level: 2 })).toBeVisible();
+      await expect(page.getByRole("heading", { name, level: 3 })).toBeVisible();
     }
   });
 });

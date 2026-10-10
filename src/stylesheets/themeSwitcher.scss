@@ -1,45 +1,11 @@
-// The header controls always sit on the banner photo, so — like the "How it
-// works" and language buttons next to it — this stays white-on-veil rather
-// than following the page's own light/dark colors.
-.theme-switcher {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.3);
-  color: white;
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s,
-    transform 0.15s ease-out;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.45);
-  }
-
-  &:active {
-    transform: scale(0.98);
-    background-color: rgba(255, 255, 255, 0.4);
-    transition:
-      transform 0.05s ease-out,
-      background-color 0.05s ease-out;
-  }
-
-  &__icon {
-    width: 1.05rem;
-    height: 1.05rem;
-
-    // Each mode change swaps in a different icon component, so this plays as
-    // a mount animation rather than a transition (there is no "from" state to
-    // transition out of — the old icon is simply gone). The class is only
-    // applied after a click (see themeSwitcher.tsx), so the initial icon
-    // never animates in on page load.
-    &--animate {
-      animation: theme-switcher-icon-in 0.3s ease;
-    }
+.theme-switcher__icon {
+  // Each mode change swaps in a different icon component, so this plays as
+  // a mount animation rather than a transition (there is no "from" state to
+  // transition out of — the old icon is simply gone). The class is only
+  // applied after a click (see themeSwitcher.tsx), so the initial icon
+  // never animates in on page load.
+  &--animate {
+    animation: theme-switcher-icon-in 0.3s ease;
   }
 }
 

@@ -33,7 +33,7 @@ export function ThemeSwitcher() {
       type="button"
       title={label}
       aria-label={label}
-      className="theme-switcher"
+      className="b-btn is-icon theme-switcher"
       onClick={handleClick}
     >
       <Icon

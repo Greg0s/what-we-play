@@ -1,44 +1,9 @@
 @use "./variables" as *;
 
-.how-it-works-trigger {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-
-  padding: 0.4rem 0.7rem;
-  border-radius: 1rem;
-  background-color: rgba(255, 255, 255, 0.3);
-  color: white;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s,
-    transform 0.15s ease-out;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.45);
-  }
-
-  &:active {
-    transform: scale(0.98);
-    background-color: rgba(255, 255, 255, 0.4);
-    transition:
-      transform 0.05s ease-out,
-      background-color 0.05s ease-out;
-  }
-
-  &__icon {
-    width: 1.1rem;
-    height: 1.1rem;
-    flex-shrink: 0;
-  }
-}
-
-@media (max-width: 640px) {
+@media (max-width: $phone) {
   .how-it-works-trigger {
-    padding: 0.4rem;
+    width: 44px;
+    padding: 0;
 
     &__label {
       display: none;
@@ -56,14 +21,14 @@
   justify-content: center;
   padding: 1.5rem;
 
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(23, 18, 28, 0);
   opacity: 0;
   transition:
     opacity 0.22s ease,
     background-color 0.22s ease;
 
   &.is-open {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(23, 18, 28, 0.55);
     opacity: 1;
 
     .how-it-works-dialog {
@@ -79,11 +44,12 @@
   max-width: 57.5ch;
 
   padding: 3rem 2.5rem 2.5rem;
-  border-radius: $border-radius;
-  background-color: var(--color-surface);
+  border-radius: 22px;
+  background-color: var(--color-card);
   color: var(--color-text);
+  border: 3px solid var(--color-line);
+  box-shadow: 8px 8px 0 var(--color-shadow);
   text-align: left;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25);
 
   transform: scale(0.92) translateY(0.75rem);
   opacity: 0;
@@ -93,14 +59,16 @@
 
   h2 {
     margin-bottom: 1.1rem;
-    font-size: 2.1rem;
+    font-family: "Honk", system-ui, sans-serif;
+    font-weight: 400;
+    font-size: 2.6rem;
+    line-height: 1;
     text-align: center;
   }
 
   p {
     font-size: 1.05rem;
     line-height: 1.6;
-    opacity: var(--opacity-body);
   }
 
   p + p {
@@ -120,16 +88,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
 
-    background-color: var(--color-overlay);
-    cursor: pointer;
+    background-color: var(--color-soft);
     transition: background-color 0.2s;
 
     &:hover {
-      background-color: var(--color-overlay-hover);
+      background-color: $yellow;
+      color: $ink;
     }
   }
 }

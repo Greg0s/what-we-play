@@ -1,7 +1,22 @@
-/* Colors */
+/* Inks that never change with the theme: the TV, the keys and the floppies are objects, not page chrome. */
+$ink: #17121c;
+$cream: #fff1d0;
+$cyan: #5fcde8;
+$pink: #ff46af;
+$yellow: #ffe14d;
+$accent-color: $pink;
 
-$light-grey: #cececeff;
-$background-color: white;
-$accent-color: #ff46af;
+/* One colour per genre (src/games.ts), shared by the chips, the card bands and the TV's reels. */
+$genre-colors: (
+  drawing: #ff9fd4,
+  words: #ffe14d,
+  trivia: #ffb35c,
+  music: #bba8ff,
+  geography: #8ee5b3,
+  movies: #ff9a86,
+  fun: #7fd8f0,
+);
 
-$border-radius: 1.5rem;
+/* The two layout breakpoints: below $stacked the banner stacks; below $phone it is the phone's. */
+$stacked: 973px;
+$phone: 639px;

@@ -48,7 +48,7 @@ export function HowItWorks() {
       <button
         ref={triggerRef}
         type="button"
-        className="how-it-works-trigger"
+        className="b-btn how-it-works-trigger"
         onClick={show}
         aria-label={t.howItWorks.trigger}
       >

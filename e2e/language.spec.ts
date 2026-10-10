@@ -7,20 +7,20 @@ test.describe("Language switcher", () => {
   test("switches the UI language and updates the URL", async ({ page }) => {
     await page.goto("/");
 
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.title);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(4).join(" "));
     await expect(page.getByPlaceholder(en.catalogue.searchPlaceholder)).toBeVisible();
 
     await page.getByRole("button", { name: en.language.label }).click();
     await page.getByRole("option", { name: LANGUAGE_NAMES.fr }).click();
 
     await expect(page).toHaveURL(/\/fr\/$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(fr.header.title);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(fr.header.question(4).join(" "));
     await expect(page.getByPlaceholder(fr.catalogue.searchPlaceholder)).toBeVisible();
 
     // A language-prefixed URL states the language outright, so it survives a
     // reload rather than falling back to a detected preference.
     await page.reload();
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(fr.header.title);
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(fr.header.question(4).join(" "));
   });
 
   test("offers all three languages, with the current one marked selected", async ({ page }) => {
