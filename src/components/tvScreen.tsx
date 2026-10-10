@@ -1,14 +1,11 @@
 import type { CSSProperties } from "react";
-import { REEL_CELL, REEL_ORDER, type Mood, type ReelPhase, type Screen } from "../tv";
+import { REEL_CELL, REEL_ORDER, type Mood, type ReelPhase, type Screen, type ScreenTile } from "../tv";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 function Reel({ spin, stopAt }: { spin: string; stopAt: number }) {
   return (
-    <span
-      className={`strip ${spin}`}
-      style={{ "--sy": spin ? 0 : -stopAt * REEL_CELL } as Vars}
-    >
+    <span className={`strip ${spin}`} style={{ "--sy": spin ? 0 : -stopAt * REEL_CELL } as Vars}>
       {[...REEL_ORDER, REEL_ORDER[0]].map((genre, i) => (
         <span key={i} className={`gc-${genre}`} />
       ))}
@@ -16,10 +13,64 @@ function Reel({ spin, stopAt }: { spin: string; stopAt: number }) {
   );
 }
 
+/** One person on the call: a pair of eyes, or « +N » in the last tile of a crowd. */
+function Tile({
+  tile,
+  reels,
+  left,
+  right,
+  reelStop,
+}: {
+  tile: ScreenTile;
+  reels: boolean;
+  left: string;
+  right: string;
+  reelStop: number;
+}) {
+  return (
+    <div
+      className={`tile${tile.pop ? " is-pop" : ""}`}
+      style={{ "--tw": tile.w, "--th": tile.h, animationDelay: `${tile.popDelay}ms` } as Vars}
+    >
+      {tile.more ? (
+        <span className="more">{tile.more}</span>
+      ) : (
+        <div className="face" style={{ "--fx": tile.fx, "--fy": tile.fy } as Vars}>
+          {(["l", "r"] as const).map((side) => (
+            <span
+              key={side}
+              className={`eye ${side}`}
+              style={
+                {
+                  "--c": tile.color,
+                  "--half": tile.half,
+                  "--ew": tile.ew,
+                  "--eh": tile.eh,
+                  "--drop": tile.drop,
+                  "--arc": tile.arc,
+                  animationDuration: `${tile.blinkDuration}s`,
+                  animationDelay: `${tile.blinkDelay + (side === "r" ? 0.04 : 0)}s`,
+                } as Vars
+              }
+            >
+              {reels && (
+                <Reel
+                  spin={side === "l" ? left : right}
+                  stopAt={side === "l" ? (left ? 0 : reelStop) : right ? 0 : reelStop}
+                />
+              )}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /**
  * The video call on the TV's screen. Drawn inside the flat TV, the 3D Mac and
  * the phone's pick screen alike: everything is sized from the `--u` of
- * whichever TV holds it.
+ * whichever TV holds it. Laid out row by row, so it can never wrap.
  */
 export function TvScreen({
   screen,
@@ -39,49 +90,25 @@ export function TvScreen({
   const reels = mood === "reels";
   const left = reelPhase === "spin" ? "spin-l" : "";
   const right = reelPhase === "spin" || reelPhase === "stop1" ? "spin-r" : "";
+  const rows = Array.from({ length: Math.ceil(screen.tiles.length / screen.cols) }, (_, row) =>
+    screen.tiles.slice(row * screen.cols, (row + 1) * screen.cols),
+  );
 
   return (
-    <div
-      className={`scr m-${mood}${screen.solo ? " is-solo" : ""}${share ? " is-share" : ""}`}
-    >
+    <div className={`scr m-${mood}${screen.solo ? " is-solo" : ""}${share ? " is-share" : ""}`}>
       <div className="scr-in">
-        {screen.tiles.map((tile, i) => (
-          <div
-            key={i}
-            className={`tile${tile.pop ? " is-pop" : ""}`}
-            style={{ "--tw": tile.w, "--th": tile.h, animationDelay: `${tile.popDelay}ms` } as Vars}
-          >
-            {tile.more ? (
-              <span className="more">{tile.more}</span>
-            ) : (
-              <div className="face" style={{ "--fx": tile.fx, "--fy": tile.fy } as Vars}>
-                {(["l", "r"] as const).map((side) => (
-                  <span
-                    key={side}
-                    className={`eye ${side}`}
-                    style={
-                      {
-                        "--c": tile.color,
-                        "--half": tile.half,
-                        "--ew": tile.ew,
-                        "--eh": tile.eh,
-                        "--drop": tile.drop,
-                        "--arc": tile.arc,
-                        animationDuration: `${tile.blinkDuration}s`,
-                        animationDelay: `${tile.blinkDelay + (side === "r" ? 0.04 : 0)}s`,
-                      } as Vars
-                    }
-                  >
-                    {reels && (
-                      <Reel
-                        spin={side === "l" ? left : right}
-                        stopAt={side === "l" ? (left ? 0 : reelStop) : right ? 0 : reelStop}
-                      />
-                    )}
-                  </span>
-                ))}
-              </div>
-            )}
+        {rows.map((tiles, row) => (
+          <div key={row} className="scr-row">
+            {tiles.map((tile, col) => (
+              <Tile
+                key={row * screen.cols + col}
+                tile={tile}
+                reels={reels}
+                left={left}
+                right={right}
+                reelStop={reelStop}
+              />
+            ))}
           </div>
         ))}
       </div>

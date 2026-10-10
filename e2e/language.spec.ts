@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { LANGUAGE_NAMES } from "../src/i18n/config";
+import { LANGUAGES, LANGUAGE_NAMES } from "../src/i18n/config";
+import { PLAYER_COUNT_PAGES, buildPath } from "../src/routes";
 import { en } from "../src/i18n/locales/en";
 import { fr } from "../src/i18n/locales/fr";
 
@@ -36,5 +37,18 @@ test.describe("Language switcher", () => {
       "aria-selected",
       "true",
     );
+  });
+
+  test("the H1 holds on two lines above the keypad, in every language and at every count", async ({ page }) => {
+    test.setTimeout(60000);
+    for (const language of LANGUAGES) {
+      for (const players of PLAYER_COUNT_PAGES) {
+        await page.goto(buildPath({ language, players, isHome: false }));
+        await page.evaluate(() => document.fonts.ready);
+        const bubble = await page.locator(".bubble").boundingBox();
+        const keypad = await page.locator(".deck").boundingBox();
+        expect(bubble!.y + bubble!.height, `${language}, ${players} players`).toBeLessThan(keypad!.y);
+      }
+    }
   });
 });

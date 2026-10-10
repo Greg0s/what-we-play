@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { gamesForPlayerCount } from "../src/games";
+import { PLAYER_COUNT_PAGES, buildPath } from "../src/routes";
 import { en } from "../src/i18n/locales/en";
 
 test.describe("Player count keypad", () => {
@@ -32,5 +33,20 @@ test.describe("Player count keypad", () => {
     await less.click();
     await less.click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(10).join(" "));
+  });
+
+  test("the TV's call fits its screen at every player count", async ({ page }) => {
+    for (const players of PLAYER_COUNT_PAGES) {
+      await page.goto(buildPath({ language: "en", players, isHome: false }));
+      const screen = await page.locator(".tv-body .scr").boundingBox();
+      const tiles = await page.locator(".tv-body .scr .tile").evaluateAll((nodes) =>
+        nodes.map((node) => node.getBoundingClientRect().toJSON() as DOMRect),
+      );
+      expect(screen, `screen at ${players}`).not.toBeNull();
+      for (const tile of tiles) {
+        expect(tile.bottom, `tile bottom at ${players} players`).toBeLessThanOrEqual(screen!.y + screen!.height + 0.5);
+        expect(tile.right, `tile right at ${players} players`).toBeLessThanOrEqual(screen!.x + screen!.width + 0.5);
+      }
+    }
   });
 });

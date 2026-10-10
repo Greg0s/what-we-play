@@ -68,7 +68,9 @@
 .m3-ps{position:absolute;left:-4%;top:82%;width:108%;height:36%;border-radius:50%;background:#17121c;opacity:.18;
   transform:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);transition:opacity .2s calc(var(--d,0)*45ms)}
 :root[data-theme="dark"] .m3-ps{background:#000;opacity:.45}
-.m3-pbody,.m3-pbase{fill:var(--pc);stroke:#17121c;stroke-width:var(--pst,3px);stroke-linejoin:round;vector-effect:non-scaling-stroke}
+/* The outline is in the pawn's own units (its viewBox is 46 wide), so it scales with the pawn: 3 px on the 47 px pawns of the
+   wide banner, proportionally thinner on the phone's 19 px ones. A fixed pixel width looked twice as heavy there. */
+.m3-pbody,.m3-pbase{fill:var(--pc);stroke:#17121c;stroke-width:2.9;stroke-linejoin:round}
 .m3-peyes rect{fill:#17121c}
 .m3-peyes{transform:translate(2.5px,-1px)}
 .m3-pawn.is-out{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .2s ease-in calc(var(--d,0)*30ms)}
@@ -131,7 +133,7 @@
 .is-big .m3-desk .m3-sign{--sx:-251;--sz:51}
 
 /* phone banner: the pawns stand on the keypad's rim in front of the Mac's chin, clear of the keypad's tape */
-.m3-phone{--pw:46;--pst:2px;left:0;top:-6px}
+.m3-phone{--pw:46;--pst:1.3px;left:0;top:-6px}
 .m3-phone .p1{--x:6;--z:167;--r:6deg}
 .m3-phone .p2{--x:56;--z:167;--r:-5deg}
 .m3-phone .p3{--x:-45;--z:161;--r:7deg}
@@ -146,7 +148,7 @@
 /* phone pick screen (B2D-tirage): the .tv.tv-pick box, lifted 6 px (top:-22px) so the Mac clears the ticket.
    The pawns queue under the bubble, just behind the ticket's top edge (bases at page y 269-277, x 24-188);
    the « +N » sign is short here so its board stays under the bubble. */
-.m3-pick{--pw:36;--pst:2px;left:0;top:-6px}
+.m3-pick{--pw:36;--pst:1.4px;left:0;top:-6px}
 .m3-pick .p1{--x:-161;--z:88;--r:6deg}
 .m3-pick .p2{--x:-202;--z:88;--r:-5deg}
 .m3-pick .p3{--x:-244;--z:83;--r:7deg}
