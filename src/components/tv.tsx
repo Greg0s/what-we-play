@@ -40,8 +40,8 @@ export function Tv({
   slot?: string;
   /** `hop-a`/`hop-b`: the pawns hop when a floppy lands. */
   pawnHop?: string;
-  /** Where the pawns stand: around the hero's Mac, or the phone's pick screen. */
-  set: "desk" | "phone" | "pick";
+  /** Where the pawns stand: around the hero's Mac (its phone layout is in CSS), or the phone's pick screen. */
+  set: "desk" | "pick";
   className?: string;
   /** Over the TV: the say bubble, a button… */
   children?: ReactNode;
