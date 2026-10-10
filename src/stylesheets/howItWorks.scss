@@ -102,13 +102,6 @@
   }
 }
 
-/* On a phone the floating « Pick for us » button steps aside while the dialog is open. */
-@media (max-width: $phone) {
-  body:has(.how-it-works-overlay.is-open) .fab-dock {
-    display: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .how-it-works-overlay,
   .how-it-works-dialog {
