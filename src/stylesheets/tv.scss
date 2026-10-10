@@ -134,12 +134,12 @@
   }
 }
 
+/* Row by row, never wrapping: a browser rounding a tile a hair wider must not push the call off the screen. */
 .scr-in {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-wrap: wrap;
-  align-content: center;
+  flex-direction: column;
   justify-content: center;
   gap: calc(4 * var(--u));
   padding: calc(6 * var(--u));
@@ -151,6 +151,13 @@
   30% { clip-path: inset(49.5% 0); filter: brightness(2.2); }
   65% { clip-path: inset(0); filter: brightness(1.6); }
   100% { clip-path: inset(0); filter: brightness(1); }
+}
+
+.scr-row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: calc(4 * var(--u));
 }
 
 .tile {

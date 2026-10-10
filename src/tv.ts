@@ -86,6 +86,8 @@ export type ScreenTile = {
 
 export type Screen = {
   tiles: ScreenTile[];
+  /** Tiles per row: the call is laid out row by row, so it can never wrap. */
+  cols: number;
   solo: boolean;
   /** Where the tear starts, from the screen's top-left corner. */
   tear: { x: number; y: number };
@@ -93,6 +95,7 @@ export type Screen = {
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 const round = (value: number) => Math.round(value * 100) / 100;
+const floorTo = (value: number) => Math.floor(value * 100) / 100;
 
 /**
  * Lays out the call for `count` people (one big face when `count` is 1),
@@ -111,8 +114,11 @@ export function buildScreen(options: {
   const shown = Math.min(count, MAX_TILES);
   const cols = COLS[shown - 1];
   const rows = Math.ceil(shown / cols);
-  const tw = (INNER_W - (cols - 1) * 4) / cols;
-  const th = (INNER_H - (rows - 1) * 4) / rows;
+  // Rounded down, with a hair to spare: a row of tiles fills the screen's
+  // width exactly (4 × 34 + 3 gaps = 148 at 7 or 8 players), so any rounding
+  // up by the browser would push it past the edge.
+  const tw = floorTo((INNER_W - (cols - 1) * 4) / cols - 0.05);
+  const th = floorTo((INNER_H - (rows - 1) * 4) / rows - 0.05);
   const eh = solo ? 32 : Math.min(30, th * 0.42, tw * 0.5);
   const ew = solo ? 13 : eh * 0.4;
   const spread = solo ? 70 : Math.min(tw * 0.42, 60);
@@ -167,6 +173,7 @@ export function buildScreen(options: {
 
   return {
     tiles,
+    cols,
     solo,
     tear: {
       x: round(6 + tw / 2 + spread / 2 - 2.5),

@@ -1,9 +1,56 @@
-import type { MouseEvent, ReactNode, RefObject } from "react";
+import { useCallback, useEffect, useRef, type MouseEvent, type ReactNode, type RefObject } from "react";
 import type { PadKey } from "../ui";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { TbCornerDownLeft, TbDice5 } from "react-icons/tb";
 import { useTranslation } from "../i18n";
+import { useIsomorphicLayoutEffect } from "../i18n/useIsomorphicLayoutEffect";
 import "../stylesheets/studio.scss";
+
+/** Smallest size the H1 steps down to, in 4 px steps from the stylesheet's. */
+const MIN_TITLE_PX = 48;
+
+/**
+ * On the wide stage the bubble sits right above the keypad: a third line of
+ * question would slide under it. How wide a line is depends on the language,
+ * the player count and how the browser renders Honk, so the H1 is measured,
+ * once the font has loaded and on every resize, and shrinks until it holds on
+ * two lines. Only there: when the banner stacks, the bubble may grow.
+ */
+function useFitTwoLines(question: readonly [string, string]) {
+  const ref = useRef<HTMLHeadingElement>(null);
+
+  const fit = useCallback(() => {
+    const title = ref.current;
+    const bubble = title?.parentElement;
+    if (!title || !bubble) return;
+    title.style.fontSize = "";
+    if (getComputedStyle(bubble).position !== "absolute") return;
+
+    const lines = () => {
+      const style = getComputedStyle(title);
+      return Math.round(title.offsetHeight / parseFloat(style.lineHeight));
+    };
+    let size = parseFloat(getComputedStyle(title).fontSize);
+    while (lines() > 2 && size > MIN_TITLE_PX) {
+      size -= 4;
+      title.style.fontSize = `${size}px`;
+    }
+  }, []);
+
+  useIsomorphicLayoutEffect(fit, [fit, question[0], question[1]]);
+
+  useEffect(() => {
+    let active = true;
+    document.fonts?.ready.then(() => active && fit());
+    window.addEventListener("resize", fit);
+    return () => {
+      active = false;
+      window.removeEventListener("resize", fit);
+    };
+  }, [fit]);
+
+  return ref;
+}
 
 /**
  * The banner: the TV asks the page's question in its bubble, and the keypad
@@ -47,8 +94,11 @@ export function Studio({
 }) {
   const { t } = useTranslation();
   const big = players >= 10;
-  // Honk is wide: past 14 characters a line no longer fits the bubble at full size (English, mostly).
+  // Honk is wide: past 14 characters a line no longer fits the bubble at full
+  // size (English, mostly). A first guess for the prerender; useFitTwoLines
+  // has the last word once the font is there.
   const long = Math.max(question[0].length, question[1].length) > 14;
+  const title = useFitTwoLines(question);
 
   return (
     <section
@@ -58,7 +108,7 @@ export function Studio({
     >
       <div className="stage">
         <div className={`bubble ${bubbleCls}`}>
-          <h1 className={`b-h1${long ? " is-long" : ""}`}>
+          <h1 ref={title} className={`b-h1${long ? " is-long" : ""}`}>
             <span>{question[0]}</span> <span>{question[1]}</span>
           </h1>
           <svg className="tail" width="96" height="60" viewBox="0 0 96 60" preserveAspectRatio="none" aria-hidden="true">
