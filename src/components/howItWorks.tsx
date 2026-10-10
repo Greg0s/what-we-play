@@ -42,6 +42,16 @@ export function HowItWorks() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, hide]);
 
+  // The page behind stays still while the dialog is up, as with the pick screen.
+  useEffect(() => {
+    if (!rendered) return;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [rendered]);
+
   useEffect(() => () => window.clearTimeout(closeTimeout.current), []);
 
   return (

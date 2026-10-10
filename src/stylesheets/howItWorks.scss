@@ -17,9 +17,10 @@
   z-index: 100;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
   padding: 1.5rem;
+  /* The page underneath is locked, so a dialog taller than the screen scrolls here. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 
   background-color: rgba(23, 18, 28, 0);
   opacity: 0;
@@ -42,6 +43,8 @@
   position: relative;
   width: 100%;
   max-width: 57.5ch;
+  /* Centered while it fits; pinned to the top once it overflows, so nothing is cut off. */
+  margin: auto;
 
   padding: 3rem 2.5rem 2.5rem;
   border-radius: 22px;
