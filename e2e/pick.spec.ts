@@ -59,6 +59,8 @@ test.describe("Pick for us — phones", () => {
     const screen = page.getByRole("dialog");
     await expect(screen).toBeVisible();
     await expect(screen.locator("#pick-say")).toHaveText(en.pick.firstLine(4));
+    // The slot stays empty while the reels spin: no ticket before it ejects.
+    await expect(screen.locator(".fl-move")).toHaveClass(/is-wait/);
     await expect(screen.getByRole("heading", { level: 2 })).toBeVisible();
     expect(names).toContain(await screen.getByRole("heading", { level: 2 }).textContent());
     expect(page.url()).toBe(before);

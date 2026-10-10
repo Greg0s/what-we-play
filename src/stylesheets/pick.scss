@@ -445,6 +445,10 @@
       opacity 0.16s ease-in;
   }
 
+  &.is-wait {
+    visibility: hidden;
+  }
+
   &.is-eject {
     animation: ticket-eject 0.44s cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
   }

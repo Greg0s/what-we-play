@@ -182,7 +182,9 @@ export function PickScreen({
   const say =
     line === 0 ? t.pick.firstLine(players) : t.pick.rerollLines[(line - 1) % t.pick.rerollLines.length];
   const tags = game ? cardTags(game, t) : [];
-  const flCls = spinning && pickId ? "is-out" : ejecting ? "is-eject" : "";
+  // Before the first ticket comes out, the slot stays empty: the game is
+  // already known (it sizes the zone) but hidden until it ejects.
+  const flCls = spinning ? (pickId ? "is-out" : "is-wait") : ejecting ? "is-eject" : "";
 
   return (
     <div className="pick-screen" role="dialog" aria-modal="true" aria-label={t.pick.title}>
