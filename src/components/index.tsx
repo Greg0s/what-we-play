@@ -1,8 +1,11 @@
-export { HowMany } from "./howMany";
-export { Title } from "./title";
 export { Game } from "./game";
 export { Games } from "./games";
-export { FilterSheet } from "./filterSheet";
-export { LanguageSwitcher } from "./languageSwitcher";
+export { GlassesSwitch } from "./glassesSwitch";
 export { HowItWorks } from "./howItWorks";
+export { LanguageSwitcher } from "./languageSwitcher";
+export { PickDrawer } from "./pickDrawer";
+export { PickScreen } from "./pickScreen";
+export { Studio } from "./studio";
 export { ThemeSwitcher } from "./themeSwitcher";
+export { Tv } from "./tv";
+export { TvScreen } from "./tvScreen";

@@ -1,327 +1,189 @@
-import { useEffect, useRef, useState } from "react";
-import {
-  FaDisplay,
-  FaMagnifyingGlass,
-  FaMobileScreenButton,
-  FaPeopleGroup,
-  FaSliders,
-  FaUser,
-  FaUserSecret,
-  FaUserSlash,
-  FaXmark,
-} from "react-icons/fa6";
-import { Game, type GameTag } from "./game";
-import { FilterSheet, type FilterDefinition } from "./filterSheet";
-import {
-  gameLink,
-  games,
-  gamesForPlayerCount,
-  playerRangeShort,
-  type Game as GameData,
-} from "../games";
-import "../App.scss";
-import "../stylesheets/games.scss";
-import "../stylesheets/search.scss";
+import { useState } from "react";
+import { FaMagnifyingGlass, FaSliders, FaXmark } from "react-icons/fa6";
+import { activeFilterCount, type CatalogueView, type Filters, type GenreChoice } from "../catalogue";
+import { GENRES, gameLink } from "../games";
 import { useTranslation } from "../i18n";
-import type { Translation } from "../i18n";
+import { cardTags } from "../ui";
+import { Game } from "./game";
+import "../stylesheets/games.scss";
 
-function buildTags(game: GameData, t: Translation): GameTag[] {
-  const tags: GameTag[] = [];
-  if (game.solo) tags.push({ icon: FaUser, label: t.catalogue.tagSolo });
-  if (game.soloWithStrangers) {
-    tags.push({ icon: FaPeopleGroup, label: t.catalogue.tagSoloWithStrangers });
-  }
-  if (game.multiplayer) {
-    tags.push({ icon: FaUserSecret, label: t.catalogue.tagMultiplayer });
-  }
-  if (game.screenShare) {
-    tags.push({ icon: FaDisplay, label: t.catalogue.tagScreenShare });
-  }
-  if (game.mobileFriendly) {
-    tags.push({ icon: FaMobileScreenButton, label: t.catalogue.mobileFriendly });
-  }
-  return tags;
-}
+const OPTION_KEYS = ["strangers", "screenShare", "mobile", "noAccount"] as const;
 
-/** Lowercases and strips accents, so "cinema" finds "Cinéma" and vice versa. */
-function normalizeForSearch(text: string): string {
-  return text.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
-}
-
-function matchesQuery(
-  game: GameData,
-  description: string,
-  keywords: readonly string[],
-  t: Translation,
-  query: string,
-): boolean {
-  const haystack = normalizeForSearch(
-    [
-      game.name,
-      description,
-      ...keywords,
-      game.solo ? t.catalogue.tagSolo : "",
-      game.soloWithStrangers ? t.catalogue.tagSoloWithStrangers : "",
-      game.multiplayer ? t.catalogue.tagMultiplayer : "",
-      game.screenShare ? t.catalogue.tagScreenShare : "",
-      game.mobileFriendly ? t.catalogue.mobileFriendly : "",
-    ].join(" "),
-  );
-  return haystack.includes(query);
-}
-
-type GamesProps = {
+/**
+ * Everything under the banner: the search, the « Feel like… » genres, the
+ * options and the cards. The state lives in App, because the TV reacts to it
+ * and « Pick for us » draws from the same list.
+ */
+export function Games({
+  players,
+  view,
+  query,
+  onQuery,
+  onSearchFocus,
+  genre,
+  onGenre,
+  filters,
+  onFilter,
+  onResetFilters,
+}: {
   players: number;
-  onPlayersChange: (players: number) => void;
-  // Bumped whenever the site title is clicked, so filters clear along with
-  // the player count the title click already resets in App.
-  resetSignal: number;
-};
+  view: CatalogueView;
+  query: string;
+  onQuery: (query: string) => void;
+  /** The search box gained (true) or lost (false) focus: the TV looks down at it. */
+  onSearchFocus: (focused: boolean) => void;
+  genre: GenreChoice;
+  onGenre: (genre: GenreChoice) => void;
+  filters: Filters;
+  onFilter: (key: keyof Filters) => void;
+  onResetFilters: () => void;
+}) {
+  const { t, language, gameDescription } = useTranslation();
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const { base, list, hasQuery } = view;
+  const filterCount = activeFilterCount(filters);
 
-export function Games({ players, onPlayersChange, resetSignal }: GamesProps) {
-  const { gameDescription, gameKeywords, language, t } = useTranslation();
-  const [query, setQuery] = useState("");
-  const [solo, setSolo] = useState(false);
-  const [soloWithStrangers, setSoloWithStrangers] = useState(false);
-  const [multiplayer, setMultiplayer] = useState(false);
-  const [screenShare, setScreenShare] = useState(false);
-  const [mobileFriendly, setMobileFriendly] = useState(false);
-  const [noAccountNeeded, setNoAccountNeeded] = useState(false);
-  const [sheetOpen, setSheetOpen] = useState(false);
-  // Player count to restore when the solo filter is turned back off.
-  const previousPlayers = useRef<number | null>(null);
-
-  const isFirstRender = useRef(true);
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    setQuery("");
-    setSolo(false);
-    setSoloWithStrangers(false);
-    setMultiplayer(false);
-    setScreenShare(false);
-    setMobileFriendly(false);
-    setNoAccountNeeded(false);
-    previousPlayers.current = null;
-  }, [resetSignal]);
-
-  const toggleSolo = () => {
-    if (solo) {
-      setSolo(false);
-      if (previousPlayers.current !== null) {
-        onPlayersChange(previousPlayers.current);
-        previousPlayers.current = null;
-      }
-    } else {
-      previousPlayers.current = players;
-      setSolo(true);
-      onPlayersChange(1);
-    }
+  const optionLabel: Record<keyof Filters, string> = {
+    strangers: t.catalogue.strangers,
+    screenShare: t.catalogue.screenShare,
+    mobile: t.catalogue.mobileFriendly,
+    noAccount: t.catalogue.noAccountNeeded,
   };
 
-  const resetFilters = () => {
-    if (solo) {
-      setSolo(false);
-      if (previousPlayers.current !== null) {
-        onPlayersChange(previousPlayers.current);
-        previousPlayers.current = null;
-      }
-    }
-    setSoloWithStrangers(false);
-    setMultiplayer(false);
-    setScreenShare(false);
-    setMobileFriendly(false);
-    setNoAccountNeeded(false);
-  };
+  const genreNote = genre === "all" ? "" : ` · ${t.genres[genre].band}`;
+  const scope = hasQuery
+    ? t.catalogue.scopeSearch(query.trim())
+    : filters.screenShare
+      ? t.catalogue.scopeScreenShare
+      : `${t.catalogue.scopeForPlayers(players)} · ${t.catalogue.scopeFree}`;
 
-  const filters: FilterDefinition[] = [
-    {
-      key: "solo",
-      label: t.catalogue.tagSolo,
-      icon: FaUser,
-      active: solo,
-      onToggle: toggleSolo,
-    },
-    {
-      key: "soloWithStrangers",
-      label: t.catalogue.tagSoloWithStrangers,
-      icon: FaPeopleGroup,
-      active: soloWithStrangers,
-      onToggle: () => setSoloWithStrangers((value) => !value),
-    },
-    {
-      key: "multiplayer",
-      label: t.catalogue.tagMultiplayer,
-      icon: FaUserSecret,
-      active: multiplayer,
-      onToggle: () => setMultiplayer((value) => !value),
-    },
-    {
-      key: "screenShare",
-      label: t.catalogue.screenShareLabel,
-      description: t.catalogue.screenShareDescription,
-      icon: FaDisplay,
-      active: screenShare,
-      onToggle: () => setScreenShare((value) => !value),
-    },
-    {
-      key: "mobileFriendly",
-      label: t.catalogue.mobileFriendly,
-      icon: FaMobileScreenButton,
-      active: mobileFriendly,
-      onToggle: () => setMobileFriendly((value) => !value),
-    },
-    {
-      key: "noAccountNeeded",
-      label: t.catalogue.noAccountNeeded,
-      icon: FaUserSlash,
-      active: noAccountNeeded,
-      onToggle: () => setNoAccountNeeded((value) => !value),
-    },
+  const chips: { key: GenreChoice; label: string; count: number }[] = [
+    { key: "all", label: t.catalogue.allGenres, count: base.length },
+    ...GENRES.map((key) => ({
+      key,
+      label: t.genres[key].chip,
+      count: base.filter((game) => game.genre === key).length,
+    })),
   ];
-  const activeFilters = filters.filter((filter) => filter.active);
-
-  const trimmedQuery = normalizeForSearch(query.trim());
-  const hasQuery = trimmedQuery.length > 0;
-  // Screen share is meant to surface games you wouldn't otherwise see at this
-  // player count (one person hosts, everyone else just watches), so — like
-  // search — it looks across the whole catalogue instead of the player-count
-  // subset.
-  const ignoresPlayerCount = hasQuery || screenShare;
-
-  let list = ignoresPlayerCount ? games : gamesForPlayerCount(players);
-  if (hasQuery) {
-    list = list.filter((game) =>
-      matchesQuery(game, gameDescription(game.id), gameKeywords(game.id), t, trimmedQuery),
-    );
-  }
-  if (solo) list = list.filter((game) => game.solo);
-  if (soloWithStrangers) list = list.filter((game) => game.soloWithStrangers);
-  if (multiplayer) list = list.filter((game) => game.multiplayer);
-  if (screenShare) list = list.filter((game) => game.screenShare);
-  if (mobileFriendly) list = list.filter((game) => game.mobileFriendly);
-  if (noAccountNeeded) list = list.filter((game) => !game.accountNeeded);
-
-  const resultLine = `${t.catalogue.resultCount(list.length)} ${
-    ignoresPlayerCount ? t.catalogue.scopeAll(games.length) : t.catalogue.scopeForPlayers(players)
-  }${activeFilters.length ? ` · ${activeFilters.map((filter) => filter.label).join(", ")}` : ""}`;
 
   return (
     <div className="catalogue">
       <label className="search">
-        <FaMagnifyingGlass className="search__icon" />
+        <FaMagnifyingGlass className="search__icon" aria-hidden="true" />
+        <span className="sr">{t.catalogue.searchLabel}</span>
         <input
           type="text"
           placeholder={t.catalogue.searchPlaceholder}
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(event) => onQuery(event.target.value)}
+          onFocus={() => onSearchFocus(true)}
+          onBlur={() => onSearchFocus(false)}
         />
-        {hasQuery && (
-          <button
-            type="button"
-            aria-label={t.catalogue.clearSearch}
-            className="search__clear"
-            onClick={() => setQuery("")}
-          >
-            <FaXmark />
+        {query !== "" && (
+          <button type="button" className="search__clear" aria-label={t.catalogue.clearSearch} onClick={() => onQuery("")}>
+            <FaXmark aria-hidden="true" />
           </button>
         )}
       </label>
 
-      <div className="toolbar">
-        {filters.map(({ key, label, description, icon: Icon, active, onToggle }) =>
-          description ? (
-            <span key={key} className="filter-chip-wrap">
-              <button
-                type="button"
-                className={`filter-chip${active ? " filter-chip--active" : ""}`}
-                onClick={onToggle}
-              >
-                <Icon />
-                {label}
-                <FaXmark className="filter-chip__clear" />
-              </button>
-              <span role="tooltip" className="filter-tooltip">
-                {description}
-              </span>
-            </span>
-          ) : (
+      <div className="genres" role="group" aria-labelledby="genres-label">
+        <span id="genres-label" className="eyebrow">
+          {t.catalogue.genresLabel}
+        </span>
+        {chips.map((chip) => {
+          const on = genre === chip.key;
+          return (
             <button
-              key={key}
+              key={chip.key}
               type="button"
-              className={`filter-chip${active ? " filter-chip--active" : ""}`}
-              onClick={onToggle}
+              className={`genre${on ? " is-on" : chip.count === 0 ? " is-off" : ""}`}
+              aria-pressed={on}
+              onClick={() => onGenre(chip.key)}
             >
-              <Icon />
-              {label}
-              <FaXmark className="filter-chip__clear" />
+              <span className={`genre__dot gc-${chip.key}`} aria-hidden="true" />
+              {chip.label}
+              <span className="genre__count">{chip.count}</span>
             </button>
-          ),
-        )}
-        <button
-          type="button"
-          className={`filters-reset${activeFilters.length > 0 ? " filters-reset--visible" : ""}`}
-          onClick={resetFilters}
-          aria-hidden={activeFilters.length === 0}
-          tabIndex={activeFilters.length > 0 ? 0 : -1}
-        >
-          <FaXmark />
-          {t.catalogue.resetFilters}
-        </button>
+          );
+        })}
       </div>
 
-      <button
-        type="button"
-        className={`filters-button${activeFilters.length ? " filters-button--active" : ""}`}
-        onClick={() => setSheetOpen(true)}
-      >
-        <FaSliders />
-        {t.catalogue.filtersButton}
-        {activeFilters.length > 0 && (
-          <span className="filters-button__count">{activeFilters.length}</span>
-        )}
-      </button>
-
-      <p className="result-line">{resultLine}</p>
-
-      {hasQuery && (
-        <div className="query-banner">
-          <p>{t.catalogue.searchingWholeCatalogue}</p>
-          <button type="button" onClick={() => setQuery("")}>
-            {t.catalogue.backTo(players)}
+      <div className={`options${optionsOpen ? " is-open" : ""}`} role="group" aria-labelledby="options-label" id="options">
+        <span id="options-label" className="eyebrow">
+          {t.catalogue.optionsLabel}
+        </span>
+        {OPTION_KEYS.map((key) => (
+          <button
+            key={key}
+            type="button"
+            className={`opt${filters[key] ? " is-on" : ""}`}
+            aria-pressed={filters[key]}
+            onClick={() => onFilter(key)}
+          >
+            {optionLabel[key]}
           </button>
+        ))}
+        {filterCount > 0 && (
+          <button type="button" className="options__reset" onClick={onResetFilters}>
+            {t.catalogue.resetFilters}
+          </button>
+        )}
+      </div>
+
+      <div className="count">
+        <div className="count__text">
+          <h2>{t.catalogue.resultCount(list.length)}</h2>
+          <p className="muted">
+            {scope}
+            {genreNote}
+          </p>
         </div>
-      )}
+        <button
+          type="button"
+          className={`opt options-toggle${optionsOpen ? " is-on" : ""}`}
+          aria-expanded={optionsOpen}
+          aria-controls="options"
+          onClick={() => setOptionsOpen((open) => !open)}
+        >
+          <FaSliders aria-hidden="true" />
+          {t.catalogue.optionsLabel}
+          {filterCount > 0 && <span className="options-toggle__count">{filterCount}</span>}
+        </button>
+      </div>
 
       <div className="grid">
         {list.map((game) => (
           <Game
             key={game.id}
             name={game.name}
+            genre={game.genre}
+            genreLabel={t.genres[game.genre].band}
             description={gameDescription(game.id)}
             playLink={gameLink(game, language)}
             playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
-            playerRangeShort={playerRangeShort(game.minPlayers, game.maxPlayers)}
-            tags={buildTags(game, t)}
+            tags={cardTags(game, t)}
+            playLabel={t.catalogue.play}
           />
         ))}
-        {list.length === 0 && (
-          <div className="empty">
-            <p className="empty__title">{t.catalogue.emptyTitle(query)}</p>
-            <p className="empty__hint">{t.catalogue.emptyHint}</p>
-          </div>
-        )}
       </div>
 
-      <FilterSheet
-        open={sheetOpen}
-        onClose={() => setSheetOpen(false)}
-        filters={filters}
-        resultCount={list.length}
-        onReset={resetFilters}
-      />
+      {list.length === 0 && (
+        <div className="empty">
+          <div className="mini" aria-hidden="true">
+            <span className="mini-eye l" />
+            <span className="mini-eye r" />
+            <span className="mini-tear" />
+            <span className="glare" />
+          </div>
+          <p className="empty__title">{hasQuery ? t.catalogue.emptyTitle(query.trim()) : t.catalogue.emptyFilters}</p>
+          <p className="empty__hint">{t.catalogue.emptyHint}</p>
+          {filterCount > 0 && (
+            <button type="button" className="b-btn empty__reset" onClick={onResetFilters}>
+              {t.catalogue.resetFilters}
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }

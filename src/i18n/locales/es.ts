@@ -17,11 +17,16 @@ export const es: Translation = {
   },
   header: {
     title: "¿A qué jugamos?",
+    question: (players: number) =>
+      players === 1
+        ? (["¿A qué juego", "en solitario?"] as const)
+        : (["¿A qué jugamos", `entre ${players}?`] as const),
     playerCount: "Número de jugadores",
+    howMany: "¿Cuántos somos?",
     addPlayer: "Añadir un jugador",
     removePlayer: "Quitar un jugador",
     players: { one: "jugador", other: "jugadores" },
-    byPlayerCount: "Juegos por número de jugadores",
+    handPicked: (count: number) => `${count} juegos elegidos a mano`,
   },
   language: {
     label: "Idioma",
@@ -29,6 +34,10 @@ export const es: Translation = {
   theme: {
     light: "Cambiar a tema claro",
     dark: "Cambiar a tema oscuro",
+  },
+  relief: {
+    to3d: "Pasar la tele a 3D",
+    to2d: "Volver a la tele en 2D",
   },
   content: {
     playerRange: (min: number, max: number) => {
@@ -54,32 +63,58 @@ export const es: Translation = {
     close: "Cerrar",
   },
   catalogue: {
-    searchPlaceholder: "Busca un juego por nombre, etiqueta o palabra clave",
+    searchLabel: "Buscar un juego",
+    searchPlaceholder: "Busca un juego, un tema…",
     clearSearch: "Borrar búsqueda",
-    searchingWholeCatalogue:
-      "Buscando en todo el catálogo — el número de jugadores se ignora mientras buscas.",
-    backTo: (players: number) =>
-      `Volver a ${players} ${players === 1 ? "jugador" : "jugadores"}`,
+    genresLabel: "¿Te apetece…",
+    allGenres: "Todo",
+    optionsLabel: "Opciones",
+    strangers: "Con desconocidos",
+    screenShare: "Pantalla compartida",
+    mobileFriendly: "Apto para móvil",
+    noAccountNeeded: "Sin cuenta",
+    resetFilters: "Borrar todo",
     resultCount: (count: number) => (count === 1 ? "1 juego" : `${count} juegos`),
     scopeForPlayers: (players: number) =>
       players === 1 ? "para 1 jugador" : `para ${players} jugadores`,
-    scopeAll: (total: number) => `de los ${total} juegos`,
-    emptyTitle: (query: string) => `Nada coincide con «${query}»`,
-    emptyHint:
-      "Prueba el nombre de un juego, una palabra clave como «dibujo» o «música», o una etiqueta como «solo».",
-    filtersButton: "Filtros",
-    resetFilters: "Restablecer filtros",
-    screenShareLabel: "Pantalla compartida",
-    screenShareDescription:
-      "Juegos que técnicamente no son multijugador, pero son divertidos jugados en grupo por pantalla compartida.",
-    mobileFriendly: "Apto para móvil",
-    noAccountNeeded: "No requiere cuenta",
-    showResults: (count: number) =>
-      count === 1 ? "Mostrar 1 juego" : `Mostrar ${count} juegos`,
-    tagSolo: "Jugable en solitario",
-    tagSoloWithStrangers: "Jugable con desconocidos",
-    tagMultiplayer: "Partida privada posible",
-    tagScreenShare: "Jugable por pantalla compartida",
+    scopeFree: "gratis, en el navegador",
+    scopeSearch: (query: string) => `para «${query}», en todo el catálogo`,
+    scopeScreenShare: "para jugar por pantalla compartida, sea cual sea el número de jugadores",
+    tagStrangers: "Con desconocidos",
+    tagScreenShare: "Pantalla compartida",
+    tagAccount: "Requiere cuenta",
+    tagNotMobile: "No en móvil",
+    play: "Jugar",
+    emptyTitle: (query: string) => `Nada para «${query}»`,
+    emptyFilters: "Ningún juego cumple todas estas condiciones",
+    emptyHint: "La tele lo ha buscado todo. Prueba «dibujo», «música», o quita una opción.",
+  },
+  genres: {
+    drawing: { chip: "Dibujo", band: "Dibujo" },
+    words: { chip: "Palabras", band: "Palabras" },
+    trivia: { chip: "Quiz", band: "Quiz y cultura" },
+    music: { chip: "Música", band: "Música" },
+    geography: { chip: "Geo", band: "Geografía" },
+    movies: { chip: "Cine y juegos", band: "Cine y videojuegos" },
+    fun: { chip: "Para reír", band: "Para reír" },
+  },
+  pick: {
+    button: "Elige por nosotros",
+    title: "Sorteo",
+    noGame: "No hay ningún juego que sortear",
+    firstLine: (players: number) =>
+      players === 1 ? "Para ti, será…" : `Para los ${players}, será…`,
+    rerollLines: ["Si no, está…", "O si no…", "¡Venga, este!", "Última idea…"],
+    chosen: (name: string) => `El azar eligió: ${name}`,
+    launch: "Empezar a jugar",
+    newTab: "se abre en una pestaña nueva",
+    reroll: "Otra vez",
+    note: (count: number, players: number | null) =>
+      `Sorteado entre ${count === 1 ? "1 juego" : `${count} juegos`}${
+        players === null ? "" : players === 1 ? " para 1 jugador" : ` para ${players} jugadores`
+      }`,
+    close: "Cerrar el sorteo",
+    back: "Volver a la lista",
   },
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",

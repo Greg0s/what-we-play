@@ -1,0 +1,644 @@
+@use "./variables" as *;
+
+/* ------------------------------------------------------------ shared */
+
+.ink-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: $ink;
+  color: #ffffff;
+  font-stretch: 125%;
+  font-weight: 800;
+  transition: transform 0.12s ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(2px);
+  }
+}
+
+:root[data-theme="dark"] .ink-btn {
+  box-shadow: 0 0 0 2px var(--color-line);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+}
+
+.pill-genre {
+  color: $ink;
+  border: 2px solid $ink;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.pill-line {
+  border: 2px solid var(--color-line);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.btag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 7px;
+  background: #f3eef5;
+  color: $ink;
+  font-size: 12px;
+  font-weight: 600;
+
+  &.is-warn {
+    background: transparent;
+    border: 1.5px dashed $ink;
+  }
+}
+
+/* ------------------------------------------------------------ the drawer (wide screens) */
+
+.drawer-wrap {
+  display: grid;
+  grid-template-rows: 1fr;
+  margin-top: 36px;
+
+  &.is-opening {
+    animation: drawer-open 0.28s ease-out backwards;
+  }
+}
+
+@keyframes drawer-open {
+  from {
+    grid-template-rows: 0fr;
+  }
+}
+
+.drawer-in {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+}
+
+.drawer {
+  position: relative;
+  display: flex;
+  min-height: 236px;
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 3px solid var(--color-line);
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--color-shadow);
+
+  .drawer-wrap.is-opening & {
+    animation: drawer-reveal 0.28s ease-out backwards;
+  }
+}
+
+@keyframes drawer-reveal {
+  from {
+    clip-path: inset(0 -16px 100% -16px round 22px);
+  }
+
+  to {
+    clip-path: inset(-16px -16px -16px -16px round 22px);
+  }
+}
+
+.d-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px 30px 28px;
+
+  &.fd-a {
+    animation: drawer-fade-a 0.2s ease-out backwards;
+  }
+
+  &.fd-b {
+    animation: drawer-fade-b 0.2s ease-out backwards;
+  }
+}
+
+.d-stub {
+  flex: 0 0 290px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding: 62px 28px 24px;
+  border-left: 3px dashed var(--color-line);
+}
+
+.drawer-wrap.is-opening .d-main,
+.drawer-wrap.is-opening .d-stub {
+  animation: drawer-fade-in 0.15s ease-out 0.12s backwards;
+}
+
+@keyframes drawer-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes drawer-fade-a {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes drawer-fade-b {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.d-slot {
+  flex: 0 0 300px;
+}
+
+.d-name {
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.d-desc {
+  max-width: 56ch;
+  font-size: 17px;
+  line-height: 1.45;
+}
+
+.d-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.d-stub .ink-btn {
+  height: 56px;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-size: 17px;
+  white-space: nowrap;
+}
+
+.ret-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  border-radius: 14px;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 16px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.d-note {
+  font-size: 13px;
+  text-align: center;
+}
+
+/* Closing: a yellow sticker on the drawer's corner, tilted like the keypad's tape. */
+.d-close {
+  position: absolute;
+  z-index: 2;
+  top: -20px;
+  right: -20px;
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: $yellow;
+  color: $ink;
+  border: 2.5px solid $ink;
+  box-shadow: 3px 3px 0 var(--color-shadow);
+  transform: rotate(8deg);
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    transform: rotate(0deg) translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+
+  &:active {
+    transform: rotate(0deg) translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-shadow);
+  }
+}
+
+@media (max-width: $stacked) {
+  .drawer {
+    flex-wrap: wrap;
+  }
+
+  .d-main {
+    flex: 1 1 100%;
+  }
+
+  .d-stub {
+    flex: 1 1 100%;
+    border-left: 0;
+    border-top: 3px dashed var(--color-line);
+    padding: 24px;
+  }
+
+  .d-slot {
+    display: none;
+  }
+
+  .d-close {
+    top: -16px;
+    right: -10px;
+  }
+
+  .d-name {
+    font-size: clamp(30px, 9vw, 44px);
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ------------------------------------------------------------ the phone's pick screen */
+
+.pick-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background: var(--color-studio);
+  color: var(--color-text);
+  animation: pick-screen-in 0.22s ease-out;
+}
+
+@keyframes pick-screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+.ps-bar {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 0;
+}
+
+.ps-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 44px;
+  padding: 0 14px 0 10px;
+  border-radius: 12px;
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 2px solid var(--color-line);
+  box-shadow: 3px 3px 0 var(--color-shadow);
+  font-stretch: 125%;
+  font-size: 14px;
+  font-weight: 800;
+
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  &:active {
+    transform: translate(3px, 3px);
+    box-shadow: 0 0 0 var(--color-shadow);
+  }
+}
+
+.ps-main {
+  flex: 1;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 4px 14px 24px;
+}
+
+.ps-head {
+  position: relative;
+  flex-shrink: 0;
+  height: 181px;
+
+  > div:last-child {
+    position: absolute;
+    right: -16px;
+    top: -16px;
+    z-index: 2;
+  }
+}
+
+.tv--pick {
+  --u: 0.58px;
+}
+
+/* What the TV says on each draw: B3D's white bubble, centred on the TV's screen whatever its number of lines. */
+.ps-say-w {
+  position: absolute;
+  z-index: 3;
+  left: 4px;
+  top: 35px;
+  width: 170px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.ps-say {
+  position: relative;
+  width: 100%;
+  padding: 10px 14px;
+  background: #ffffff;
+  color: $ink;
+  border: 2.5px solid $ink;
+  border-radius: 14px;
+  box-shadow: 4px 4px 0 var(--color-shadow);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.2;
+  transform-origin: 100% 50%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    top: 50%;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-right: 2.5px solid $ink;
+    border-top: 2.5px solid $ink;
+    transform: rotate(45deg) skew(12deg, 12deg);
+  }
+
+  &.say-a {
+    animation: say-pop-a 0.2s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+}
+
+.fl-zone.ps-ticket {
+  position: relative;
+  inset: auto;
+  z-index: 4;
+  margin: 10px 8px 0;
+  pointer-events: auto;
+}
+
+.fl-move {
+  position: relative;
+  transform-origin: 50% 50%;
+
+  &.is-out {
+    transform: translateY(-30px) scale(0.9);
+    opacity: 0;
+    transition:
+      transform 0.16s ease-in,
+      opacity 0.16s ease-in;
+  }
+
+  &.is-eject {
+    animation: ticket-eject 0.44s cubic-bezier(0.2, 0.9, 0.25, 1.15) both;
+  }
+}
+
+@keyframes ticket-eject {
+  from {
+    transform: translate(var(--ej-x, 104px), var(--ej-y, -188px)) scale(0.11, 0.03);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+.ps-ticket {
+  .floppy-w {
+    filter: drop-shadow(8px 8px 0 var(--color-shadow));
+  }
+
+  .floppy {
+    padding: 60px 16px 16px;
+  }
+
+  .shutter {
+    left: 96px;
+    width: 150px;
+    height: 48px;
+  }
+
+  .shutter-win {
+    left: 22px;
+    top: 8px;
+    width: 30px;
+    height: 29px;
+  }
+
+  .notch {
+    left: 14px;
+    bottom: 5px;
+    width: 10px;
+    height: 10px;
+  }
+
+  .band {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 14px;
+    color: $ink;
+    border-bottom: 2.5px solid $ink;
+    font-stretch: 125%;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .band-range {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
+}
+
+.ps-lbl-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 16px 14px;
+
+  p {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .ink-btn {
+    height: 54px;
+    border-radius: 13px;
+    font-size: 17px;
+  }
+}
+
+.ps-name {
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+
+  &.is-long {
+    font-size: 26px;
+  }
+}
+
+.clamp3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.ps-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.ps-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 8px 0;
+}
+
+.reroll {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 56px;
+  border-radius: 16px;
+  background: $pink;
+  color: $ink;
+  border: 2.5px solid $ink;
+  box-shadow: 0 5px 0 $ink;
+  font-stretch: 125%;
+  font-size: 17px;
+  font-weight: 800;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  &:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 $ink;
+  }
+}
+
+.ps-note {
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ps-stripes {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  i:nth-child(1) {
+    height: 16px;
+    background: #ffa14a;
+  }
+
+  i:nth-child(2) {
+    height: 18px;
+    background: #ff7a6b;
+  }
+
+  i:nth-child(3) {
+    height: 26px;
+    background: $pink;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer-wrap,
+  .drawer,
+  .d-main,
+  .d-stub,
+  .pick-screen,
+  .ps-say,
+  .fl-move {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .fl-move.is-out {
+    opacity: 1;
+    transform: none;
+  }
+}

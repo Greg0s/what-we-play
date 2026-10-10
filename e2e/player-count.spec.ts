@@ -2,31 +2,35 @@ import { test, expect } from "@playwright/test";
 import { gamesForPlayerCount } from "../src/games";
 import { en } from "../src/i18n/locales/en";
 
-test.describe("Player count", () => {
-  test("typing a new count updates the list and the URL", async ({ page }) => {
+test.describe("Player count keypad", () => {
+  test("each key is a real link to its page, and a click switches in place", async ({ page }) => {
     await page.goto("/");
 
-    const input = page.getByLabel(en.header.playerCount);
-    await expect(input).toHaveValue("4");
-    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(4).length);
+    const keypad = page.getByRole("navigation", { name: en.header.playerCount });
+    const two = keypad.getByRole("link", { name: "2", exact: true });
+    await expect(two).toHaveAttribute("href", "/games-for-2-players/");
 
-    await input.fill("2");
+    await two.click();
     await expect(page).toHaveURL(/\/games-for-2-players\/$/);
+    await expect(two).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(2).join(" "));
     await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(2).length);
   });
 
-  test("the + and − buttons step the count and floor at 1", async ({ page }) => {
-    await page.goto("/games-for-1-player/");
+  test("10+ opens a stepper that goes past ten and floors at ten", async ({ page }) => {
+    await page.goto("/games-for-9-players/");
 
-    const input = page.getByLabel(en.header.playerCount);
-    await expect(input).toHaveValue("1");
+    await page.getByRole("link", { name: "10+", exact: true }).click();
+    await expect(page).toHaveURL(/\/games-for-10-players\/$/);
 
-    await page.getByRole("button", { name: en.header.removePlayer, exact: true }).click();
-    await expect(input).toHaveValue("1");
+    const more = page.getByRole("button", { name: en.header.addPlayer, exact: true });
+    const less = page.getByRole("button", { name: en.header.removePlayer, exact: true });
+    await more.click();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(11).join(" "));
+    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(11).length);
 
-    await page.getByRole("button", { name: en.header.addPlayer, exact: true }).click();
-    await expect(input).toHaveValue("2");
-    await expect(page).toHaveURL(/\/games-for-2-players\/$/);
-    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(2).length);
+    await less.click();
+    await less.click();
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(10).join(" "));
   });
 });

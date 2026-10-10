@@ -39,6 +39,20 @@ When a game's site serves a translation at its own URL (e.g.
 visitors reading What we play? in that language, and `link` everywhere else. Sites that pick their language from the
 browser or an in-game setting need nothing.
 
+## Adding a game
+
+Add an entry to `src/games.json` with a `genre` (one of `GENRES` in
+`src/games.ts`: drawing, words, trivia, music, geography, movies, fun — it
+sets the card's colour and the « Feel like… » chip it falls under), then a
+description and search keywords for it in every locale
+(`gameDescriptions`, `gameKeywords`).
+
+## The TV, in 2D or in 3D
+
+The banner's TV asks the page's question and reacts to what you do. The 3D
+glasses next to the theme switcher turn it into a 3D Mac with one pawn per
+player; the choice is remembered like the theme.
+
 ## Planned features
 
 - Add game images

@@ -1,3 +1,5 @@
+import type { Genre } from "../../games";
+
 /**
  * English is the reference locale: its shape defines the `Translation` type
  * and the other locales must provide exactly the same keys.
@@ -17,12 +19,19 @@ export const en = {
         : `${games} browser games for ${players} players, all free and with nothing to install.`,
   },
   header: {
+    /** The site's name, as used in page titles and the top bar. */
     title: "What we play?",
+    /** The page's question, the H1 the TV asks, on two lines. */
+    question: (players: number) =>
+      players === 1
+        ? (["What do I play", "solo?"] as const)
+        : (["What do we play", `with ${players}?`] as const),
     playerCount: "Number of players",
+    howMany: "How many are we?",
     addPlayer: "Add a player",
     removePlayer: "Remove a player",
     players: { one: "player", other: "players" },
-    byPlayerCount: "Games by player count",
+    handPicked: (count: number) => `${count} games picked by hand`,
   },
   language: {
     label: "Language",
@@ -30,6 +39,10 @@ export const en = {
   theme: {
     light: "Switch to light theme",
     dark: "Switch to dark theme",
+  },
+  relief: {
+    to3d: "Switch the TV to 3D",
+    to2d: "Back to the flat TV",
   },
   content: {
     playerRange: (min: number, max: number) => {
@@ -54,31 +67,58 @@ export const en = {
     close: "Close",
   },
   catalogue: {
-    searchPlaceholder: "Search a game by name, tag or keyword",
+    searchLabel: "Search a game",
+    searchPlaceholder: "Search a game, a theme, a keyword…",
     clearSearch: "Clear search",
-    searchingWholeCatalogue:
-      "Searching the whole catalogue — the player count is ignored while you search.",
-    backTo: (players: number) =>
-      `Back to ${players} ${players === 1 ? "player" : "players"}`,
+    genresLabel: "Feel like…",
+    allGenres: "All",
+    optionsLabel: "Options",
+    strangers: "With strangers",
+    screenShare: "Screen share",
+    mobileFriendly: "Mobile friendly",
+    noAccountNeeded: "No account",
+    resetFilters: "Clear all",
     resultCount: (count: number) => (count === 1 ? "1 game" : `${count} games`),
     scopeForPlayers: (players: number) =>
       players === 1 ? "for 1 player" : `for ${players} players`,
-    scopeAll: (total: number) => `in all ${total} games`,
-    emptyTitle: (query: string) => `Nothing matches “${query}”`,
-    emptyHint:
-      "Try a game name, a keyword like “draw” or “music”, or a tag like “solo”.",
-    filtersButton: "Filters",
-    resetFilters: "Reset filters",
-    screenShareLabel: "Screen share",
-    screenShareDescription:
-      "Games that aren't technically multiplayer, but are fun to play together over screen share.",
-    mobileFriendly: "Mobile friendly",
-    noAccountNeeded: "No account needed",
-    showResults: (count: number) => (count === 1 ? "Show 1 game" : `Show ${count} games`),
-    tagSolo: "Playable solo",
-    tagSoloWithStrangers: "Playable with strangers",
-    tagMultiplayer: "Private game possible",
-    tagScreenShare: "Playable over screen share",
+    scopeFree: "free, in your browser",
+    scopeSearch: (query: string) => `for “${query}”, across the whole catalogue`,
+    scopeScreenShare: "to play over screen share, whatever the player count",
+    tagStrangers: "With strangers",
+    tagScreenShare: "Screen share",
+    tagAccount: "Account needed",
+    tagNotMobile: "Not on mobile",
+    play: "Play",
+    emptyTitle: (query: string) => `Nothing for “${query}”`,
+    emptyFilters: "No game ticks all these boxes",
+    emptyHint: "The TV searched everywhere. Try “drawing”, “music”, or remove an option.",
+  },
+  genres: {
+    drawing: { chip: "Drawing", band: "Drawing" },
+    words: { chip: "Words", band: "Words" },
+    trivia: { chip: "Trivia", band: "Trivia & culture" },
+    music: { chip: "Music", band: "Music" },
+    geography: { chip: "Geo", band: "Geography" },
+    movies: { chip: "Movies & games", band: "Movies & video games" },
+    fun: { chip: "For laughs", band: "Just for laughs" },
+  },
+  pick: {
+    button: "Pick for us",
+    title: "Random pick",
+    noGame: "No game to pick from",
+    firstLine: (players: number) =>
+      players === 1 ? "For you, it'll be…" : `For the ${players} of you, it'll be…`,
+    rerollLines: ["Or else, there's…", "Or maybe…", "Come on, this one!", "Last idea…"],
+    chosen: (name: string) => `Chance picked: ${name}`,
+    launch: "Start playing",
+    newTab: "opens in a new tab",
+    reroll: "Reroll",
+    note: (count: number, players: number | null) =>
+      `Drawn from ${count === 1 ? "1 game" : `${count} games`}${
+        players === null ? "" : players === 1 ? " for 1 player" : ` for ${players} players`
+      }`,
+    close: "Close the draw",
+    back: "Back to the list",
   },
   gameDescriptions: {
     "uwufufu": "Vote in tournaments about various subjects",
@@ -208,12 +248,18 @@ export type Translation = {
     countDescription: (games: number, players: number) => string;
   };
   header: {
+    /** The site's name: page titles, the top bar. */
     title: string;
+    /** The H1: the question the TV asks, on two lines. */
+    question: (players: number) => readonly [string, string];
     playerCount: string;
+    /** Taped on the keypad. */
+    howMany: string;
     addPlayer: string;
     removePlayer: string;
     players: { one: string; other: string };
-    byPlayerCount: string;
+    /** The round sticker in the banner. */
+    handPicked: (count: number) => string;
   };
   language: {
     label: string;
@@ -222,6 +268,11 @@ export type Translation = {
     /** Label of the switcher when clicking it would select this mode. */
     light: string;
     dark: string;
+  };
+  /** Label of the 3D glasses, i.e. what a click does. */
+  relief: {
+    to3d: string;
+    to2d: string;
   };
   content: {
     /** "2 to 16 players", with `-1` meaning no upper limit. */
@@ -239,26 +290,50 @@ export type Translation = {
     close: string;
   };
   catalogue: {
+    searchLabel: string;
     searchPlaceholder: string;
     clearSearch: string;
-    searchingWholeCatalogue: string;
-    backTo: (players: number) => string;
-    resultCount: (count: number) => string;
-    scopeForPlayers: (players: number) => string;
-    scopeAll: (total: number) => string;
-    emptyTitle: (query: string) => string;
-    emptyHint: string;
-    filtersButton: string;
-    resetFilters: string;
-    screenShareLabel: string;
-    screenShareDescription: string;
+    genresLabel: string;
+    allGenres: string;
+    optionsLabel: string;
+    strangers: string;
+    screenShare: string;
     mobileFriendly: string;
     noAccountNeeded: string;
-    showResults: (count: number) => string;
-    tagSolo: string;
-    tagSoloWithStrangers: string;
-    tagMultiplayer: string;
+    resetFilters: string;
+    resultCount: (count: number) => string;
+    scopeForPlayers: (players: number) => string;
+    /** Appended to the player-count scope. */
+    scopeFree: string;
+    scopeSearch: (query: string) => string;
+    scopeScreenShare: string;
+    tagStrangers: string;
     tagScreenShare: string;
+    tagAccount: string;
+    tagNotMobile: string;
+    play: string;
+    emptyTitle: (query: string) => string;
+    emptyFilters: string;
+    emptyHint: string;
+  };
+  /** `chip` on the genre buttons, `band` on cards and floppies. */
+  genres: Record<Genre, { chip: string; band: string }>;
+  pick: {
+    button: string;
+    title: string;
+    noGame: string;
+    /** What the TV says on the first draw… */
+    firstLine: (players: number) => string;
+    /** …and on each reroll, in order, then it loops. */
+    rerollLines: readonly string[];
+    chosen: (name: string) => string;
+    launch: string;
+    newTab: string;
+    reroll: string;
+    /** `players` is null when the pick ignored the player count (search, screen share). */
+    note: (count: number, players: number | null) => string;
+    close: string;
+    back: string;
   };
   gameDescriptions: Record<GameId, string>;
   /**

@@ -1,0 +1,268 @@
+@use "./variables" as *;
+
+/*
+ * The floppy the TV ejects with the picked game: flat in 2D, ten pixels thick
+ * in 3D. Its flight starts at the TV's slot; the components measure where that
+ * is and pass it in as --ej-x / --ej-y (slot centre minus the floppy's resting
+ * centre), so the path holds at every width.
+ */
+
+/* ------------------------------------------------------------ the floppy itself */
+
+.floppy {
+  position: relative;
+  background: $ink;
+  border-radius: 14px;
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+}
+
+.shutter {
+  position: absolute;
+  top: 0;
+  background: #e7e3ea;
+  border: 3px solid $ink;
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+}
+
+.shutter-win {
+  position: absolute;
+  background: $ink;
+  border-radius: 3px;
+}
+
+.notch {
+  position: absolute;
+  left: 12px;
+  bottom: 4px;
+  width: 10px;
+  height: 8px;
+  background: #3a3340;
+  border-radius: 2px;
+}
+
+.lbl {
+  position: relative;
+  background: #ffffff;
+  color: $ink;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------ the drawer's floppy (wide screens), decorative */
+
+.drawer-in {
+  .floppy-w,
+  .fl-anchor {
+    position: absolute;
+    right: 37px;
+    top: -46px;
+    width: 236px;
+    height: 250px;
+    pointer-events: none;
+  }
+
+  .floppy-w {
+    height: auto;
+    transform: translate(0, 0) scale(1) rotate(-5deg);
+    filter: drop-shadow(8px 8px 0 var(--color-shadow));
+
+    &.ej-a {
+      animation: eject-a 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.15) backwards;
+    }
+
+    &.ej-b {
+      animation: eject-b 0.42s cubic-bezier(0.2, 0.9, 0.25, 1.15) backwards;
+    }
+
+    /* Going back in (reroll, close) is the way out played backwards: same path, the easing mirrored. */
+    &.is-in {
+      animation: eject-back 0.42s cubic-bezier(0.75, -0.15, 0.8, 0.1) both;
+    }
+  }
+
+  .floppy {
+    height: 250px;
+    padding: 60px 14px 16px;
+  }
+
+  .shutter {
+    left: 60px;
+    width: 112px;
+    height: 48px;
+  }
+
+  .shutter-win {
+    left: 16px;
+    top: 8px;
+    width: 24px;
+    height: 30px;
+  }
+
+  .lbl {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.fl-zone {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.lbl-band {
+  padding: 7px 12px;
+  border-bottom: 2.5px solid $ink;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lbl-name {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 8px 12px;
+  text-align: center;
+  font-stretch: 62%;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+@keyframes eject-a {
+  from {
+    transform: translate(var(--ej-x, -160px), var(--ej-y, -209px)) scale(0.12, 0.03) rotate(0deg);
+  }
+}
+
+@keyframes eject-b {
+  from {
+    transform: translate(var(--ej-x, -160px), var(--ej-y, -209px)) scale(0.12, 0.03) rotate(0deg);
+  }
+}
+
+@keyframes eject-back {
+  from {
+    transform: translate(0, 0) scale(1) rotate(-5deg);
+  }
+
+  99% {
+    opacity: 1;
+  }
+
+  to {
+    transform: translate(var(--ej-x, -160px), var(--ej-y, -209px)) scale(0.12, 0.03) rotate(0deg);
+    opacity: 0;
+  }
+}
+
+.f3-desk {
+  position: absolute;
+  right: 37px;
+  top: -46px;
+  width: 236px;
+  pointer-events: none;
+  --f3-rz: -5deg;
+  --f3-rx: 4deg;
+  --f3-ry: -9deg;
+  --f3-fx: var(--ej-x, -179px);
+  --f3-fy: var(--ej-y, -186px);
+  --f3-s0: 0.34;
+  --f3-z0: 5deg;
+}
+
+/* ------------------------------------------------------------ in 3D */
+
+/* ================= the FLOPPY in volume: the B2D floppy is the front face, 10 px of extruded edge =================
+   Same camera as the Mac: the eye sits far up and to the right, so the top and right edges show (the 2D TV's depth
+   direction) while the front face stays square to the screen: the label is never 3D-skewed, its text stays crisp.
+   The B2D hard shadow becomes a plane 12 px behind (ink by day, pink by night). */
+.f3-w{perspective:640px;perspective-origin:calc(100% + 560px) -580px}
+.f3-fly,.f3{position:relative;transform-style:preserve-3d}
+.f3-fly{transform-origin:50% 50%}
+.f3{transform:rotateZ(var(--f3-rz,0deg)) rotateX(var(--f3-rx,0deg)) rotateY(var(--f3-ry,0deg))}
+.f3>.floppy{position:relative;backface-visibility:hidden}
+.f3-e,.f3-bk,.f3-sh{position:absolute;display:block;backface-visibility:hidden}
+.f3-e{background:#3a3342;border:2px solid #17121c}
+.f3-e.t,.f3-e.c,.f3-e.tl{background:#6c6377}
+.f3-e.t{left:14px;right:26px;top:-10px;height:10px;transform-origin:0 100%;transform:rotateX(90deg)}
+.f3-e.c{left:calc(100% - 26px);top:-10px;width:36.77px;height:10px;transform-origin:0 100%;transform:rotateZ(45deg) rotateX(90deg)}
+.f3-e.r{left:100%;top:26px;bottom:14px;width:10px;transform-origin:0 50%;transform:rotateY(90deg)}
+.f3-e.b{left:14px;right:14px;top:100%;height:10px;transform-origin:50% 0;transform:rotateX(-90deg)}
+.f3-e.l{right:100%;top:14px;bottom:14px;width:10px;transform-origin:100% 50%;transform:rotateY(-90deg)}
+/* the three rounded corners (radius 14), one 45-degree facet each */
+.f3-e.tl{left:0;top:4px;width:19.8px;height:10px;transform-origin:0 100%;transform:rotateZ(-45deg) rotateX(90deg)}
+.f3-e.br{left:calc(100% - 14px);top:100%;width:19.8px;height:10px;transform-origin:0 0;transform:rotateZ(-45deg) rotateX(-90deg)}
+.f3-e.bl{left:0;top:calc(100% - 14px);width:19.8px;height:10px;transform-origin:0 0;transform:rotateZ(45deg) rotateX(-90deg)}
+.f3-bk{inset:0;background:#17121c;border-radius:14px;transform:translateZ(-10px) rotateY(180deg)}
+.f3-sh{inset:0;background:var(--color-shadow);border-radius:14px;clip-path:polygon(0 0,calc(100% - 26px) 0,100% 26px,100% 100%,0 100%);transform:translate3d(-3px,19px,-12px)}
+
+/* ---------- flight: out of the Mac's slot, lying flat, then up into place. --f3-fx/--f3-fy = slot centre minus the
+   floppy's resting centre (constant per context). Opacity lives on the 2D wrapper, never on the 3D nodes. ---------- */
+@keyframes f3-out{
+  0%{transform:translate3d(var(--f3-fx),var(--f3-fy),0) scale(var(--f3-s0)) rotateZ(var(--f3-z0)) rotateX(84deg);animation-timing-function:cubic-bezier(.3,.6,.6,1)}
+  22%{transform:translate3d(calc(var(--f3-fx)*.9),calc(var(--f3-fy)*.9 + 16px),0) scale(calc(var(--f3-s0)*1.35)) rotateZ(var(--f3-z0)) rotateX(68deg);animation-timing-function:cubic-bezier(.4,0,.6,1)}
+  62%{transform:translate3d(calc(var(--f3-fx)*.2),calc(var(--f3-fy)*.2 - 30px),0) scale(.9) rotateZ(calc(var(--f3-z0)*.3)) rotateX(14deg);animation-timing-function:cubic-bezier(.3,0,.4,1)}
+  82%{transform:translate3d(0,-6px,0) scale(1.03) rotateZ(0deg) rotateX(-7deg);animation-timing-function:ease-in-out}
+  100%{transform:none}}
+@keyframes f3-in{
+  0%{transform:none}
+  100%{transform:translate3d(var(--f3-fx),var(--f3-fy),0) scale(var(--f3-s0)) rotateZ(var(--f3-z0)) rotateX(84deg)}}
+/* the eye is centred while the floppy flies, then glides up-right as it lands: the thickness fades in */
+@keyframes f3-show{0%{opacity:0;perspective-origin:50% 30%}6%{opacity:1}70%{perspective-origin:50% 30%}100%{opacity:1;perspective-origin:calc(100% + 560px) -580px}}
+@keyframes f3-hide{0%{opacity:1;perspective-origin:calc(100% + 560px) -580px}35%{perspective-origin:50% 30%}82%{opacity:1}100%{opacity:0;perspective-origin:50% 30%}}
+/* desktop drawer: same class names as B2D's .floppy-w (ej-a / ej-b fly out, is-in flies back in on « Relancer ») */
+.f3-w.ej-a .f3-fly,.f3-w.ej-b .f3-fly{animation:f3-out .56s both}
+.f3-w.ej-a,.f3-w.ej-b{animation:f3-show .56s linear both}
+.f3-w.is-in .f3-fly{animation:f3-in .2s cubic-bezier(.5,0,.8,.4) both}
+.f3-w.is-in{animation:f3-hide .2s linear both}
+/* the phone's ticket in 3D: its flat flight is switched off, the 3D one plays instead */
+:root[data-relief="3d"] .fl-move.is-eject,:root[data-relief="3d"] .fl-move.is-out{animation:none;transform:none;opacity:1;transition:none}
+:root[data-relief="3d"] .fl-move.is-eject .f3-fly{animation:f3-out .48s both}
+:root[data-relief="3d"] .fl-move.is-eject .f3-w{animation:f3-show .48s linear both}
+:root[data-relief="3d"] .fl-move.is-out .f3-fly{animation:f3-in .2s cubic-bezier(.5,0,.8,.4) both}
+:root[data-relief="3d"] .fl-move.is-out .f3-w{animation:f3-hide .2s linear both}
+
+
+/* the phone's ticket: square to the screen at rest (its label and button stay crisp) */
+.f3-pick {
+  --f3-rz: 0deg;
+  --f3-fx: var(--ej-x, 96px);
+  --f3-fy: var(--ej-y, -180px);
+  --f3-s0: 0.13;
+  --f3-z0: 0deg;
+}
+
+/* end states that must hold without animation (reduced motion, or after the fill) */
+.f3-w.is-in {
+  opacity: 0;
+}
+
+@media (max-width: $stacked) {
+  .drawer-in .floppy-w,
+  .drawer-in .f3-desk {
+    display: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floppy-w,
+  .f3-fly,
+  .f3-w {
+    animation: none !important;
+  }
+
+  .drawer-in .floppy-w.is-in {
+    opacity: 0;
+  }
+}

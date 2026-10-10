@@ -1,0 +1,177 @@
+/*
+ * The TV in 3D: the flat TV's drawing extruded into a CSS 3D Mac, built in the
+ * same TV units (u): front 220 × 246 u, 200 u deep, bezel, screen, label and slot
+ * where the flat drawing has them. One pawn per player stands in front of it.
+ *
+ * Never put filter, opacity, overflow or clip-path on .m3-world, .m3-hop, .m3,
+ * .m3-pawn, .m3-pb or .m3-sign: they are preserve-3d, and any of those flattens
+ * them. The faces (.m3-f) are leaves: anything goes on them.
+ */
+
+/* ---------- the set: same box as the 2D .tv (340 x 340 u), camera in u so every size projects alike ---------- */
+.m3-set{position:absolute;width:calc(340*var(--u));height:calc(340*var(--u));pointer-events:none;
+  perspective:calc(2200*var(--u));perspective-origin:calc(600*var(--u)) calc(-400*var(--u))}
+.m3-world,.m3-hop,.m3,.m3-pawn,.m3-pb,.m3-sign{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d}
+/* origin = the Mac's floor centre */
+.m3-world{left:calc(168.22*var(--u));top:calc(308.8*var(--u));transform:scale3d(.971,.971,.971)}
+.m3{transform:rotateY(-16deg)}
+
+/* ---------- the Mac: 220 w x 246 h x 200 d (u) ---------- */
+.m3-f{position:absolute;border:3px solid #17121c;backface-visibility:hidden}
+.m3-front{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#5fcde8;
+  transform:translateZ(calc(100*var(--u)))}
+.m3-back{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#e2c78f;
+  transform:rotateY(180deg) translateZ(calc(100*var(--u)))}
+.m3-right{left:calc(-100*var(--u));top:calc(-246*var(--u));width:calc(200*var(--u));height:calc(246*var(--u));background:#f2d9a6;
+  transform:rotateY(90deg) translateZ(calc(110*var(--u)))}
+.m3-left{left:calc(-100*var(--u));top:calc(-246*var(--u));width:calc(200*var(--u));height:calc(246*var(--u));background:#ead09b;
+  transform:rotateY(-90deg) translateZ(calc(110*var(--u)))}
+.m3-top{left:calc(-110*var(--u));top:calc(-100*var(--u));width:calc(220*var(--u));height:calc(200*var(--u));background:#fff1d0;
+  transform:translateY(calc(-246*var(--u))) rotateX(90deg)}
+/* floor shadow = the 2D TV's hard offset shadow, laid on the floor (ink by day, pink by night) */
+.m3-shadow{position:absolute;left:calc(-110*var(--u));top:calc(-100*var(--u));width:calc(220*var(--u));height:calc(200*var(--u));
+  background:#17121c;border-radius:calc(4*var(--u));transform:translate3d(calc(16*var(--u)),0,calc(14*var(--u))) rotateX(90deg)}
+:root[data-theme="dark"] .m3-shadow{background:#ff46af}
+/* handle groove: the 2D TV's dark band across the top, and its notch in the side */
+.m3-groove{position:absolute;left:-3px;right:-3px;top:calc(70*var(--u) - 3px);height:calc(40*var(--u));background:#c9a263;border:3px solid #17121c;border-width:3px 0}
+.m3-notch{position:absolute;left:calc(90*var(--u) - 3px);top:-3px;width:calc(40*var(--u));height:calc(12*var(--u));background:#c9a263;border:3px solid #17121c;border-top:0}
+/* vents: 4 rows of 5 slats, the 2D TV's dashes seen square-on */
+.m3-vents{position:absolute;left:calc(30*var(--u) - 3px);top:calc(198*var(--u) - 3px);width:calc(140*var(--u));height:calc(33*var(--u));
+  background:repeating-linear-gradient(90deg,#b38c50 0 calc(18*var(--u)),transparent calc(18*var(--u)) calc(30.5*var(--u)));
+  -webkit-mask:repeating-linear-gradient(180deg,#000 0 calc(2.6*var(--u)),transparent calc(2.6*var(--u)) calc(10*var(--u)));
+  mask:repeating-linear-gradient(180deg,#000 0 calc(2.6*var(--u)),transparent calc(2.6*var(--u)) calc(10*var(--u)))}
+/* front face, at the 2D TV's coordinates minus its (22, 84) origin */
+.m3-bezel{position:absolute;left:calc(20*var(--u) - 3px);top:calc(20*var(--u) - 3px);width:calc(180*var(--u));height:calc(142*var(--u));
+  background:#3db2d6;border:3px solid #17121c;border-radius:calc(12*var(--u))}
+.m3-front .scr{left:calc(30*var(--u) - 3px);top:calc(29*var(--u) - 3px);outline:1.5px solid #17121c}
+.m3-seam{position:absolute;left:0;right:0;top:calc(178*var(--u) - 4.5px);border-top:3px solid #17121c}
+.m3-dot{position:absolute;left:calc(13.5*var(--u) - 3px);top:calc(196.5*var(--u) - 3px);width:calc(13*var(--u));height:calc(13*var(--u));
+  border-radius:50%;background:linear-gradient(180deg,#ffe14d 0 50%,#ff46af 50%);box-shadow:0 0 0 2px #17121c}
+.m3-name{position:absolute;left:calc(33*var(--u) - 3px);top:calc(199.4*var(--u) - 3px);font-family:'Archivo',system-ui,sans-serif;font-weight:800;
+  font-stretch:125%;font-size:calc(9.5*var(--u));line-height:1;color:#17121c;white-space:nowrap}
+.m3-slot{position:absolute;left:calc(118*var(--u) - 3px);top:calc(198*var(--u) - 3px);width:calc(80*var(--u));height:calc(7*var(--u));border-radius:calc(3.5*var(--u));background:#17121c}
+.m3-slot::before{content:"";position:absolute;left:0;top:calc(-3*var(--u));width:calc(12*var(--u));height:calc(5*var(--u));border-radius:calc(1.5*var(--u));background:#17121c}
+.m3-front .slot-light{left:calc(118*var(--u) - 3px);top:calc(198*var(--u) - 3px)}
+.m3-led{position:absolute;left:calc(206.6*var(--u) - 3px);top:calc(199.1*var(--u) - 3px);width:calc(4.8*var(--u));height:calc(4.8*var(--u));border-radius:50%;background:#17121c}
+.m3-foot{position:absolute;left:calc(10*var(--u) - 3px);right:0;bottom:0;height:calc(18*var(--u));background:#3fb3d6;border:3px solid #17121c;border-width:3px 0 0 3px}
+
+/* ---------- pawns: B3D standees, one per player, colours = the 2D eye colours ---------- */
+.m3-pawn{left:calc(var(--pw)*-.5*var(--u));top:calc(var(--pw)*-1.4423*var(--u));width:calc(var(--pw)*var(--u));height:calc(var(--pw)*1.4423*var(--u));
+  transform:translate3d(calc(var(--x)*var(--u)),0,calc(var(--z)*var(--u))) rotateY(var(--r));
+  transition:transform .42s cubic-bezier(.34,1.56,.64,1) calc(var(--d,0)*45ms)}
+.m3-pb{width:100%;height:100%}
+/* 2D -> 3D: the pawns drop in one by one (B3D arrival keyframes). Only while .m3-set has .is-arriving, so a page
+   that opens in 3D shows them standing (no animation on first render). */
+.m3-set.is-arriving .m3-pb{animation:m3-drop .42s cubic-bezier(.34,1.56,.64,1) calc(90ms + var(--i)*45ms) both}
+@keyframes m3-drop{0%{transform:translateY(calc(-150*var(--u))) scale(.5)}100%{transform:none}}
+.m3-pb>svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;transition:opacity .2s calc(var(--d,0)*45ms)}
+.m3-ps{position:absolute;left:-4%;top:82%;width:108%;height:36%;border-radius:50%;background:#17121c;opacity:.18;
+  transform:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);transition:opacity .2s calc(var(--d,0)*45ms)}
+:root[data-theme="dark"] .m3-ps{background:#000;opacity:.45}
+.m3-pbody,.m3-pbase{fill:var(--pc);stroke:#17121c;stroke-width:var(--pst,3px);stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.m3-peyes rect{fill:#17121c}
+.m3-peyes{transform:translate(2.5px,-1px)}
+.m3-pawn.is-out{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .2s ease-in calc(var(--d,0)*30ms)}
+.m3-pawn.is-out .m3-pb>svg,.m3-pawn.is-out .m3-ps{opacity:0;transition:opacity .15s ease-in calc(var(--d,0)*30ms)}
+.m3-pawn.p1{--i:0;--pc:#c9f6ff}.m3-pawn.p2{--i:1;--pc:#ffe14d}.m3-pawn.p3{--i:2;--pc:#ff9fd4}.m3-pawn.p4{--i:3;--pc:#8ee5b3}.m3-pawn.p5{--i:4;--pc:#ffb35c}
+.m3-pawn.p6{--i:5;--pc:#bba8ff}.m3-pawn.p7{--i:6;--pc:#ff9a86}.m3-pawn.p8{--i:7;--pc:#7fd8f0}.m3-pawn.p9{--i:8;--pc:#ffffff}.m3-pawn.p10{--i:9;--pc:#ffe14d}
+.m3-pawn.d1{--d:1}.m3-pawn.d2{--d:2}.m3-pawn.d3{--d:3}.m3-pawn.d4{--d:4}.m3-pawn.d5{--d:5}.m3-pawn.d6{--d:6}.m3-pawn.d7{--d:7}.m3-pawn.d8{--d:8}.m3-pawn.d9{--d:9}
+/* the pawns hop when the floppy lands: set hop-a / hop-b on .m3-set when the flight starts and keep it 1000 ms;
+   the 380 ms delay lands the first hop with the floppy */
+.m3-set.hop-a .m3-pb>svg{animation:m3-hopA .26s cubic-bezier(.3,1.4,.5,1) calc(380ms + var(--i)*30ms) both}
+.m3-set.hop-b .m3-pb>svg{animation:m3-hopB .26s cubic-bezier(.3,1.4,.5,1) calc(380ms + var(--i)*30ms) both}
+@keyframes m3-hopA{50%{transform:translateY(-18%)}}
+@keyframes m3-hopB{50%{transform:translateY(-18%)}}
+/* 3D -> 2D: every pawn hops out, 15 ms apart (4 players gone in 225 ms, 10 in 315 ms) */
+.m3-set.is-leaving .m3-pawn{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .18s ease-in calc(var(--i)*15ms)}
+.m3-set.is-leaving .m3-pb>svg,.m3-set.is-leaving .m3-ps{opacity:0;transition:opacity .14s ease-in calc(var(--i)*15ms + 40ms)}
+
+/* ---------- more than 10 players: a « +N » standee ---------- */
+.m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),0,calc(var(--sz)*var(--u))) rotateY(8deg);transition:transform .42s cubic-bezier(.34,1.56,.64,1) .2s}
+.m3-board{position:absolute;left:calc(-30*var(--u));top:calc(-74*var(--u));width:calc(60*var(--u));height:calc(40*var(--u));display:grid;place-items:center;
+  background:#ffffff;color:#17121c;border:var(--pst,3px) solid #17121c;border-radius:calc(8*var(--u));
+  font-family:'Archivo',system-ui,sans-serif;font-stretch:125%;font-weight:900;font-size:calc(20*var(--u));line-height:1;white-space:nowrap;transition:opacity .2s .2s}
+.m3-stick{position:absolute;left:calc(-2*var(--u));top:calc(-36*var(--u));width:calc(4*var(--u));height:calc(36*var(--u));background:#17121c;transition:opacity .2s .2s}
+.m3-sign.is-out{transform:translate3d(calc(var(--sx)*var(--u)),calc(-150*var(--u)),calc(var(--sz)*var(--u))) scale(.5);transition:transform .2s ease-in}
+.m3-sign.is-out .m3-board,.m3-sign.is-out .m3-stick{opacity:0;transition:opacity .15s ease-in}
+.m3-set.is-leaving .m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),calc(-150*var(--u)),calc(var(--sz)*var(--u))) scale(.5);transition:transform .2s ease-in}
+.m3-set.is-leaving .m3-board,.m3-set.is-leaving .m3-stick{opacity:0;transition:opacity .15s ease-in}
+
+/* ---------- the Mac hops like the 2D TV (same keyframes, on the hop node) ---------- */
+.m3-hop.jp-a{animation:m3-jpA .28s ease-out}
+.m3-hop.jp-b{animation:m3-jpB .28s ease-out}
+@keyframes m3-jpA{0%{transform:translateY(0)}45%{transform:translateY(calc(-10*var(--u)))}80%{transform:translateY(0) scaleY(.97)}100%{transform:scaleY(1)}}
+@keyframes m3-jpB{0%{transform:translateY(0)}45%{transform:translateY(calc(-10*var(--u)))}80%{transform:translateY(0) scaleY(.97)}100%{transform:scaleY(1)}}
+
+
+/* ---------- where the pawns stand, per TV ---------- */
+/* hero (wide): around the Mac, with a gap where the cord plugs in; 10+ players step forward into the taller studio */
+.m3-desk{--pw:42;--pst:3px;left:0;top:0}
+.m3-desk .p1{--x:-87;--z:140;--r:6deg}
+.m3-desk .p2{--x:-154;--z:130;--r:-5deg}
+.m3-desk .p3{--x:-39;--z:145;--r:7deg}
+.m3-desk .p4{--x:-200;--z:132;--r:-6deg}
+.m3-desk .p5{--x:7;--z:142;--r:-8deg}
+.m3-desk .p6{--x:-204;--z:45;--r:5deg}
+.m3-desk .p7{--x:-244;--z:135;--r:-4deg}
+.m3-desk .p8{--x:-163;--z:51;--r:6deg}
+.m3-desk .p9{--x:54;--z:147;--r:8deg}
+.m3-desk .p10{--x:-249;--z:40;--r:-7deg}
+.m3-desk .m3-sign{--sx:-271;--sz:-11}
+.is-big .m3-desk .p1{--x:-71;--z:203}
+.is-big .m3-desk .p2{--x:-136;--z:194}
+.is-big .m3-desk .p3{--x:-25;--z:208}
+.is-big .m3-desk .p4{--x:-180;--z:196}
+.is-big .m3-desk .p5{--x:20;--z:205}
+.is-big .m3-desk .p6{--x:-187;--z:104}
+.is-big .m3-desk .p7{--x:-223;--z:198}
+.is-big .m3-desk .p8{--x:-147;--z:109}
+.is-big .m3-desk .p9{--x:66;--z:210}
+.is-big .m3-desk .p10{--x:-231;--z:99}
+.is-big .m3-desk .m3-sign{--sx:-251;--sz:51}
+
+/* phone banner: the pawns stand on the keypad's rim in front of the Mac's chin, clear of the keypad's tape */
+.m3-phone{--pw:46;--pst:2px;left:0;top:-6px}
+.m3-phone .p1{--x:6;--z:167;--r:6deg}
+.m3-phone .p2{--x:56;--z:167;--r:-5deg}
+.m3-phone .p3{--x:-45;--z:161;--r:7deg}
+.m3-phone .p4{--x:107;--z:174;--r:-6deg}
+.m3-phone .p5{--x:-95;--z:154;--r:-8deg}
+.m3-phone .p6{--x:157;--z:174;--r:5deg}
+.m3-phone .p7{--x:-30;--z:120;--r:-4deg}
+.m3-phone .p8{--x:21;--z:120;--r:6deg}
+.m3-phone .p9{--x:74;--z:127;--r:8deg}
+.m3-phone .p10{--x:-80;--z:114;--r:-7deg}
+.m3-phone .m3-sign{--sx:-110;--sz:107}
+/* phone pick screen (B2D-tirage): the .tv.tv-pick box, lifted 6 px (top:-22px) so the Mac clears the ticket.
+   The pawns queue under the bubble, just behind the ticket's top edge (bases at page y 269-277, x 24-188);
+   the « +N » sign is short here so its board stays under the bubble. */
+.m3-pick{--pw:36;--pst:2px;left:0;top:-6px}
+.m3-pick .p1{--x:-161;--z:88;--r:6deg}
+.m3-pick .p2{--x:-202;--z:88;--r:-5deg}
+.m3-pick .p3{--x:-244;--z:83;--r:7deg}
+.m3-pick .p4{--x:-284;--z:88;--r:-6deg}
+.m3-pick .p5{--x:-327;--z:83;--r:-8deg}
+.m3-pick .p6{--x:-233;--z:52;--r:5deg}
+.m3-pick .p7{--x:-366;--z:88;--r:-4deg}
+.m3-pick .p8{--x:-275;--z:52;--r:6deg}
+.m3-pick .p9{--x:-409;--z:83;--r:8deg}
+.m3-pick .p10{--x:-319;--z:46;--r:-7deg}
+.m3-pick .m3-sign{--sx:-441;--sz:88}
+.m3-pick .m3-board{top:calc(-62*var(--u))}
+.m3-pick .m3-stick{top:calc(-24*var(--u));height:calc(24*var(--u))}
+
+/* the stacked banner: the Mac and its crowd fit inside the flat TV's own box */
+@media (max-width: 973px) and (min-width: 640px) {
+  .studio .m3-desk{transform:translate(calc(101.8 * var(--u)),calc(25 * var(--u))) scale(.75);transform-origin:0 0}
+}
+
+/* the Mac hops like the flat TV (same classes, on the hop node) */
+.m3-hop.is-hop{animation:m3-jpB .28s ease-out}
+/* the dark glass under the screen: the screen's power-on opens on black */
+.m3-bezel::after{content:"";position:absolute;left:calc(10*var(--u) - 3px);top:calc(9*var(--u) - 3px);width:calc(160*var(--u));height:calc(124*var(--u));border-radius:calc(9*var(--u));background:#05121f}
+
+@media (prefers-reduced-motion: reduce){
+  .m3-set .m3-pb,.m3-hop,.m3-set .m3-pb>svg{animation:none !important}
+  .m3-pawn,.m3-sign,.m3-pb>svg,.m3-ps,.m3-board,.m3-stick{transition:none !important}
+}

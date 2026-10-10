@@ -1,0 +1,693 @@
+@use "./variables" as *;
+
+/*
+ * The banner. On wide screens a fixed 1234 × 492 stage (540 with the 10+
+ * stepper hanging under the keypad), every piece placed by hand around the
+ * TV, scaled down in steps as the window narrows; below $stacked it stacks;
+ * below $phone it is the phone's, with « Pick for us » floating at the bottom.
+ */
+.studio {
+  position: relative;
+  margin-top: 24px;
+  border: 3px solid var(--color-line);
+  border-radius: 28px;
+  box-shadow: 8px 8px 0 var(--color-shadow);
+  background: var(--color-studio);
+}
+
+.stage {
+  position: relative;
+  width: 1234px;
+  height: 492px;
+  margin: 0 auto;
+}
+
+.studio.is-big .stage {
+  height: 540px;
+}
+
+.studio svg {
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------ the bubble: the page's question */
+
+.bubble {
+  position: absolute;
+  left: 44px;
+  top: 36px;
+  width: 610px;
+  padding: 20px 28px 26px;
+  background: $cyan;
+  color: $ink;
+  border: 3px solid var(--color-line);
+  border-radius: 26px;
+  box-shadow: 6px 6px 0 var(--color-shadow);
+  transform-origin: 100% 60%;
+
+  &.bp-a {
+    animation: bubble-pop-a 0.2s ease-out;
+  }
+
+  &.bp-b {
+    animation: bubble-pop-b 0.2s ease-out;
+  }
+}
+
+@keyframes bubble-pop-a {
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes bubble-pop-b {
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+.b-h1 {
+  font-family: "Honk", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 88px;
+  line-height: 0.95;
+
+  span {
+    display: block;
+  }
+
+  &.is-long {
+    font-size: 72px;
+  }
+}
+
+.tail {
+  position: absolute;
+  right: -92px;
+  top: 96px;
+  overflow: visible;
+}
+
+.tail-p {
+  fill: $cyan;
+  stroke: var(--color-line);
+  stroke-width: 3;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.tail-m {
+  fill: $cyan;
+}
+
+/* ------------------------------------------------------------ the cord, from the keypad to behind the TV */
+
+.cord {
+  position: absolute;
+  left: 556px;
+  top: 388px;
+  overflow: visible;
+}
+
+.cord-p {
+  fill: none;
+  stroke: var(--color-line);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ------------------------------------------------------------ the TV and what it says */
+
+.tv-zone {
+  display: contents;
+}
+
+.studio .tv {
+  --u: 1.12px;
+  position: absolute;
+  left: 720px;
+  top: 82px;
+}
+
+/* While a pick is open, the TV says its line above its lid; it shrinks back into its tail on close. */
+.tv-say {
+  position: absolute;
+  z-index: 3;
+  left: 790px;
+  top: 34px;
+  max-width: 330px;
+  padding: 11px 16px;
+  background: #ffffff;
+  color: $ink;
+  border: 2.5px solid $ink;
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--color-shadow);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 19px;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform-origin: 70px 100%;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 62px;
+    bottom: -10px;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    border-right: 2.5px solid $ink;
+    border-bottom: 2.5px solid $ink;
+    transform: rotate(45deg) skew(12deg, 12deg);
+  }
+
+  &.say-a {
+    animation: say-pop-a 0.2s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+
+  &.say-b {
+    animation: say-pop-b 0.2s cubic-bezier(0.3, 1.4, 0.5, 1);
+  }
+
+  &.is-out {
+    animation: say-out 0.18s cubic-bezier(0.5, 0, 0.8, 0.4) both;
+  }
+}
+
+@keyframes say-pop-a {
+  from {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes say-pop-b {
+  from {
+    transform: scale(0.85);
+  }
+}
+
+@keyframes say-out {
+  to {
+    transform: scale(0.55);
+    opacity: 0;
+  }
+}
+
+/* ------------------------------------------------------------ the sticker */
+
+.badge2 {
+  position: absolute;
+  left: 1066px;
+  top: 300px;
+  width: 116px;
+  height: 116px;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  border-radius: 999px;
+  background: $yellow;
+  color: $ink;
+  border: 3px solid $ink;
+  box-shadow: 4px 4px 0 var(--color-shadow);
+  transform: rotate(10deg);
+  text-align: center;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 12.5px;
+  line-height: 1.15;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------ the keypad */
+
+.deck {
+  position: absolute;
+  left: 44px;
+  top: 289px;
+  z-index: 1;
+  display: flex;
+  gap: 10px;
+  padding: 16px 16px 21px;
+  background: var(--color-deck);
+  color: $ink;
+  border: 3px solid var(--color-line);
+  border-radius: 20px;
+  box-shadow: 0 8px 0 var(--color-shadow);
+}
+
+.tape {
+  position: absolute;
+  z-index: 2;
+  left: 20px;
+  top: -17px;
+  padding: 3px 10px;
+  background: $yellow;
+  color: $ink;
+  border: 2px solid $ink;
+  transform: rotate(-2deg);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(5, 58px);
+  gap: 8px;
+}
+
+.key {
+  background: #ffffff;
+  color: $ink;
+  border: 2.5px solid $ink;
+  box-shadow: 0 5px 0 $ink;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    background-color 0.15s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 $ink;
+  }
+
+  &:active,
+  &.is-on {
+    background: $pink;
+    transform: translateY(5px);
+    box-shadow: 0 0 0 $ink;
+  }
+}
+
+.pad-key {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 22px;
+
+  &.is-ten {
+    font-size: 20px;
+  }
+}
+
+/* The Enter key: « Pick for us ». */
+.ret {
+  background: $pink;
+  color: $ink;
+  border: 2.5px solid $ink;
+  box-shadow: 0 5px 0 $ink;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease,
+    opacity 0.2s;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 0 $ink;
+  }
+
+  &:active,
+  &.is-busy {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 $ink;
+  }
+
+  &[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 5px 0 $ink;
+  }
+}
+
+.ret-enter {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 13px;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 17px;
+  line-height: 1.1;
+  text-align: center;
+
+  &__dice {
+    width: 26px;
+    height: 26px;
+  }
+
+  &__label {
+    max-width: 7.5em;
+  }
+
+  &__arrow {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* 10 players and more: a stepper hangs under the keypad. */
+.tab {
+  position: absolute;
+  left: 226px;
+  top: calc(100% + 11px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px 10px;
+  background: var(--color-deck);
+  color: $ink;
+  border: 3px solid var(--color-line);
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+
+:root[data-theme="dark"] .tab {
+  color: var(--color-text);
+}
+
+.tab-key {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+}
+
+.tab-n {
+  min-width: 46px;
+  text-align: center;
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 22px;
+}
+
+/* ------------------------------------------------------------ « Pick for us » on a phone: a floating Enter key */
+
+.fab-dock {
+  display: none;
+}
+
+.fab {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 56px;
+  padding: 0 24px 0 20px;
+  border-radius: 16px;
+  background: $pink;
+  color: $ink;
+  border: 2.5px solid $ink;
+  box-shadow: 0 5px 0 $ink;
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 17px;
+  transition:
+    transform 0.1s ease,
+    box-shadow 0.1s ease;
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  &:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 $ink;
+  }
+
+  &[aria-disabled="true"] {
+    background: #ffc4e4;
+    color: #6b6270;
+    border-color: #8c8492;
+    box-shadow: 0 5px 0 #8c8492;
+    transform: none;
+    cursor: default;
+  }
+}
+
+/* ------------------------------------------------------------ narrower: the stage scales down in steps */
+
+@media (max-width: 1319px) {
+  .stage {
+    zoom: 0.9;
+  }
+}
+
+@media (max-width: 1195px) {
+  .stage {
+    zoom: 0.8;
+  }
+}
+
+@media (max-width: 1073px) {
+  .stage {
+    zoom: 0.72;
+  }
+}
+
+/* ------------------------------------------------------------ stacked */
+
+@media (max-width: $stacked) {
+  .stage,
+  .studio.is-big .stage {
+    zoom: 1;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 22px;
+    padding: 20px 16px 34px;
+  }
+
+  .bubble {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    flex: 1 1 280px;
+    padding: 16px 20px 20px;
+  }
+
+  .b-h1,
+  .b-h1.is-long {
+    font-size: clamp(38px, 8vw, 64px);
+  }
+
+  .tail,
+  .cord,
+  .badge2 {
+    display: none;
+  }
+
+  /* The TV and its line share a row; the line stands right of the TV, tail turned left at the screen. */
+  .tv-zone {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .studio .tv {
+    --u: 0.616px;
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: none;
+  }
+
+  .tv-say {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 0 1 auto;
+    font-size: 17px;
+    transform-origin: 0 50%;
+
+    &::after {
+      left: -10px;
+      bottom: auto;
+      top: 50%;
+      margin-top: -8px;
+      transform: rotate(135deg) skew(12deg, 12deg);
+    }
+  }
+
+  .deck {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+
+  .keys {
+    flex: 1 1 100%;
+    grid-template-columns: repeat(5, minmax(44px, 1fr));
+  }
+
+  .pad-key {
+    width: auto;
+    height: 52px;
+  }
+
+  .ret-enter {
+    width: auto;
+    flex: 1 1 100%;
+    min-height: 56px;
+    flex-direction: row;
+    gap: 10px;
+
+    &__label {
+      max-width: none;
+    }
+  }
+
+  .tab {
+    position: relative;
+    left: auto;
+    top: auto;
+    flex: 1 1 100%;
+    justify-content: center;
+    border: 0;
+    padding: 4px 0 0;
+    background: transparent;
+  }
+}
+
+/* ------------------------------------------------------------ the phone's banner */
+
+@media (max-width: $phone) {
+  .studio {
+    margin-top: 10px;
+    border-radius: 22px;
+    box-shadow: 6px 6px 0 var(--color-shadow);
+  }
+
+  .stage,
+  .studio.is-big .stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 0;
+    padding: 12px 12px 12px;
+  }
+
+  .bubble {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    width: 192px;
+    margin: 2px 0 17px;
+    padding: 12px 12px 15px 14px;
+    border-radius: 18px;
+    box-shadow: 4px 4px 0 var(--color-shadow);
+  }
+
+  .b-h1,
+  .b-h1.is-long {
+    font-size: 36px;
+  }
+
+  .tail {
+    display: block;
+    width: 28px;
+    height: 34px;
+    right: -26px;
+    top: auto;
+    bottom: 18px;
+  }
+
+  /* The TV stands on the keypad's rim. */
+  .tv-zone {
+    grid-column: 2;
+    grid-row: 1;
+    position: relative;
+    z-index: 2;
+    margin: 0 -16px -6px 0;
+  }
+
+  .studio .tv {
+    --u: 0.42px;
+  }
+
+  .tv-say,
+  .ret-enter,
+  .badge2,
+  .cord {
+    display: none;
+  }
+
+  .deck {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0;
+    padding: 15px 10px 14px;
+    border-radius: 16px;
+    box-shadow: 0 6px 0 var(--color-shadow);
+  }
+
+  .tape {
+    left: 14px;
+    top: -11px;
+    padding: 2px 9px;
+    font-size: 11px;
+  }
+
+  .keys {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .pad-key {
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .tab .key {
+    box-shadow: 0 3px 0 $ink;
+
+    &:active {
+      transform: translateY(3px);
+      box-shadow: 0 0 0 $ink;
+    }
+  }
+
+  .fab-dock {
+    position: fixed;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .tv-say {
+    animation: none !important;
+  }
+
+  .tv-say.is-out {
+    opacity: 0;
+  }
+}
