@@ -205,7 +205,7 @@
     "minPlayers": 1,
     "maxPlayers": -1,
     "link": "https://www.rentguessr.fun/game",
-    "genre": "geography",
+    "genre": "trivia",
     "solo": true,
     "soloWithStrangers": true,
     "multiplayer": true,
