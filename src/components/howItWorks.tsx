@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { FaCircleQuestion, FaXmark } from "react-icons/fa6";
 import "../stylesheets/howItWorks.scss";
 import { useTranslation } from "../i18n";
@@ -41,6 +42,16 @@ export function HowItWorks() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open, hide]);
 
+  // The page behind stays still while the dialog is up, as with the pick screen.
+  useEffect(() => {
+    if (!rendered) return;
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [rendered]);
+
   useEffect(() => () => window.clearTimeout(closeTimeout.current), []);
 
   return (
@@ -56,40 +67,41 @@ export function HowItWorks() {
         <span className="how-it-works-trigger__label">{t.howItWorks.trigger}</span>
       </button>
 
-      {rendered && (
-        <div
-          className={`how-it-works-overlay${open ? " is-open" : ""}`}
-          onClick={hide}
-        >
-          <div
-            className="how-it-works-dialog"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="how-it-works-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              ref={closeRef}
-              type="button"
-              className="how-it-works-dialog__close"
-              aria-label={t.howItWorks.close}
-              onClick={hide}
+      {/* Portalled to <body>: inside the header's stacking context the overlay
+          would sit under the floating « Pick for us » button instead of dimming it. */}
+      {rendered &&
+        createPortal(
+          <div className={`how-it-works-overlay${open ? " is-open" : ""}`} onClick={hide}>
+            <div
+              className="how-it-works-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="how-it-works-title"
+              onClick={(event) => event.stopPropagation()}
             >
-              <FaXmark />
-            </button>
-            <h2 id="how-it-works-title">{t.howItWorks.title}</h2>
-            <p>{t.howItWorks.intro}</p>
-            <p>
-              {t.howItWorks.paragraph1.before}
-              <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
-                {t.howItWorks.paragraph1.linkText}
-              </a>
-              {t.howItWorks.paragraph1.after}
-            </p>
-            <p>{t.howItWorks.paragraph2}</p>
-          </div>
-        </div>
-      )}
+              <button
+                ref={closeRef}
+                type="button"
+                className="how-it-works-dialog__close"
+                aria-label={t.howItWorks.close}
+                onClick={hide}
+              >
+                <FaXmark />
+              </button>
+              <h2 id="how-it-works-title">{t.howItWorks.title}</h2>
+              <p>{t.howItWorks.intro}</p>
+              <p>
+                {t.howItWorks.paragraph1.before}
+                <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+                  {t.howItWorks.paragraph1.linkText}
+                </a>
+                {t.howItWorks.paragraph1.after}
+              </p>
+              <p>{t.howItWorks.paragraph2}</p>
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }
