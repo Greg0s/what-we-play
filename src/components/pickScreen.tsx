@@ -274,7 +274,8 @@ export function PickScreen({
         </div>
 
         <div className="ps-actions">
-          <button type="button" className="reroll" onClick={reroll}>
+          {/* Nothing to reroll until the first ticket is out: the button waits, holding its place. */}
+          <button type="button" className={`reroll${pickId ? "" : " is-wait"}`} onClick={reroll}>
             <TbDice5 aria-hidden="true" />
             {t.pick.reroll}
           </button>

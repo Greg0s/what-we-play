@@ -599,6 +599,10 @@
     transform: translateY(5px);
     box-shadow: 0 0 0 $ink;
   }
+
+  &.is-wait {
+    visibility: hidden;
+  }
 }
 
 .ps-note {
