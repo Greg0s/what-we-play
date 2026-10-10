@@ -69,8 +69,10 @@ built `dist/` through `vite preview`, not the dev server: hydration, lazy
 favicons and per-page SEO tags only exist in that output. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
-the keypad, the options and genres, the draw (drawer and phone screen) and the
-3D glasses. The favicon test needs `www.google.com`: it fails behind a proxy
+the keypad, the options and genres, the draw (drawer and phone screen), the
+3D glasses, and two layout guards: the TV's call stays inside its screen at
+every player count, and the H1 holds on two lines above the keypad in every
+language (`Studio` shrinks it when Honk renders a line too wide). The favicon test needs `www.google.com`: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only
