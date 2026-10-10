@@ -102,29 +102,8 @@
   }
 }
 
-/* On a phone the dialog takes the whole screen, and the floating « Pick for us »
-   button steps aside while it is open. */
+/* On a phone the floating « Pick for us » button steps aside while the dialog is open. */
 @media (max-width: $phone) {
-  .how-it-works-overlay {
-    padding: 0;
-  }
-
-  .how-it-works-dialog {
-    max-width: none;
-    height: 100%;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: 4.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-    transform: translateY(1.5rem);
-
-    h2 {
-      font-size: 2.3rem;
-    }
-  }
-
   body:has(.how-it-works-overlay.is-open) .fab-dock {
     display: none;
   }
