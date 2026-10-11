@@ -6,7 +6,7 @@ import { ThemeProvider } from "./theme";
 import { LANGUAGES, OG_LOCALES } from "./i18n/config";
 import { games, gamesForPlayerCount } from "./games";
 import { en } from "./i18n/locales/en";
-import { pageMeta } from "./pageMeta";
+import { pageMeta, previewImage } from "./pageMeta";
 import { allRoutes, alternates, buildPath, buildUrl, type Route } from "./routes";
 import { structuredData } from "./structuredData";
 
@@ -38,6 +38,7 @@ function renderJsonLd(route: Route, dateModified?: string): string {
 function renderHead(route: Route, dateModified?: string): string {
   const { title, description } = pageMeta(route);
   const url = buildUrl(route);
+  const image = previewImage(route.language);
 
   return [
     `<title>${escapeAttribute(title)}</title>`,
@@ -54,8 +55,14 @@ function renderHead(route: Route, dateModified?: string): string {
     ...LANGUAGES.filter((code) => code !== route.language).map(
       (code) => `<meta property="og:locale:alternate" content="${OG_LOCALES[code]}" />`
     ),
+    `<meta property="og:image" content="${image.url}" />`,
+    `<meta property="og:image:width" content="${image.width}" />`,
+    `<meta property="og:image:height" content="${image.height}" />`,
+    `<meta property="og:image:alt" content="${escapeAttribute(image.alt)}" />`,
     `<meta name="twitter:title" content="${escapeAttribute(title)}" />`,
     `<meta name="twitter:description" content="${escapeAttribute(description)}" />`,
+    `<meta name="twitter:image" content="${image.url}" />`,
+    `<meta name="twitter:image:alt" content="${escapeAttribute(image.alt)}" />`,
     renderJsonLd(route, dateModified),
   ].join("\n    ");
 }

@@ -24,6 +24,7 @@ Structure:
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
 - `src/routes.ts` — the URL scheme (see URLs below). `src/pageMeta.ts` — per-page title/description. `src/structuredData.ts` — per-page JSON-LD.
 - `src/entry-server.tsx` + `scripts/prerender.js` — build-time render into `dist/<path>/index.html`, `sitemap.xml`, `llms.txt`. `scripts/check-seo.js` — audits the built `dist/` (see Rendering below).
+- `scripts/og-image.js` — draws the link previews, `public/what-we-play-preview-<lang>.jpg` (1200 × 630, one per language), from the built banner: its real bubble, sticker and 3D Mac with four pawns, rearranged by injected CSS. Nothing pressable is drawn (no keypad, no « Pick for us »). The title is « What we play? » in every language; the tape, the sticker and the alt are `preview` in the locale files. Not part of the build: rerun it by hand when the banner's look or that text changes, then bump `PREVIEW_VERSION` in `src/pageMeta.ts` so social sites drop their cached copy.
 - `e2e/` — Playwright tests against the built `dist/` (`playwright.config.ts` at the repo root). `src/stylesheets/` — the rest of the Sass, roughly one file per feature.
 
 ## Working on this project
@@ -35,6 +36,7 @@ pnpm run build    # typecheck, client + SSR build, prerender, then check-seo (se
 pnpm run check    # re-run just the check-seo audit against an existing dist/
 pnpm run lint     # ESLint, config in eslint.config.js
 pnpm run preview  # serve the built dist/ (also what e2e tests run against)
+pnpm run og-image # redraw the link previews from the built dist/ (needs Chromium + Google Fonts)
 pnpm run test:e2e # Playwright — run `pnpm run build` first, it does not build for you
 ```
 
@@ -45,7 +47,8 @@ GitHub Pages serves files only and crawlers that don't run JavaScript —
 every generative engine among them — would otherwise get an empty
 `<div id="root">`. `scripts/check-seo.js` re-reads the built `dist/` after
 prerendering and fails the build on a broken canonical, non-reciprocal
-`hreflang`, duplicate title, unparseable JSON-LD, or a page with no games —
+`hreflang`, duplicate title, unparseable JSON-LD, an `og:image` that is not
+a file of `dist/`, or a page with no games —
 deliberately by inspecting the output files rather than importing the code
 that wrote them. See [docs/seo-geo-audit.md](docs/seo-geo-audit.md).
 

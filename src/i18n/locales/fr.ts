@@ -28,6 +28,11 @@ export const fr: Translation = {
     players: { one: "joueur", other: "joueurs" },
     handPicked: (count: number) => `${count} jeux choisis à la main`,
   },
+  preview: {
+    tape: "Des jeux en ligne entre amis",
+    sticker: "Jeux gratuits choisis à la main",
+    alt: "What we play? — une TV rétro propose à quatre pions des jeux en ligne à jouer entre amis",
+  },
   language: {
     label: "Langue",
   },

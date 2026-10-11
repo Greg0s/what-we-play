@@ -64,31 +64,14 @@
     <!-- Shared by every page. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="What we play?" />
-    <meta
-      property="og:image"
-      content="https://whatweplay.gregoiretinn.es/what-we-play-metadata.jpg"
-    />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="628" />
-    <meta
-      property="og:image:alt"
-      content="What we play? — find a game to play online with your friends"
-    />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:image"
-      content="https://whatweplay.gregoiretinn.es/what-we-play-metadata.jpg"
-    />
-    <meta
-      name="twitter:image:alt"
-      content="What we play? — find a game to play online with your friends"
-    />
 
     <!--
       Everything between these markers is rewritten per page by
       scripts/prerender.js: title, description, canonical, hreflang and the
-      per-locale Open Graph. What sits here is the English home page, which is
-      also what `vite dev` serves.
+      per-locale Open Graph, preview image included (one per language, see
+      previewImage in src/pageMeta.ts). What sits here is the English home
+      page, which is also what `vite dev` serves.
     -->
     <!--head:start-->
     <title>What we play? Find a game to play online with your friends!</title>
@@ -108,12 +91,30 @@
     />
     <meta property="og:locale" content="en_US" />
     <meta
+      property="og:image"
+      content="https://whatweplay.gregoiretinn.es/what-we-play-preview-en.jpg?v=1"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="What we play? — a retro TV offers four pawns online games to play with friends"
+    />
+    <meta
       name="twitter:title"
       content="What we play? Find a game to play online with your friends!"
     />
     <meta
       name="twitter:description"
       content="Find the best game to play online with your friends based on player count."
+    />
+    <meta
+      name="twitter:image"
+      content="https://whatweplay.gregoiretinn.es/what-we-play-preview-en.jpg?v=1"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="What we play? — a retro TV offers four pawns online games to play with friends"
     />
     <!--head:end-->
   </head>

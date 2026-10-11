@@ -74,6 +74,8 @@ for (const file of await htmlFiles()) {
     title: first(html, /<title>([^<]*)<\/title>/),
     description: first(html, /<meta name="description" content="([^"]*)"/),
     canonical: first(html, /rel="canonical" href="([^"]+)"/),
+    ogImage: first(html, /<meta property="og:image" content="([^"]+)"/),
+    twitterImage: first(html, /<meta name="twitter:image" content="([^"]+)"/),
     alternates: Object.fromEntries(
       [...html.matchAll(/rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)].map(
         (m) => [m[1], m[2]]
@@ -98,6 +100,19 @@ for (const [url, page] of pages) {
 
   if (page.canonical !== url) {
     fail(`${where} : canonical "${page.canonical}" au lieu de "${url}"`);
+  }
+
+  // The link preview: a file of this build, the same for Open Graph and X.
+  if (!page.ogImage) {
+    fail(`${where} : pas d'og:image`);
+  } else {
+    const image = new URL(page.ogImage);
+    if (image.origin !== origin || !(await exists(image.pathname.slice(1)))) {
+      fail(`${where} : og:image "${page.ogImage}" ne pointe vers aucun fichier de dist/`);
+    }
+    if (page.twitterImage !== page.ogImage) {
+      fail(`${where} : twitter:image "${page.twitterImage}" diffère de l'og:image`);
+    }
   }
 
   // hreflang has to be reciprocal, or search engines ignore the whole cluster.
