@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState } from "react";
 import type { Game } from "./games";
 import type { Translation } from "./i18n/locales";
-import { chooseSay, type Edge, type Say } from "./pickLines";
+import { chooseSay, type Edge, type LineMemory, type Say } from "./pickLines";
 import { prefersReducedMotion } from "./relief/config";
 import { REEL_ORDER, type ReelPhase } from "./tv";
 import type { Deal } from "./useDeck";
@@ -69,7 +69,7 @@ const ab = (on: boolean, n: number, a: string, b: string) => (on ? (n % 2 ? a : 
  * stop on the game's genre, and a floppy with the game pops out of the slot
  * into the drawer under the banner. Again: the floppy goes back in first.
  */
-export function usePick(list: Game[], draw: () => Deal | null, options: { flat: boolean; t: Translation }) {
+export function usePick(list: Game[], draw: () => Deal | null, options: { flat: boolean; t: Translation; lines: LineMemory }) {
   const { later, stop } = useTimers();
   const [state, setState] = useState<State>(INITIAL);
   const latest = useRef(state);
@@ -105,7 +105,13 @@ export function usePick(list: Game[], draw: () => Deal | null, options: { flat: 
       nextId: null,
       retract: false,
       line,
-      say: chooseSay(options.t, { reroll: line, edge: current.nextEdge, size: list.length, previous: current.say }),
+      say: chooseSay(options.t, {
+        reroll: line,
+        edge: current.nextEdge,
+        size: list.length,
+        previous: current.say,
+        memory: options.lines,
+      }),
       eject: current.eject + 1,
       ejecting: true,
       fade: current.fade + 1,
@@ -121,7 +127,7 @@ export function usePick(list: Game[], draw: () => Deal | null, options: { flat: 
     settle();
     // 3D: the pawns hop as the floppy lands (the CSS waits 380 ms).
     later("hop", 1000, () => patch({ hopping: false }));
-  }, [cancelReels, later, list, options.t, patch, settle]);
+  }, [cancelReels, later, list, options.lines, options.t, patch, settle]);
 
   const start = useCallback(() => {
     const current = latest.current;

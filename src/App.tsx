@@ -22,7 +22,7 @@ import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { useRelief } from "./relief";
-import { sayLine } from "./pickLines";
+import { createLineMemory, sayLine } from "./pickLines";
 import { buildPath, parseRoute, type Route } from "./routes";
 import { buildScreen, DEFAULT_EYE, eyeColor, GENRE_COLORS, MAX_TILES, type Mood } from "./tv";
 import { useDocumentMeta } from "./useDocumentMeta";
@@ -146,7 +146,9 @@ function App({ route }: { route: Route }) {
 
   const tv = useTvMood(count);
   const draw = useDeck(view.list);
-  const pick = usePick(view.list, draw, { flat: relief.view !== "3d", t });
+  // What the TV has said with the draws, shared by the drawer and the phone screen.
+  const [lines] = useState(createLineMemory);
+  const pick = usePick(view.list, draw, { flat: relief.view !== "3d", t, lines });
   const tvZone = useRef<HTMLDivElement>(null);
 
   // A player count change: the bubble bounces, newcomers' faces pop onto the
@@ -373,6 +375,7 @@ function App({ route }: { route: Route }) {
           players={pickScreen.players}
           wide={pickScreen.wide}
           draw={draw}
+          lines={lines}
           onClose={closePickScreen}
         />
       )}
