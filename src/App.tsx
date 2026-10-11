@@ -25,6 +25,7 @@ import { useRelief } from "./relief";
 import { buildPath, parseRoute, type Route } from "./routes";
 import { buildScreen, DEFAULT_EYE, eyeColor, GENRE_COLORS, MAX_TILES, type Mood } from "./tv";
 import { useDocumentMeta } from "./useDocumentMeta";
+import { useDeck } from "./useDeck";
 import { usePick } from "./usePick";
 import { useTimers } from "./useTimers";
 import { useTvMood } from "./useTvMood";
@@ -143,7 +144,8 @@ function App({ route }: { route: Route }) {
   // ------------------------------------------------------------ the TV
 
   const tv = useTvMood(count);
-  const pick = usePick(view.list, { flat: relief.view !== "3d" });
+  const draw = useDeck(view.list);
+  const pick = usePick(view.list, draw, { flat: relief.view !== "3d" });
   const tvZone = useRef<HTMLDivElement>(null);
 
   // A player count change: the bubble bounces, newcomers' faces pop onto the
@@ -372,6 +374,7 @@ function App({ route }: { route: Route }) {
           list={pickScreen.list}
           players={pickScreen.players}
           wide={pickScreen.wide}
+          draw={draw}
           onClose={closePickScreen}
         />
       )}

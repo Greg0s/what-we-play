@@ -69,7 +69,7 @@ built `dist/` through `vite preview`, not the dev server: hydration, lazy
 favicons and per-page SEO tags only exist in that output. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
-the keypad, the options and genres, the draw (drawer and phone screen), the
+the keypad, the options and genres, the draw (drawer and phone screen, no repeats), the
 3D glasses, and three layout guards: the TV's call stays inside its screen at
 every player count, the H1 holds on two lines above the keypad in every
 language (`Studio` shrinks it when Honk renders a line too wide), and on
@@ -167,7 +167,10 @@ left and the Mac right, so the crowd must fit the gap between them. Never put `f
 
 ## The draw
 
-« Pick for us » draws among the games the list currently shows. On wide
+« Pick for us » draws among the games the list currently shows. Both
+draws deal from one deck (`useDeck`, shared by `App.tsx`): no game comes up
+twice until every game on the list has, and any change to the list (player
+count, search, genre, options) starts a fresh deck. On wide
 screens (`usePick`) the TV's eyes become slot machine reels, then a floppy
 pops out of its slot into a drawer under the banner, the TV says a line in a
 bubble above it, and a yellow sticker closes it (the floppy goes back in

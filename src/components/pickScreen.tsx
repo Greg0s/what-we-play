@@ -55,6 +55,7 @@ export function PickScreen({
   list,
   players,
   wide,
+  draw: drawGame,
   onClose,
 }: {
   /** The games on the list when the screen opened. */
@@ -62,6 +63,8 @@ export function PickScreen({
   players: number;
   /** The list ignored the player count. */
   wide: boolean;
+  /** Draws from the list without repeats (see `useDeck`). */
+  draw: () => Game | null;
   onClose: () => void;
 }) {
   const { t, language, gameDescription } = useTranslation();
@@ -90,31 +93,28 @@ export function PickScreen({
     [later],
   );
 
-  const draw = useCallback(
-    (avoid: string | null) => {
-      const pool = list.length > 1 ? list.filter((game) => game.id !== avoid) : list;
-      const next = pool[Math.floor(Math.random() * pool.length)];
-      const quick = prefersReducedMotion();
-      stop("face");
-      setNextId(next.id);
-      setPhase("reels");
-      setStops(0);
-      later("l", quick ? 0 : 500, () => setStops(1));
-      later("r", quick ? 0 : 680, () => setStops(2));
-      later("e", quick ? 0 : 920, () => {
-        setPickId(next.id);
-        setPhase("eject");
-        runFace(FACE_LAND, 0);
-      });
-      later("d", quick ? 0 : 1400, () => setPhase("landed"));
-    },
-    [later, list, runFace, stop],
-  );
+  const draw = useCallback(() => {
+    const next = drawGame();
+    if (!next) return;
+    const quick = prefersReducedMotion();
+    stop("face");
+    setNextId(next.id);
+    setPhase("reels");
+    setStops(0);
+    later("l", quick ? 0 : 500, () => setStops(1));
+    later("r", quick ? 0 : 680, () => setStops(2));
+    later("e", quick ? 0 : 920, () => {
+      setPickId(next.id);
+      setPhase("eject");
+      runFace(FACE_LAND, 0);
+    });
+    later("d", quick ? 0 : 1400, () => setPhase("landed"));
+  }, [drawGame, later, runFace, stop]);
 
   // Opening the screen is the first draw. Its timers are cleared on the way
   // out, so React's StrictMode replay (dev only) simply draws again.
   useEffect(() => {
-    draw(null);
+    draw();
     back.current?.focus();
     return () => ["l", "r", "e", "d", "face"].forEach(stop);
     // The list is the one the screen opened with: it never changes while open.
@@ -144,7 +144,7 @@ export function PickScreen({
       return;
     }
     setLine((n) => n + 1);
-    draw(pickId);
+    draw();
   };
 
   // Touch screens have no hover: the finger landing on « Start playing »

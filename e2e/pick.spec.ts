@@ -26,6 +26,24 @@ test.describe("Pick for us — wide screens", () => {
     await expect(name).toHaveCount(0);
   });
 
+  test("rerolls never repeat a game until the whole list has come up", async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto("/");
+    await page.getByRole("button", { name: en.pick.button }).click();
+
+    const name = page.locator("#pick-name");
+    const say = page.locator(".tv-say");
+    const drawn: string[] = [];
+    for (let draw = 0; draw < names.length; draw++) {
+      if (draw > 0) await page.getByRole("button", { name: en.pick.reroll }).click();
+      await expect(say).toHaveText(
+        draw === 0 ? en.pick.firstLine(4) : en.pick.rerollLines[(draw - 1) % en.pick.rerollLines.length],
+      );
+      drawn.push((await name.textContent()) ?? "");
+    }
+    expect([...drawn].sort()).toEqual([...names].sort());
+  });
+
   test("Escape closes the drawer", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: en.pick.button }).click();

@@ -7,8 +7,6 @@ import { useTimers } from "./useTimers";
 type State = {
   /** The game on the floppy; the drawer is open while it is set. */
   pickId: string | null;
-  /** The last game picked, so a new draw avoids it. */
-  lastId: string | null;
   /** While the reels spin, the game they will stop on. */
   nextId: string | null;
   phase: ReelPhase | null;
@@ -36,7 +34,6 @@ type State = {
 
 const INITIAL: State = {
   pickId: null,
-  lastId: null,
   nextId: null,
   phase: null,
   reelStop: 0,
@@ -63,7 +60,7 @@ const ab = (on: boolean, n: number, a: string, b: string) => (on ? (n % 2 ? a : 
  * stop on the game's genre, and a floppy with the game pops out of the slot
  * into the drawer under the banner. Again: the floppy goes back in first.
  */
-export function usePick(list: Game[], options: { flat: boolean }) {
+export function usePick(list: Game[], draw: () => Game | null, options: { flat: boolean }) {
   const { later, stop } = useTimers();
   const [state, setState] = useState<State>(INITIAL);
   const latest = useRef(state);
@@ -95,7 +92,6 @@ export function usePick(list: Game[], options: { flat: boolean }) {
       ...current,
       phase: null,
       pickId: current.nextId,
-      lastId: current.nextId,
       nextId: null,
       retract: false,
       line: wasOpen ? current.line + 1 : 0,
@@ -123,12 +119,9 @@ export function usePick(list: Game[], options: { flat: boolean }) {
       finish();
       return;
     }
-    if (list.length === 0) return;
-    const showing = list.some((game) => game.id === current.pickId) ? current.pickId : null;
-    const avoid = showing ?? current.lastId;
-    const pool = list.length > 1 ? list.filter((game) => game.id !== avoid) : list;
-    const next = pool[Math.floor(Math.random() * pool.length)];
-    const quick = showing !== null;
+    const next = draw();
+    if (!next) return;
+    const quick = list.some((game) => game.id === current.pickId);
     setState({
       ...current,
       phase: "spin",
@@ -144,7 +137,7 @@ export function usePick(list: Game[], options: { flat: boolean }) {
     later("r1", quick ? 250 : 500, () => patch({ phase: "stop1" }));
     later("r2", quick ? 380 : 680, () => patch({ phase: "stop2" }));
     later("r3", quick ? 560 : 900, finish);
-  }, [finish, later, list, patch]);
+  }, [draw, finish, later, list, patch]);
 
   const close = useCallback(() => {
     const current = latest.current;
