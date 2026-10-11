@@ -18,7 +18,7 @@ Structure:
 
 - `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on.
 - `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
-- `src/catalogue.ts` — what the list shows: player count, search, genre and the four options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share.
+- `src/catalogue.ts` — what the list shows: player count, search, genre and the four options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below). `src/relief/` — the 2D/3D TV (see below).
 - `src/components/` — `Studio` (the banner: the bubble with the H1, the TV, the cord, the sticker and the keypad, whose keys are real links to each player-count page and whose Enter key draws a game), `Tv` + `TvScreen` (the mascot, flat and 3D), `PickDrawer` (the draw on wide screens), `PickScreen` (the draw on phones), `Floppy`, `Games` (search, genres, options, cards), `Game` (card), `GlassesSwitch`, `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal, portalled to `<body>` so its backdrop also covers the floating « Pick for us » button).
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
@@ -70,11 +70,12 @@ favicons and per-page SEO tags only exist in that output. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
 the keypad, the options and genres, the draw (drawer and phone screen, no repeats), the
-3D glasses, and three layout guards: the TV's call stays inside its screen at
+3D glasses, and four layout guards: the TV's call stays inside its screen at
 every player count, the H1 holds on two lines above the keypad in every
 language (`Studio` shrinks it when Honk renders a line too wide), and on
 phones (360 and 412 px) the 3D pawns and « +N » sign stay clear of the
-keypad's tape, its keys and the bubble. The favicon test needs `www.google.com`: it fails behind a proxy
+keypad's tape, its keys and the bubble, and every line the TV can say with a
+draw fits its bubble. The favicon test needs `www.google.com`: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only
@@ -180,6 +181,17 @@ expressions between draws. On its first draw only, while the slot is still
 empty, a waiting screen (`PickLoader`: three floppies shuffled like a deck)
 holds the slot and fades as the ticket flies out over it. The floppy's flight is measured from the TV's slot
 at run time, so it holds at every width.
+
+What the TV says with each draw comes from `src/pickLines.ts`, chosen in the
+draw (it is random) and stored as a key, not a text, so a language switch
+translates it: `firstLine`, then on rerolls a random line of the current
+tier of `rerollLines` (tiers take over at `REROLL_TIERS`, from cheerful to
+fed up), never the same twice in a row. The deck's edges win over the tier:
+`lastLine` with the last game not drawn yet, one of `againLines` when it
+starts over — or `fewLine` instead, when the list has `FEW_GAMES` or fewer.
+**Lines must be short**: the drawer's bubble holds a single line of about
+25 characters (`white-space: nowrap`), the phone's three. An e2e test checks
+every line of every locale; shorten a line rather than widen the bubble.
 
 ## Load animation
 
