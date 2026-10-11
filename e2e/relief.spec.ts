@@ -14,12 +14,12 @@ function crowdOverlaps() {
   const studio = document.querySelector(".studio")!;
   const tape = box(studio.querySelector(".tape")!);
   const bubble = box(studio.querySelector(".bubble")!);
-  const keys = [...studio.querySelectorAll(".pad-key")].map(box);
+  const keys = Array.from(studio.querySelectorAll(".pad-key")).map(box);
   const right = box(studio).right - 5;
   const hits = (a: DOMRect, b: DOMRect) =>
     a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
 
-  const figures = [...studio.querySelectorAll(".m3-pawn:not(.is-out)")].map((pawn) => {
+  const figures = Array.from(studio.querySelectorAll(".m3-pawn:not(.is-out)")).map((pawn) => {
     // The body and its base: the base is the wider of the two.
     const body = box(pawn.querySelector(".m3-pbody")!);
     const base = box(pawn.querySelector(".m3-pbase")!);
