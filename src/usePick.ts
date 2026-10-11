@@ -3,7 +3,7 @@ import type { Game } from "./games";
 import type { Translation } from "./i18n/locales";
 import { chooseSay, type Edge, type LineMemory, type Say } from "./pickLines";
 import { prefersReducedMotion } from "./relief/config";
-import { REEL_ORDER, type ReelPhase } from "./tv";
+import { PAWN_HOP_MS, REEL_ORDER, type ReelPhase } from "./tv";
 import type { Deal } from "./useDeck";
 import { useTimers } from "./useTimers";
 
@@ -126,7 +126,7 @@ export function usePick(list: Game[], draw: () => Deal | null, options: { flat: 
     });
     settle();
     // 3D: the pawns hop as the floppy lands (the CSS waits 380 ms).
-    later("hop", 1000, () => patch({ hopping: false }));
+    later("hop", PAWN_HOP_MS, () => patch({ hopping: false }));
   }, [cancelReels, later, list, options.lines, options.t, patch, settle]);
 
   const start = useCallback(() => {

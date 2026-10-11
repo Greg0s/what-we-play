@@ -6,7 +6,7 @@ import { useTranslation } from "../i18n";
 import { useRelief } from "../relief";
 import { prefersReducedMotion } from "../relief/config";
 import { chooseSay, sayLine, type LineMemory, type Say } from "../pickLines";
-import { buildScreen, GENRE_COLORS, REEL_ORDER, type Mood } from "../tv";
+import { buildScreen, GENRE_COLORS, PAWN_HOP_MS, REEL_ORDER, type Mood } from "../tv";
 import type { Deal } from "../useDeck";
 import { useTimers } from "../useTimers";
 import { Floppy, Floppy3d } from "./floppy";
@@ -83,6 +83,10 @@ export function PickScreen({
   const [say, setSay] = useState<Say>({ kind: "first" });
   const [face, setFace] = useState<Mood>("happy");
   const [cheer, setCheer] = useState(false);
+  // The pawns' hop outlives the eject phase (it waits for the ticket to land),
+  // so it holds its own class; the count alternates hop-a / hop-b to replay it.
+  const [hop, setHop] = useState(0);
+  const [hopping, setHopping] = useState(false);
   const back = useRef<HTMLButtonElement>(null);
   const tvBox = useRef<HTMLDivElement>(null);
   const ticket = useRef<HTMLDivElement>(null);
@@ -117,6 +121,9 @@ export function PickScreen({
       later("e", quick ? 0 : 920, () => {
         setPickId(next.id);
         setPhase("eject");
+        setHop((n) => n + 1);
+        setHopping(true);
+        later("hop", PAWN_HOP_MS, () => setHopping(false));
         runFace(FACE_LAND, 0);
       });
       later("d", quick ? 0 : 1400, () => setPhase("landed"));
@@ -129,7 +136,7 @@ export function PickScreen({
   useEffect(() => {
     draw(0);
     back.current?.focus();
-    return () => ["l", "r", "e", "d", "face"].forEach(stop);
+    return () => ["l", "r", "e", "d", "hop", "face"].forEach(stop);
     // The list is the one the screen opened with: it never changes while open.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -244,7 +251,7 @@ export function PickScreen({
               screen3d={face2d}
               hop={ejecting || cheer ? "is-hop" : ""}
               slot={ejecting ? "is-slot" : ""}
-              pawnHop={ejecting ? "hop-a" : ""}
+              pawnHop={hopping ? (hop % 2 ? "hop-a" : "hop-b") : ""}
             />
           </div>
         </div>
