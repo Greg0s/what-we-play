@@ -179,7 +179,8 @@ left and the Mac right, so the crowd must fit the gap between them. Never put `f
 
 ## The draw
 
-« Pick for us » draws among the games the list currently shows. Both
+« Pick for us » draws among the games the list currently shows. Alone (1 player) the
+button reads « Pick for me » (`pick.button` takes the player count). Both
 draws deal from one deck (`useDeck`, shared by `App.tsx`): no game comes up
 twice until every game on the list has, and any change to the list (player
 count, search, genre, options) starts a fresh deck. On wide

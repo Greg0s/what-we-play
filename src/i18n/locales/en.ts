@@ -108,7 +108,7 @@ export const en = {
     fun: { chip: "For laughs", band: "Just for laughs" },
   },
   pick: {
-    button: "Pick for us",
+    button: (players: number) => (players === 1 ? "Pick for me" : "Pick for us"),
     title: "Random pick",
     noGame: "No game to pick from",
     firstLine: (players: number) =>
@@ -379,7 +379,8 @@ export type Translation = {
   /** `chip` on the genre buttons, `band` on cards and floppies. */
   genres: Record<Genre, { chip: string; band: string }>;
   pick: {
-    button: string;
+    /** « Pick for us », or « for me » when playing alone. */
+    button: (players: number) => string;
     title: string;
     noGame: string;
     /** What the TV says on the first draw… */

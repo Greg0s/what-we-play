@@ -370,7 +370,7 @@ function App({ route }: { route: Route }) {
           aria-haspopup="dialog"
         >
           <TbDice5 aria-hidden="true" />
-          {t.pick.button}
+          {t.pick.button(players)}
           {count === 0 && <span className="sr">{t.pick.noGame}</span>}
         </button>
       </div>
