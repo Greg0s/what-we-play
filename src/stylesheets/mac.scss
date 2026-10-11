@@ -132,19 +132,35 @@
 .is-big .m3-desk .p10{--x:-231;--z:99}
 .is-big .m3-desk .m3-sign{--sx:-251;--sz:51}
 
-/* phone banner: the pawns stand on the keypad's rim in front of the Mac's chin, clear of the keypad's tape */
-.m3-phone{--pw:46;--pst:1.3px;left:0;top:-6px}
-.m3-phone .p1{--x:6;--z:167;--r:6deg}
-.m3-phone .p2{--x:56;--z:167;--r:-5deg}
-.m3-phone .p3{--x:-45;--z:161;--r:7deg}
-.m3-phone .p4{--x:107;--z:174;--r:-6deg}
-.m3-phone .p5{--x:-95;--z:154;--r:-8deg}
-.m3-phone .p6{--x:157;--z:174;--r:5deg}
-.m3-phone .p7{--x:-30;--z:120;--r:-4deg}
-.m3-phone .p8{--x:21;--z:120;--r:6deg}
-.m3-phone .p9{--x:74;--z:127;--r:8deg}
-.m3-phone .p10{--x:-80;--z:114;--r:-7deg}
-.m3-phone .m3-sign{--sx:-110;--sz:107}
+/* phone banner (the hero's set, below 640 px): the Mac sits at the right edge and the keypad's tape at the left, so the gap
+   between them shrinks with the screen. The crowd stays right of the tape's end and above the keys, at every player count
+   (no step forward at 10+); under 400 px it closes ranks with smaller pawns. The « +N » sign stands by the Mac's side. */
+@media (max-width: 639px) {
+  .studio .m3-desk .p1{--x:9;--z:146;--r:6deg}
+  .studio .m3-desk .p2{--x:-38;--z:142;--r:-5deg}
+  .studio .m3-desk .p3{--x:56;--z:148;--r:7deg}
+  .studio .m3-desk .p4{--x:-85;--z:140;--r:-6deg}
+  .studio .m3-desk .p5{--x:103;--z:150;--r:-8deg}
+  .studio .m3-desk .p6{--x:-63;--z:100;--r:5deg}
+  .studio .m3-desk .p7{--x:-132;--z:138;--r:-4deg}
+  .studio .m3-desk .p8{--x:-16;--z:112;--r:6deg}
+  .studio .m3-desk .p9{--x:150;--z:152;--r:8deg}
+  .studio .m3-desk .p10{--x:-110;--z:92;--r:-7deg}
+  .studio .m3-desk .m3-sign{--sx:128;--sz:40}
+}
+@media (max-width: 399px) {
+  .studio .m3-desk{--pw:36}
+  .studio .m3-desk .p1{--x:43;--z:150}
+  .studio .m3-desk .p2{--x:8;--z:148}
+  .studio .m3-desk .p3{--x:78;--z:152}
+  .studio .m3-desk .p4{--x:-27;--z:146}
+  .studio .m3-desk .p5{--x:113;--z:152}
+  .studio .m3-desk .p6{--x:-9;--z:116}
+  .studio .m3-desk .p7{--x:148;--z:154}
+  .studio .m3-desk .p8{--x:130;--z:84}
+  .studio .m3-desk .p9{--x:26;--z:125}
+  .studio .m3-desk .p10{--x:96;--z:134}
+}
 /* phone pick screen (B2D-tirage): the .tv.tv-pick box, lifted 6 px (top:-22px) so the Mac clears the ticket.
    The pawns queue under the bubble, just behind the ticket's top edge (bases at page y 269-277, x 24-188);
    the « +N » sign is short here so its board stays under the bubble. */

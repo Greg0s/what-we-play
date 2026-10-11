@@ -70,9 +70,11 @@ favicons and per-page SEO tags only exist in that output. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
 the keypad, the options and genres, the draw (drawer and phone screen, no repeats), the
-3D glasses, and two layout guards: the TV's call stays inside its screen at
-every player count, and the H1 holds on two lines above the keypad in every
-language (`Studio` shrinks it when Honk renders a line too wide). The favicon test needs `www.google.com`: it fails behind a proxy
+3D glasses, and three layout guards: the TV's call stays inside its screen at
+every player count, the H1 holds on two lines above the keypad in every
+language (`Studio` shrinks it when Honk renders a line too wide), and on
+phones (360 and 412 px) the 3D pawns and « +N » sign stay clear of the
+keypad's tape, its keys and the bubble. The favicon test needs `www.google.com`: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only
@@ -158,7 +160,9 @@ script in `index.html` sets it before the first paint — keep its key in step
 with `src/relief/config.ts`. A switch plays a short red/cyan anaglyph flicker,
 then the pawns drop in (or hop off first); `mode` flips at the click, `view`
 (what is drawn) at the middle of the flicker. With reduced motion it is
-immediate. Never put `filter`, `opacity`, `overflow` or `clip-path` on a
+immediate. On phones the banner's pawns use their own positions (the
+`max-width: 639px` and `399px` blocks in `mac.scss`): the tape is pinned
+left and the Mac right, so the crowd must fit the gap between them. Never put `filter`, `opacity`, `overflow` or `clip-path` on a
 `preserve-3d` node of the Mac (see `src/stylesheets/mac.scss`): it flattens it.
 
 ## The draw
