@@ -24,6 +24,9 @@ header, and their choice is remembered for the next visits.
   `src/i18n/config.ts`. Both are typed per language, so the build fails until
   they are there. The new language then gets its own pages, `hreflang`
   annotations and sitemap entries automatically.
+- Add the language to `languages` in `scripts/og-image.js` and run
+  `pnpm run og-image` after a build: every page points to its language's link
+  preview, and the build fails while that image is missing.
 
 `src/i18n/locales/en.ts` is the reference locale: the build fails if another
 locale misses one of its keys. Game descriptions and search keywords

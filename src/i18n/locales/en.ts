@@ -33,6 +33,11 @@ export const en = {
     players: { one: "player", other: "players" },
     handPicked: (count: number) => `${count} games picked by hand`,
   },
+  preview: {
+    tape: "Online games with friends",
+    sticker: "Free games picked by hand",
+    alt: "What we play? — a retro TV asks the question to four pawns: online games to play with friends",
+  },
   language: {
     label: "Language",
   },
@@ -304,6 +309,17 @@ export type Translation = {
     players: { one: string; other: string };
     /** The round sticker in the banner. */
     handPicked: (count: number) => string;
+  };
+  /**
+   * The link preview, drawn by scripts/og-image.js. Its title stays « What we
+   * play? » in every language; these are the rest of its text, and its alt.
+   */
+  preview: {
+    /** The yellow tape under the bubble. */
+    tape: string;
+    /** The round sticker (no count: the image is not redrawn when a game is added). */
+    sticker: string;
+    alt: string;
   };
   language: {
     label: string;

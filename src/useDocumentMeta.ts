@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { pageMeta } from "./pageMeta";
+import { pageMeta, previewImage } from "./pageMeta";
 import { buildUrl, type Route } from "./routes";
 
 function setContent(selector: string, content: string) {
@@ -36,6 +36,12 @@ export function useDocumentMeta(route: Route) {
     }
 
     setContent('meta[property="og:url"]', url);
+
+    const image = previewImage(route.language);
+    setContent('meta[property="og:image"]', image.url);
+    setContent('meta[name="twitter:image"]', image.url);
+    setContent('meta[property="og:image:alt"]', image.alt);
+    setContent('meta[name="twitter:image:alt"]', image.alt);
     document.querySelector('link[rel="canonical"]')?.setAttribute("href", url);
   }, [route]);
 }
