@@ -36,7 +36,7 @@ export const en = {
   preview: {
     tape: "Online games with friends",
     sticker: "Free games picked by hand",
-    alt: "What we play? — a retro TV asks the question to four pawns: online games to play with friends",
+    alt: "What we play? — a retro TV offers four pawns online games to play with friends",
   },
   language: {
     label: "Language",

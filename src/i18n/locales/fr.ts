@@ -31,7 +31,7 @@ export const fr: Translation = {
   preview: {
     tape: "Des jeux en ligne entre amis",
     sticker: "Jeux gratuits choisis à la main",
-    alt: "What we play? — une TV rétro pose la question à quatre pions : des jeux en ligne à jouer entre amis",
+    alt: "What we play? — une TV rétro propose à quatre pions des jeux en ligne à jouer entre amis",
   },
   language: {
     label: "Langue",
