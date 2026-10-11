@@ -103,7 +103,7 @@ export const fr: Translation = {
     title: "Tirage au sort",
     noGame: "Aucun jeu à tirer au sort",
     firstLine: (players: number) =>
-      players === 1 ? "Pour toi, ce sera…" : `Pour vous\u00a0${players}, ce sera…`,
+      players === 1 ? "Pour vous, ce sera…" : `Pour vous\u00a0${players}, ce sera…`,
     rerollLines: [
       [
         "Sinon, il\u00a0y\u00a0a…",
