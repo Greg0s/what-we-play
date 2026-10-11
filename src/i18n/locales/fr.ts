@@ -109,6 +109,7 @@ export const fr: Translation = {
     launch: "Lancer la partie",
     newTab: "s'ouvre dans un nouvel onglet",
     reroll: "Relancer",
+    loading: "On mélange les disquettes…",
     note: (count: number, players: number | null) =>
       `Tiré au sort parmi ${count === 1 ? "1 jeu" : `${count} jeux`}${
         players === null ? "" : players === 1 ? " pour 1 joueur" : ` pour ${players} joueurs`

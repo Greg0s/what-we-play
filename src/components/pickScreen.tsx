@@ -27,6 +27,26 @@ const FACE_LOOP: [Mood, number][] = [
 type Phase = "reels" | "eject" | "landed";
 
 /**
+ * What fills the empty slot while the first draw spins: three floppies in the
+ * genres' colours, the front one pulled out and slipped to the back, like a deck.
+ */
+function PickLoader({ caption, out }: { caption: string; out: boolean }) {
+  return (
+    <div className={`ps-loader${out ? " is-gone" : ""}`} aria-hidden="true">
+      <div className="ld-art">
+        {(["drawing", "words", "fun"] as const).map((genre) => (
+          <span key={genre} className="ld-fl">
+            <i className="ld-sh" />
+            <i className={`ld-lb gc-${genre}`} />
+          </span>
+        ))}
+      </div>
+      <p className="ld-cap">{caption}</p>
+    </div>
+  );
+}
+
+/**
  * « Pick for us » on a phone: a whole screen of its own (not a page: no URL),
  * the TV on top asking, the floppy ticket with the game under it. The TV keeps
  * living between draws: it marvels, smiles, reads the ticket, winks, dozes off.
@@ -185,6 +205,8 @@ export function PickScreen({
   // Before the first ticket comes out, the slot stays empty: the game is
   // already known (it sizes the zone) but hidden until it ejects.
   const flCls = spinning ? (pickId ? "is-out" : "is-wait") : ejecting ? "is-eject" : "";
+  // Meanwhile a waiting screen holds the empty slot, and fades as the ticket flies out over it.
+  const loading = line === 0 && phase !== "landed";
 
   return (
     <div className="pick-screen" role="dialog" aria-modal="true" aria-label={t.pick.title}>
@@ -217,9 +239,10 @@ export function PickScreen({
         </div>
 
         <p className="sr" aria-live="polite">
-          {game && phase !== "reels" ? t.pick.chosen(game.name) : ""}
+          {game && phase !== "reels" ? t.pick.chosen(game.name) : loading ? t.pick.loading : ""}
         </p>
         <div className={`fl-zone ps-ticket ${glitch}`} ref={ticket}>
+          {loading && <PickLoader caption={t.pick.loading} out={ejecting} />}
           {game && (
             <div className={`fl-move ${flCls}`} style={flight}>
               {(["2d", "3d"] as const).map((dim) => {

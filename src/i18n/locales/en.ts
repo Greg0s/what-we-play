@@ -113,6 +113,8 @@ export const en = {
     launch: "Start playing",
     newTab: "opens in a new tab",
     reroll: "Reroll",
+    /** What the empty slot says while the first draw spins. */
+    loading: "Shuffling the floppies…",
     note: (count: number, players: number | null) =>
       `Drawn from ${count === 1 ? "1 game" : `${count} games`}${
         players === null ? "" : players === 1 ? " for 1 player" : ` for ${players} players`
@@ -330,6 +332,8 @@ export type Translation = {
     launch: string;
     newTab: string;
     reroll: string;
+    /** What the empty slot says while the first draw spins. */
+    loading: string;
     /** `players` is null when the pick ignored the player count (search, screen share). */
     note: (count: number, players: number | null) => string;
     close: string;
