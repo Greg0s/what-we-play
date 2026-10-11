@@ -5,7 +5,9 @@ import { gameLink, type Game } from "../games";
 import { useTranslation } from "../i18n";
 import { useRelief } from "../relief";
 import { prefersReducedMotion } from "../relief/config";
+import { chooseSay, sayLine, type Say } from "../pickLines";
 import { buildScreen, GENRE_COLORS, REEL_ORDER, type Mood } from "../tv";
+import type { Deal } from "../useDeck";
 import { useTimers } from "../useTimers";
 import { Floppy, Floppy3d } from "./floppy";
 import { GlassesSwitch } from "./glassesSwitch";
@@ -64,7 +66,7 @@ export function PickScreen({
   /** The list ignored the player count. */
   wide: boolean;
   /** Draws from the list without repeats (see `useDeck`). */
-  draw: () => Game | null;
+  draw: () => Deal | null;
   onClose: () => void;
 }) {
   const { t, language, gameDescription } = useTranslation();
@@ -75,6 +77,7 @@ export function PickScreen({
   const [phase, setPhase] = useState<Phase>("reels");
   const [stops, setStops] = useState(0);
   const [line, setLine] = useState(0);
+  const [say, setSay] = useState<Say>({ kind: "first" });
   const [face, setFace] = useState<Mood>("happy");
   const [cheer, setCheer] = useState(false);
   const back = useRef<HTMLButtonElement>(null);
@@ -93,28 +96,35 @@ export function PickScreen({
     [later],
   );
 
-  const draw = useCallback(() => {
-    const next = drawGame();
-    if (!next) return;
-    const quick = prefersReducedMotion();
-    stop("face");
-    setNextId(next.id);
-    setPhase("reels");
-    setStops(0);
-    later("l", quick ? 0 : 500, () => setStops(1));
-    later("r", quick ? 0 : 680, () => setStops(2));
-    later("e", quick ? 0 : 920, () => {
-      setPickId(next.id);
-      setPhase("eject");
-      runFace(FACE_LAND, 0);
-    });
-    later("d", quick ? 0 : 1400, () => setPhase("landed"));
-  }, [drawGame, later, runFace, stop]);
+  /** `reroll` counts the rerolls since the screen opened: 0 is the first draw. */
+  const draw = useCallback(
+    (reroll: number) => {
+      const deal = drawGame();
+      if (!deal) return;
+      const next = deal.game;
+      setLine(reroll);
+      setSay(chooseSay(t, { reroll, edge: deal.edge, size: list.length, previous: say }));
+      const quick = prefersReducedMotion();
+      stop("face");
+      setNextId(next.id);
+      setPhase("reels");
+      setStops(0);
+      later("l", quick ? 0 : 500, () => setStops(1));
+      later("r", quick ? 0 : 680, () => setStops(2));
+      later("e", quick ? 0 : 920, () => {
+        setPickId(next.id);
+        setPhase("eject");
+        runFace(FACE_LAND, 0);
+      });
+      later("d", quick ? 0 : 1400, () => setPhase("landed"));
+    },
+    [drawGame, later, list.length, runFace, say, stop, t],
+  );
 
   // Opening the screen is the first draw. Its timers are cleared on the way
   // out, so React's StrictMode replay (dev only) simply draws again.
   useEffect(() => {
-    draw();
+    draw(0);
     back.current?.focus();
     return () => ["l", "r", "e", "d", "face"].forEach(stop);
     // The list is the one the screen opened with: it never changes while open.
@@ -143,8 +153,7 @@ export function PickScreen({
       runFace(FACE_LAND, 0);
       return;
     }
-    setLine((n) => n + 1);
-    draw();
+    draw(line + 1);
   };
 
   // Touch screens have no hover: the finger landing on « Start playing »
@@ -199,8 +208,7 @@ export function PickScreen({
   const face2d = <TvScreen screen={screen} mood={mood} reelPhase={spinning ? reelPhase : null} reelStop={reelStop} />;
   const glitch = reliefPhase === "glitch" ? (switchCount % 2 ? "sw-glitch-a" : "sw-glitch-b") : "";
 
-  const say =
-    line === 0 ? t.pick.firstLine(players) : t.pick.rerollLines[(line - 1) % t.pick.rerollLines.length];
+  const sayText = sayLine(t, say, players);
   const tags = game ? cardTags(game, t) : [];
   // Before the first ticket comes out, the slot stays empty: the game is
   // already known (it sizes the zone) but hidden until it ejects.
@@ -222,7 +230,7 @@ export function PickScreen({
         <div className="ps-head">
           <div className="ps-say-w">
             <p id="pick-say" key={line} className={`ps-say${line ? " say-a" : ""}`}>
-              {say}
+              {sayText}
             </p>
           </div>
           <div ref={tvBox}>

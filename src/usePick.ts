@@ -1,22 +1,29 @@
 import { useCallback, useRef, useState } from "react";
 import type { Game } from "./games";
+import type { Translation } from "./i18n/locales";
+import { chooseSay, type Edge, type Say } from "./pickLines";
 import { prefersReducedMotion } from "./relief/config";
 import { REEL_ORDER, type ReelPhase } from "./tv";
+import type { Deal } from "./useDeck";
 import { useTimers } from "./useTimers";
 
 type State = {
   /** The game on the floppy; the drawer is open while it is set. */
   pickId: string | null;
-  /** While the reels spin, the game they will stop on. */
+  /** While the reels spin, the game they will stop on… */
   nextId: string | null;
+  /** …and where it falls in the deck. */
+  nextEdge: Edge;
   phase: ReelPhase | null;
   /** Index in REEL_ORDER of the next game's genre: where the reels stop. */
   reelStop: number;
   /** The floppy goes back into the slot (reroll, close). */
   retract: boolean;
   closing: boolean;
-  /** How many draws since the drawer opened: picks what the TV says. */
+  /** How many draws since the drawer opened: how impatient the TV gets… */
   line: number;
+  /** …and what it says with the floppy. */
+  say: Say;
   // One-shot animations: each counter flips an a/b class so the next run
   // restarts it; the flag says whether it is running.
   eject: number;
@@ -35,11 +42,13 @@ type State = {
 const INITIAL: State = {
   pickId: null,
   nextId: null,
+  nextEdge: null,
   phase: null,
   reelStop: 0,
   retract: false,
   closing: false,
   line: 0,
+  say: { kind: "first" },
   eject: 0,
   ejecting: false,
   fade: 0,
@@ -60,7 +69,7 @@ const ab = (on: boolean, n: number, a: string, b: string) => (on ? (n % 2 ? a : 
  * stop on the game's genre, and a floppy with the game pops out of the slot
  * into the drawer under the banner. Again: the floppy goes back in first.
  */
-export function usePick(list: Game[], draw: () => Game | null, options: { flat: boolean }) {
+export function usePick(list: Game[], draw: () => Deal | null, options: { flat: boolean; t: Translation }) {
   const { later, stop } = useTimers();
   const [state, setState] = useState<State>(INITIAL);
   const latest = useRef(state);
@@ -88,13 +97,15 @@ export function usePick(list: Game[], draw: () => Game | null, options: { flat: 
     if (!current.nextId) return;
     cancelReels();
     const wasOpen = current.pickId !== null && list.some((game) => game.id === current.pickId);
+    const line = wasOpen ? current.line + 1 : 0;
     setState({
       ...current,
       phase: null,
       pickId: current.nextId,
       nextId: null,
       retract: false,
-      line: wasOpen ? current.line + 1 : 0,
+      line,
+      say: chooseSay(options.t, { reroll: line, edge: current.nextEdge, size: list.length, previous: current.say }),
       eject: current.eject + 1,
       ejecting: true,
       fade: current.fade + 1,
@@ -110,7 +121,7 @@ export function usePick(list: Game[], draw: () => Game | null, options: { flat: 
     settle();
     // 3D: the pawns hop as the floppy lands (the CSS waits 380 ms).
     later("hop", 1000, () => patch({ hopping: false }));
-  }, [cancelReels, later, list, patch, settle]);
+  }, [cancelReels, later, list, options.t, patch, settle]);
 
   const start = useCallback(() => {
     const current = latest.current;
@@ -119,14 +130,15 @@ export function usePick(list: Game[], draw: () => Game | null, options: { flat: 
       finish();
       return;
     }
-    const next = draw();
-    if (!next) return;
+    const deal = draw();
+    if (!deal) return;
     const quick = list.some((game) => game.id === current.pickId);
     setState({
       ...current,
       phase: "spin",
-      nextId: next.id,
-      reelStop: Math.max(0, REEL_ORDER.indexOf(next.genre)),
+      nextId: deal.game.id,
+      nextEdge: deal.edge,
+      reelStop: Math.max(0, REEL_ORDER.indexOf(deal.game.genre)),
       retract: quick,
       ejecting: false,
       fading: false,
@@ -174,7 +186,7 @@ export function usePick(list: Game[], draw: () => Game | null, options: { flat: 
     open,
     phase: state.phase,
     reelStop: state.reelStop,
-    line: state.line,
+    say: state.say,
     closing: state.closing,
     start,
     close,

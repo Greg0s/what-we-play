@@ -1,5 +1,9 @@
 import { useCallback, useRef } from "react";
 import type { Game } from "./games";
+import type { Edge } from "./pickLines";
+
+/** A drawn game, and where it falls in the deck: the TV remarks on a round's end. */
+export type Deal = { game: Game; edge: Edge };
 
 /**
  * The draw, without repeats: every game on the list comes up once before any
@@ -15,19 +19,22 @@ export function useDeck(list: Game[]) {
   });
 
   /** Only ever called from a click handler or an effect: never during render. */
-  const draw = useCallback((): Game | null => {
+  const draw = useCallback((): Deal | null => {
     if (list.length === 0) return null;
     if (deck.current.list !== list) deck.current = { list, drawn: new Set(), last: null };
     const current = deck.current;
     let pool = list.filter((game) => !current.drawn.has(game.id));
+    let edge: Edge = null;
     if (pool.length === 0) {
       current.drawn.clear();
       pool = list.length > 1 ? list.filter((game) => game.id !== current.last) : list;
+      edge = "again";
     }
     const next = pool[Math.floor(Math.random() * pool.length)];
     current.drawn.add(next.id);
     current.last = next.id;
-    return next;
+    if (!edge && current.drawn.size === list.length) edge = "last";
+    return { game: next, edge };
   }, [list]);
 
   return draw;

@@ -108,7 +108,50 @@ export const en = {
     noGame: "No game to pick from",
     firstLine: (players: number) =>
       players === 1 ? "For you, it'll be…" : `For the ${players} of you, it'll be…`,
-    rerollLines: ["Or else, there's…", "Or maybe…", "Come on, this one!", "Last idea…"],
+    rerollLines: [
+      [
+        "Or else, there's…",
+        "Or maybe…",
+        "Come on, this one!",
+        "Why not…",
+        "I've got better:",
+        "Wait, wait…",
+        "Hmm, rather…",
+        "Give this a go:",
+        "A little bird tells me…",
+        "I've got a good feeling:",
+      ],
+      [
+        "Fine. This one, then…",
+        "Picky, aren't you…",
+        "Again? Alright…",
+        "I've got more floppies…",
+        "This one, I promise!",
+        "I'm warming up…",
+        "Last idea…",
+        "OK, really the last one…",
+      ],
+      [
+        "Doing this on purpose?",
+        "I'll just pick for you.",
+        "My floppies are tired…",
+        "Will you play someday?",
+        "Closing my eyes and…",
+        "I'm just a TV, you know.",
+        "Blame it on chance…",
+        "That's a lot of noes.",
+      ],
+      [
+        "3 floppies left. Kidding.",
+        "Is the draw the game?",
+        "Was this the real game?",
+        "I'm on strike. … Fine:",
+        "Staying up all night?",
+      ],
+    ],
+    lastLine: "Last floppy in the pile:",
+    againLines: ["That's all of them! Again:", "All out. Reshuffling…"],
+    fewLine: "There aren't fifty…",
     chosen: (name: string) => `Chance picked: ${name}`,
     launch: "Start playing",
     newTab: "opens in a new tab",
@@ -326,8 +369,17 @@ export type Translation = {
     noGame: string;
     /** What the TV says on the first draw… */
     firstLine: (players: number) => string;
-    /** …and on each reroll, in order, then it loops. */
-    rerollLines: readonly string[];
+    /**
+     * …and on each reroll, a random one of the current tier: tiers take over
+     * at `REROLL_TIERS` rerolls (`src/pickLines.ts`), from cheerful to fed up.
+     */
+    rerollLines: readonly [readonly string[], readonly string[], readonly string[], readonly string[]];
+    /** With the last game not drawn yet: the whole list has come up. */
+    lastLine: string;
+    /** When the draw starts over the games already seen, one at random. */
+    againLines: readonly string[];
+    /** Instead of `againLines` when there are only a few games to draw from. */
+    fewLine: string;
     chosen: (name: string) => string;
     launch: string;
     newTab: string;

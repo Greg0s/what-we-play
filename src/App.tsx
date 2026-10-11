@@ -22,6 +22,7 @@ import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
 import { useRelief } from "./relief";
+import { sayLine } from "./pickLines";
 import { buildPath, parseRoute, type Route } from "./routes";
 import { buildScreen, DEFAULT_EYE, eyeColor, GENRE_COLORS, MAX_TILES, type Mood } from "./tv";
 import { useDocumentMeta } from "./useDocumentMeta";
@@ -145,7 +146,7 @@ function App({ route }: { route: Route }) {
 
   const tv = useTvMood(count);
   const draw = useDeck(view.list);
-  const pick = usePick(view.list, draw, { flat: relief.view !== "3d" });
+  const pick = usePick(view.list, draw, { flat: relief.view !== "3d", t });
   const tvZone = useRef<HTMLDivElement>(null);
 
   // A player count change: the bubble bounces, newcomers' faces pop onto the
@@ -250,10 +251,7 @@ function App({ route }: { route: Route }) {
 
   const say = drawerOpen
     ? {
-        line:
-          pick.line === 0
-            ? t.pick.firstLine(players)
-            : t.pick.rerollLines[(pick.line - 1) % t.pick.rerollLines.length],
+        line: sayLine(t, pick.say, players),
         className: pick.classes.sayCls,
       }
     : null;
