@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { FaChevronLeft, FaUsers } from "react-icons/fa6";
-import { TbArrowUpRight, TbDice2, TbDice4, TbDice5, TbDice6 } from "react-icons/tb";
+import { TbArrowUpRight, TbDice5 } from "react-icons/tb";
 import { gameLink, type Game } from "../games";
 import { useTranslation } from "../i18n";
 import { useRelief } from "../relief";
@@ -26,32 +26,20 @@ const FACE_LOOP: [Mood, number][] = [
 
 type Phase = "reels" | "eject" | "landed";
 
-/** The waiting screens the empty slot can show during the first draw: one per opening, at random. */
-const LOADERS = ["shuffle", "read", "dice"] as const;
-type Loader = (typeof LOADERS)[number];
-
 /**
- * What fills the empty slot while the first draw spins, in the site's inks:
- * floppies shuffled like a deck, a disk being read, or keypad keys rolling dice.
+ * What fills the empty slot while the first draw spins: three floppies in the
+ * genres' colours, the front one pulled out and slipped to the back, like a deck.
  */
-function PickLoader({ kind, caption, out }: { kind: Loader; caption: string; out: boolean }) {
+function PickLoader({ caption, out }: { caption: string; out: boolean }) {
   return (
-    <div className={`ps-loader ld-${kind}${out ? " is-gone" : ""}`} aria-hidden="true">
+    <div className={`ps-loader${out ? " is-gone" : ""}`} aria-hidden="true">
       <div className="ld-art">
-        {kind === "shuffle" &&
-          (["drawing", "words", "fun"] as const).map((genre) => (
-            <span key={genre} className="ld-fl">
-              <i className="ld-sh" />
-              <i className={`ld-lb gc-${genre}`} />
-            </span>
-          ))}
-        {kind === "read" && Array.from({ length: 8 }, (_, i) => <i key={i} className="ld-seg" />)}
-        {kind === "dice" &&
-          [TbDice2, TbDice6, TbDice4].map((Die, i) => (
-            <span key={i} className="ld-key">
-              <Die />
-            </span>
-          ))}
+        {(["drawing", "words", "fun"] as const).map((genre) => (
+          <span key={genre} className="ld-fl">
+            <i className="ld-sh" />
+            <i className={`ld-lb gc-${genre}`} />
+          </span>
+        ))}
       </div>
       <p className="ld-cap">{caption}</p>
     </div>
@@ -86,8 +74,6 @@ export function PickScreen({
   const [line, setLine] = useState(0);
   const [face, setFace] = useState<Mood>("happy");
   const [cheer, setCheer] = useState(false);
-  // The screen only ever mounts from a click, never in the prerender: drawing here is safe.
-  const [loader] = useState<Loader>(() => LOADERS[Math.floor(Math.random() * LOADERS.length)]);
   const back = useRef<HTMLButtonElement>(null);
   const tvBox = useRef<HTMLDivElement>(null);
   const ticket = useRef<HTMLDivElement>(null);
@@ -253,10 +239,10 @@ export function PickScreen({
         </div>
 
         <p className="sr" aria-live="polite">
-          {game && phase !== "reels" ? t.pick.chosen(game.name) : loading ? t.pick.loading[loader] : ""}
+          {game && phase !== "reels" ? t.pick.chosen(game.name) : loading ? t.pick.loading : ""}
         </p>
         <div className={`fl-zone ps-ticket ${glitch}`} ref={ticket}>
-          {loading && <PickLoader kind={loader} caption={t.pick.loading[loader]} out={ejecting} />}
+          {loading && <PickLoader caption={t.pick.loading} out={ejecting} />}
           {game && (
             <div className={`fl-move ${flCls}`} style={flight}>
               {(["2d", "3d"] as const).map((dim) => {

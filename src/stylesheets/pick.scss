@@ -1,5 +1,3 @@
-@use "sass:list";
-@use "sass:map";
 @use "./variables" as *;
 
 /* ------------------------------------------------------------ shared */
@@ -601,14 +599,6 @@
   }
 }
 
-.ld-art {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 84px;
-}
-
 .ld-cap {
   color: var(--color-text);
   font-stretch: 125%;
@@ -618,8 +608,9 @@
   text-transform: uppercase;
 }
 
-/* Shuffle: three small floppies, the front one pulled out and slipped to the back, like a deck. */
-.ld-shuffle .ld-art {
+/* Three small floppies, the front one pulled out and slipped to the back, like a deck. */
+.ld-art {
+  position: relative;
   width: 170px;
   height: 100px;
 }
@@ -696,109 +687,6 @@
   100% {
     z-index: 3;
     transform: none;
-  }
-}
-
-/* Read: a chunky progress bar, its segments lighting up in the genres' colours, a cursor blinking after the caption. */
-.ld-read .ld-art {
-  gap: 4px;
-  width: 210px;
-  height: 34px;
-  margin: 25px 0;
-  padding: 4px;
-  background: #ffffff;
-  border: 2.5px solid $ink;
-  border-radius: 10px;
-  box-shadow: 4px 4px 0 var(--color-shadow);
-}
-
-.ld-seg {
-  flex: 1;
-  align-self: stretch;
-  border-radius: 4px;
-  animation: ld-seg 1.1s steps(1, end) infinite;
-
-  @for $i from 1 through 8 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{($i - 1) * 0.1}s;
-      background: list.nth(map.values($genre-colors), ($i - 1) % list.length(map.values($genre-colors)) + 1);
-    }
-  }
-}
-
-@keyframes ld-seg {
-  0% {
-    opacity: 0;
-  }
-
-  8%,
-  88% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-.ld-read .ld-cap::after {
-  content: "_";
-  margin-left: 2px;
-  animation: ld-blink 0.6s steps(1, end) infinite;
-}
-
-@keyframes ld-blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-/* Dice: three keypad keys pressed in turn, each lighting pink like a key of the banner. */
-.ld-dice .ld-art {
-  gap: 12px;
-}
-
-.ld-key {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin-bottom: 5px;
-  border-radius: 13px;
-  background: #ffffff;
-  color: $ink;
-  border: 2.5px solid $ink;
-  box-shadow: 0 5px 0 $ink;
-  animation: ld-press 0.9s ease-in-out infinite;
-
-  &:nth-child(2) {
-    animation-delay: 0.15s;
-  }
-
-  &:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-@keyframes ld-press {
-  0%,
-  45%,
-  100% {
-    background: #ffffff;
-    transform: none;
-    box-shadow: 0 5px 0 $ink;
-  }
-
-  15%,
-  30% {
-    background: $pink;
-    transform: translateY(5px) rotate(-6deg);
-    box-shadow: 0 0 0 $ink;
   }
 }
 
