@@ -9,6 +9,7 @@
     "check": "node scripts/check-seo.js",
     "lint": "eslint .",
     "preview": "vite preview",
+    "og-image": "node scripts/og-image.js",
     "test:e2e": "tsc -b tsconfig.e2e.json && playwright test"
   },
   "dependencies": {

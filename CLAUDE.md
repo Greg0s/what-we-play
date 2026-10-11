@@ -24,6 +24,7 @@ Structure:
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
 - `src/routes.ts` — the URL scheme (see URLs below). `src/pageMeta.ts` — per-page title/description. `src/structuredData.ts` — per-page JSON-LD.
 - `src/entry-server.tsx` + `scripts/prerender.js` — build-time render into `dist/<path>/index.html`, `sitemap.xml`, `llms.txt`. `scripts/check-seo.js` — audits the built `dist/` (see Rendering below).
+- `scripts/og-image.js` — draws the link preview (`public/what-we-play-metadata.jpg`, 1200 × 630, shared by every page) from the built banner's real bubble, TV, keypad and sticker, rearranged by injected CSS. Not part of the build: rerun it by hand when the banner's look changes, then bump the `?v=` on `og:image`/`twitter:image` in `index.html` so social sites drop their cached copy.
 - `e2e/` — Playwright tests against the built `dist/` (`playwright.config.ts` at the repo root). `src/stylesheets/` — the rest of the Sass, roughly one file per feature.
 
 ## Working on this project
@@ -35,6 +36,7 @@ pnpm run build    # typecheck, client + SSR build, prerender, then check-seo (se
 pnpm run check    # re-run just the check-seo audit against an existing dist/
 pnpm run lint     # ESLint, config in eslint.config.js
 pnpm run preview  # serve the built dist/ (also what e2e tests run against)
+pnpm run og-image # redraw the link preview from the built dist/ (needs Chromium + Google Fonts)
 pnpm run test:e2e # Playwright — run `pnpm run build` first, it does not build for you
 ```
 
