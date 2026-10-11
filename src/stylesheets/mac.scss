@@ -5,7 +5,7 @@
  *
  * Never put filter, opacity, overflow or clip-path on .m3-world, .m3-hop, .m3,
  * .m3-pawn, .m3-pb or .m3-sign: they are preserve-3d, and any of those flattens
- * them. The faces (.m3-f) are leaves: anything goes on them.
+ * them. The faces (.m3-f) and the pawns' figures (.m3-pfig) are leaves: anything goes on them.
  */
 
 /* ---------- the set: same box as the 2D .tv (340 x 340 u), camera in u so every size projects alike ---------- */
@@ -64,7 +64,8 @@
    that opens in 3D shows them standing (no animation on first render). */
 .m3-set.is-arriving .m3-pb{animation:m3-drop .42s cubic-bezier(.34,1.56,.64,1) calc(90ms + var(--i)*45ms) both}
 @keyframes m3-drop{0%{transform:translateY(calc(-150*var(--u))) scale(.5)}100%{transform:none}}
-.m3-pb>svg{position:absolute;left:0;top:0;width:100%;height:100%;overflow:visible;transition:opacity .2s calc(var(--d,0)*45ms)}
+.m3-pfig,.m3-pfig>svg{position:absolute;left:0;top:0;width:100%;height:100%}
+.m3-pfig>svg{overflow:visible;transition:opacity .2s calc(var(--d,0)*45ms)}
 .m3-ps{position:absolute;left:-4%;top:82%;width:108%;height:36%;border-radius:50%;background:#17121c;opacity:.18;
   transform:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);transition:opacity .2s calc(var(--d,0)*45ms)}
 :root[data-theme="dark"] .m3-ps{background:#000;opacity:.45}
@@ -72,18 +73,20 @@
    wide banner, proportionally thinner on the phone's 19 px ones. A fixed pixel width looked twice as heavy there. */
 .m3-pbody,.m3-pbase{fill:var(--pc);stroke:#17121c;stroke-width:2.9;stroke-linejoin:round}
 .m3-peyes rect{fill:#17121c}
-.m3-peyes{transform:translate(2.5px,-1px)}
+/* the eyes follow the TV's gaze (--gx, --gy on .m3-set, each −1…1) */
+.m3-peyes{transform-box:fill-box;transform-origin:50% 50%;
+  transform:translate(calc(2.5px + var(--gx,0)*1.6px),calc(-1px + var(--gy,0)*1.6px));transition:transform .2s cubic-bezier(.23,1,.32,1)}
 .m3-pawn.is-out{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .2s ease-in calc(var(--d,0)*30ms)}
-.m3-pawn.is-out .m3-pb>svg,.m3-pawn.is-out .m3-ps{opacity:0;transition:opacity .15s ease-in calc(var(--d,0)*30ms)}
+.m3-pawn.is-out .m3-pfig>svg,.m3-pawn.is-out .m3-ps{opacity:0;transition:opacity .15s ease-in calc(var(--d,0)*30ms)}
 .m3-pawn.p1{--i:0;--pc:#c9f6ff}.m3-pawn.p2{--i:1;--pc:#ffe14d}.m3-pawn.p3{--i:2;--pc:#ff9fd4}.m3-pawn.p4{--i:3;--pc:#8ee5b3}.m3-pawn.p5{--i:4;--pc:#ffb35c}
 .m3-pawn.p6{--i:5;--pc:#bba8ff}.m3-pawn.p7{--i:6;--pc:#ff9a86}.m3-pawn.p8{--i:7;--pc:#7fd8f0}.m3-pawn.p9{--i:8;--pc:#ffffff}.m3-pawn.p10{--i:9;--pc:#ffe14d}
 .m3-pawn.d1{--d:1}.m3-pawn.d2{--d:2}.m3-pawn.d3{--d:3}.m3-pawn.d4{--d:4}.m3-pawn.d5{--d:5}.m3-pawn.d6{--d:6}.m3-pawn.d7{--d:7}.m3-pawn.d8{--d:8}.m3-pawn.d9{--d:9}
 /* the pawns hop when the floppy lands: set hop-a / hop-b on .m3-set when the flight starts and keep it PAWN_HOP_MS
    (src/tv.ts); the 380 ms delay lands the first hop with the floppy. A real jump: crouch, rise slowing down, stretch at
    the top, fall speeding up, squash on landing, settle; the floor shadow shrinks while the pawn is up. */
-.m3-pb>svg{transform-origin:50% 100%}
-.m3-set.hop-a .m3-pb>svg{animation:m3-hopA .52s calc(380ms + var(--i)*30ms) both}
-.m3-set.hop-b .m3-pb>svg{animation:m3-hopB .52s calc(380ms + var(--i)*30ms) both}
+.m3-pfig>svg{transform-origin:50% 100%}
+.m3-set.hop-a .m3-pfig>svg{animation:m3-hopA .52s calc(380ms + var(--i)*30ms) both}
+.m3-set.hop-b .m3-pfig>svg{animation:m3-hopB .52s calc(380ms + var(--i)*30ms) both}
 .m3-set.hop-a .m3-ps{animation:m3-hopsA .52s calc(380ms + var(--i)*30ms) both}
 .m3-set.hop-b .m3-ps{animation:m3-hopsB .52s calc(380ms + var(--i)*30ms) both}
 $m3-ps-at:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);
@@ -104,9 +107,53 @@ $m3-ps-at:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);
     100%{transform:$m3-ps-at}
   }
 }
+/* At rest the pawns are alive: each one rocks gently on its base and blinks, on its own rhythm (--sw, --bl, below).
+   The TV's passing moods take over (.pm-* on .m3-set, see Tv): they bounce on a smile, start on a « wow », trample
+   while the reels spin, eyes up on the screen, and droop when nothing matches. The rocking is on the figure, the hop
+   on its drawing, so a hop never cuts a mood short. */
+.m3-pfig{transform-origin:50% 100%;animation:m3-sway var(--sw,3s) ease-in-out calc(var(--i)*.23s) infinite;
+  transition:transform .45s cubic-bezier(.23,1,.32,1)}
+@keyframes m3-sway{
+  0%,50%,100%{transform:none}
+  25%{transform:rotate(2deg) scaleY(1.02)}
+  75%{transform:rotate(-2deg) scaleY(1.02)}
+}
+.m3-peyes rect{transform-box:fill-box;transform-origin:50% 50%;animation:m3-blink var(--bl,4s) linear calc(.4s + var(--i)*.61s) infinite}
+@keyframes m3-blink{0%,94%,100%{transform:none}97%{transform:scaleY(.1)}}
+.m3-pawn.is-out .m3-pfig,.m3-pawn.is-out .m3-peyes rect{animation:none}
+/* results came back, or the player count changed: one bounce each, squinting with joy */
+.pm-happy .m3-pfig{animation:m3-cheer .5s calc(var(--i)*40ms) both}
+.pm-happy .m3-peyes rect{animation:none;transform:scaleY(.4)}
+@keyframes m3-cheer{
+  0%{transform:none;animation-timing-function:cubic-bezier(.3,0,.5,1)}
+  18%{transform:scale(1.06,.92);animation-timing-function:cubic-bezier(.2,.6,.35,1)}
+  50%{transform:translateY(-14%) scale(.96,1.05);animation-timing-function:cubic-bezier(.55,0,.8,.4)}
+  80%{transform:scale(1.05,.95);animation-timing-function:ease-in-out}
+  100%{transform:none}
+}
+/* one game left: a start, eyes wide */
+.pm-wow .m3-pfig{animation:m3-start .36s cubic-bezier(.23,1,.32,1) calc(var(--i)*25ms) both}
+.pm-wow .m3-peyes{transform:translate(calc(2.5px + var(--gx,0)*1.6px),calc(-1.5px + var(--gy,0)*1.6px)) scale(1.3)}
+.pm-wow .m3-peyes rect{animation:none}
+@keyframes m3-start{0%,100%{transform:none}35%{transform:translateY(-9%) scale(.97,1.04)}}
+/* the reels spin: eyes up on the screen, no blinking, trampling with impatience */
+.pm-reels .m3-pfig{animation:m3-trample .4s calc(var(--i)*70ms) infinite}
+.pm-reels .m3-peyes{transform:translate(3px,-3.5px)}
+.pm-reels .m3-peyes rect{animation:none}
+@keyframes m3-trample{
+  0%{transform:none;animation-timing-function:cubic-bezier(.2,.6,.35,1)}
+  45%{transform:translateY(-7%) scale(.98,1.03);animation-timing-function:cubic-bezier(.55,0,.8,.4)}
+  80%{transform:scale(1.04,.95);animation-timing-function:ease-in-out}
+  100%{transform:none}
+}
+/* nothing matches: they slump and look at their feet */
+.pm-sad .m3-pfig{animation:none;transform:scale(1.03,.92)}
+.pm-sad .m3-peyes{transform:translate(1.5px,3px) scaleY(.75)}
+.m3-pawn.p1{--sw:3.1s;--bl:4.2s}.m3-pawn.p2{--sw:2.7s;--bl:5.1s}.m3-pawn.p3{--sw:3.4s;--bl:3.7s}.m3-pawn.p4{--sw:2.9s;--bl:4.6s}.m3-pawn.p5{--sw:3.3s;--bl:5.4s}
+.m3-pawn.p6{--sw:2.6s;--bl:3.9s}.m3-pawn.p7{--sw:3.5s;--bl:4.9s}.m3-pawn.p8{--sw:2.8s;--bl:4.4s}.m3-pawn.p9{--sw:3.2s;--bl:5.7s}.m3-pawn.p10{--sw:3s;--bl:4s}
 /* 3D -> 2D: every pawn hops out, 15 ms apart (4 players gone in 225 ms, 10 in 315 ms) */
 .m3-set.is-leaving .m3-pawn{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .18s ease-in calc(var(--i)*15ms)}
-.m3-set.is-leaving .m3-pb>svg,.m3-set.is-leaving .m3-ps{opacity:0;transition:opacity .14s ease-in calc(var(--i)*15ms + 40ms)}
+.m3-set.is-leaving .m3-pfig>svg,.m3-set.is-leaving .m3-ps{opacity:0;transition:opacity .14s ease-in calc(var(--i)*15ms + 40ms)}
 
 /* ---------- more than 10 players: a « +N » standee ---------- */
 .m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),0,calc(var(--sz)*var(--u))) rotateY(8deg);transition:transform .42s cubic-bezier(.34,1.56,.64,1) .2s}
@@ -210,6 +257,6 @@ $m3-ps-at:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);
 .m3-bezel::after{content:"";position:absolute;left:calc(10*var(--u) - 3px);top:calc(9*var(--u) - 3px);width:calc(160*var(--u));height:calc(124*var(--u));border-radius:calc(9*var(--u));background:#05121f}
 
 @media (prefers-reduced-motion: reduce){
-  .m3-set .m3-pb,.m3-hop,.m3-set .m3-pb>svg,.m3-set .m3-ps{animation:none !important}
-  .m3-pawn,.m3-sign,.m3-pb>svg,.m3-ps,.m3-board,.m3-stick{transition:none !important}
+  .m3-set .m3-pb,.m3-hop,.m3-set .m3-pfig,.m3-set .m3-pfig>svg,.m3-set .m3-ps,.m3-set .m3-peyes rect{animation:none !important}
+  .m3-pawn,.m3-sign,.m3-pfig,.m3-pfig>svg,.m3-ps,.m3-peyes,.m3-board,.m3-stick{transition:none !important}
 }

@@ -252,6 +252,7 @@ export function PickScreen({
               hop={ejecting || cheer ? "is-hop" : ""}
               slot={ejecting ? "is-slot" : ""}
               pawnHop={hopping ? (hop % 2 ? "hop-a" : "hop-b") : ""}
+              mood={phase === "reels" ? "reels" : "idle"}
             />
           </div>
         </div>

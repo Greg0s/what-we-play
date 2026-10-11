@@ -164,7 +164,12 @@ script in `index.html` sets it before the first paint — keep its key in step
 with `src/relief/config.ts`. A switch plays a short red/cyan anaglyph flicker,
 then the pawns drop in (or hop off first); `mode` flips at the click, `view`
 (what is drawn) at the middle of the flicker. With reduced motion it is
-immediate. On phones the banner's pawns use their own positions (the
+immediate. The pawns are never still: at rest each one rocks on its base and
+blinks on its own rhythm, their eyes follow the TV's gaze, and they act out its
+mood (`pm-*` on `.m3-set`, from the `mood` prop of `Tv`): a bounce on a smile,
+a start on « wow », trampling with eyes up while the reels spin, a slump when
+nothing matches. The rocking lives on `.m3-pfig`, the draw's hop on its `svg`,
+so the two never cut each other short; reduced motion stills all of it. On phones the banner's pawns use their own positions (the
 `max-width: 639px` and `399px` blocks in `mac.scss`): the tape is pinned
 left and the Mac right, so the crowd must fit the gap between them. Never put `filter`, `opacity`, `overflow` or `clip-path` on a
 `preserve-3d` node of the Mac (see `src/stylesheets/mac.scss`): it flattens it.
