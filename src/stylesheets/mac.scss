@@ -19,8 +19,12 @@
 
 /* ---------- the Mac: 220 w x 246 h x 200 d (u) ---------- */
 .m3-f{position:absolute;border:3px solid #17121c;backface-visibility:hidden}
+/* The screen's face, eyes and glare are composited layers of their own (they animate). Left as they are, Chrome draws each
+   one as a separate quad of the Mac's 3D scene, sorts and splits them against the others, and as the gaze moves them by a
+   fraction of a pixel the anti-aliased seams between them show as a thin vertical line across the screen. The no-op
+   filter makes the front a single surface: its layers are composited flat, then drawn in 3D as one quad. */
 .m3-front{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#5fcde8;
-  transform:translateZ(calc(100*var(--u)))}
+  transform:translateZ(calc(100*var(--u)));filter:blur(0)}
 .m3-back{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#e2c78f;
   transform:rotateY(180deg) translateZ(calc(100*var(--u)))}
 .m3-right{left:calc(-100*var(--u));top:calc(-246*var(--u));width:calc(200*var(--u));height:calc(246*var(--u));background:#f2d9a6;
