@@ -30,7 +30,9 @@ test.describe("Pick for us — wide screens", () => {
     await expect(name).toHaveCount(0);
   });
 
-  test("rerolls never repeat a game until the whole list has come up, and the TV says so", async ({ page }) => {
+  test("rerolls never repeat a game, nor a line, until the others have come up, and the TV says so", async ({
+    page,
+  }) => {
     test.setTimeout(60_000);
     await page.goto("/");
     await page.getByRole("button", { name: en.pick.button }).click();
@@ -39,6 +41,8 @@ test.describe("Pick for us — wide screens", () => {
     const say = page.locator(".tv-say");
     const drawn: string[] = [];
     let said = "";
+    // The lines of each tier said since its round started over.
+    const rounds = new Map<number, Set<string>>();
     const reroll = async () => {
       await page.getByRole("button", { name: en.pick.reroll }).click();
       await expect(name).not.toHaveText(drawn[drawn.length - 1]);
@@ -49,8 +53,15 @@ test.describe("Pick for us — wide screens", () => {
       if (draw === 0) expect(line).toBe(en.pick.firstLine(4));
       else if (draw === names.length - 1) expect(line).toBe(en.pick.lastLine);
       else {
-        // One of the current tier's lines, never twice in a row.
-        expect(en.pick.rerollLines[rerollTier(draw)]).toContain(line);
+        // One of the current tier's lines, none again before the others, never twice in a row.
+        const tier = rerollTier(draw);
+        const lines = en.pick.rerollLines[tier];
+        expect(lines).toContain(line);
+        const round = rounds.get(tier) ?? new Set<string>();
+        if (round.size === lines.length) round.clear();
+        expect(round).not.toContain(line);
+        round.add(line);
+        rounds.set(tier, round);
         expect(line).not.toBe(said);
       }
       said = line;
@@ -61,6 +72,27 @@ test.describe("Pick for us — wide screens", () => {
     // The deck starts over: the TV notices.
     await reroll();
     expect(en.pick.againLines).toContain(await say.textContent());
+  });
+
+  test("closing keeps the deck: reopened on the round's last game, the TV says so", async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto("/");
+    const name = page.locator("#pick-name");
+    const open = () => page.getByRole("button", { name: en.pick.button }).click();
+    await open();
+    await expect(name).toBeVisible();
+    // Every game but one.
+    for (let draw = 1; draw < names.length - 1; draw++) {
+      const shown = (await name.textContent()) ?? "";
+      await page.getByRole("button", { name: en.pick.reroll }).click();
+      await expect(name).not.toHaveText(shown);
+    }
+    await page.getByRole("button", { name: en.pick.close }).click();
+    await expect(name).toHaveCount(0);
+
+    await open();
+    await expect(name).toBeVisible();
+    await expect(page.locator(".tv-say")).toHaveText(en.pick.lastLine);
   });
 
   test("Escape closes the drawer", async ({ page }) => {

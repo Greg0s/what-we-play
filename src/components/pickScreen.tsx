@@ -5,7 +5,7 @@ import { gameLink, type Game } from "../games";
 import { useTranslation } from "../i18n";
 import { useRelief } from "../relief";
 import { prefersReducedMotion } from "../relief/config";
-import { chooseSay, sayLine, type Say } from "../pickLines";
+import { chooseSay, sayLine, type LineMemory, type Say } from "../pickLines";
 import { buildScreen, GENRE_COLORS, REEL_ORDER, type Mood } from "../tv";
 import type { Deal } from "../useDeck";
 import { useTimers } from "../useTimers";
@@ -58,6 +58,7 @@ export function PickScreen({
   players,
   wide,
   draw: drawGame,
+  lines,
   onClose,
 }: {
   /** The games on the list when the screen opened. */
@@ -67,6 +68,8 @@ export function PickScreen({
   wide: boolean;
   /** Draws from the list without repeats (see `useDeck`). */
   draw: () => Deal | null;
+  /** The lines the TV has said, shared with the drawer: none repeats before the others have. */
+  lines: LineMemory;
   onClose: () => void;
 }) {
   const { t, language, gameDescription } = useTranslation();
@@ -103,7 +106,7 @@ export function PickScreen({
       if (!deal) return;
       const next = deal.game;
       setLine(reroll);
-      setSay(chooseSay(t, { reroll, edge: deal.edge, size: list.length, previous: say }));
+      setSay(chooseSay(t, { reroll, edge: deal.edge, size: list.length, previous: say, memory: lines }));
       const quick = prefersReducedMotion();
       stop("face");
       setNextId(next.id);
@@ -118,7 +121,7 @@ export function PickScreen({
       });
       later("d", quick ? 0 : 1400, () => setPhase("landed"));
     },
-    [drawGame, later, list.length, runFace, say, stop, t],
+    [drawGame, later, lines, list.length, runFace, say, stop, t],
   );
 
   // Opening the screen is the first draw. Its timers are cleared on the way

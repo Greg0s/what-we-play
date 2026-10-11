@@ -31,38 +31,64 @@ export function rerollTier(reroll: number): number {
   return REROLL_TIERS.reduce((tier, from, index) => (reroll >= from ? index : tier), 0);
 }
 
-/** A random index below `count`, never `previous` when there is a choice. */
-function randomIndex(count: number, previous: number | null): number {
-  if (previous === null || previous >= count || count < 2) return Math.floor(Math.random() * count);
-  const index = Math.floor(Math.random() * (count - 1));
-  return index >= previous ? index + 1 : index;
+/**
+ * Which lines the TV has said, per situation (each tier of `rerollLines`,
+ * `againLines`): like the games, none comes back before the others of the same
+ * situation have. Kept for the whole visit, shared by the drawer and the phone
+ * screen; only ever touched from a click handler or an effect.
+ */
+export type LineMemory = Map<string, { count: number; said: Set<number>; last: number | null }>;
+
+export const createLineMemory = (): LineMemory => new Map();
+
+/**
+ * An index below `count` not said yet in `situation`. Once they all have, they
+ * start over, never on the one just said. A locale with another number of
+ * lines (a language switch) starts its own round.
+ */
+function dealLine(memory: LineMemory, situation: string, count: number): number {
+  let round = memory.get(situation);
+  if (!round || round.count !== count) {
+    round = { count, said: new Set(), last: null };
+    memory.set(situation, round);
+  }
+  if (round.said.size >= count) round.said.clear();
+  const { said, last } = round;
+  const left = [...Array(count).keys()].filter((index) => !said.has(index) && (index !== last || count < 2));
+  const index = left[Math.floor(Math.random() * left.length)];
+  said.add(index);
+  round.last = index;
+  return index;
 }
 
 const same = (a: Say, b: Say | null) => b !== null && JSON.stringify(a) === JSON.stringify(b);
 
 /**
- * The line for a draw: the first one, the end of a round, or one of the
- * current tier, never the one just said. `reroll` counts the rerolls since
- * the draw opened (0 = the first draw).
+ * The line for a draw: the end of a round, the first one, or one of the
+ * current tier, dealt from `memory` so none repeats before the others have
+ * come up. `reroll` counts the rerolls since the draw opened (0 = the first draw).
  */
 export function chooseSay(
   t: Translation,
-  { reroll, edge, size, previous }: { reroll: number; edge: Edge; size: number; previous: Say | null },
+  {
+    reroll,
+    edge,
+    size,
+    previous,
+    memory,
+  }: { reroll: number; edge: Edge; size: number; previous: Say | null; memory: LineMemory },
 ): Say {
-  if (reroll === 0) return { kind: "first" };
+  // The deck outlives a closed draw: reopened, its first game can be the
+  // round's last one or start it over, and that wins over the greeting.
   const few = size <= FEW_GAMES;
   if (few && edge === "again" && !same({ kind: "few" }, previous)) return { kind: "few" };
   if (!few && edge === "last") return { kind: "last" };
   if (!few && edge === "again") {
-    return {
-      kind: "again",
-      index: randomIndex(t.pick.againLines.length, previous?.kind === "again" ? previous.index : null),
-    };
+    return { kind: "again", index: dealLine(memory, "again", t.pick.againLines.length) };
   }
+  if (reroll === 0) return { kind: "first" };
   const tier = rerollTier(reroll);
-  const lines = t.pick.rerollLines[tier];
-  const last = previous?.kind === "reroll" && previous.tier === tier ? previous.index : null;
-  return { kind: "reroll", tier, index: randomIndex(lines.length, last) };
+  return { kind: "reroll", tier, index: dealLine(memory, `reroll-${tier}`, t.pick.rerollLines[tier].length) };
 }
 
 /** The text of a line, in the page's language. */
