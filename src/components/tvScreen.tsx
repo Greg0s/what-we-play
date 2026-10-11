@@ -17,12 +17,17 @@ function Reel({ spin, stopAt }: { spin: string; stopAt: number }) {
 function Tile({
   tile,
   reels,
+  tear,
+  index,
   left,
   right,
   reelStop,
 }: {
   tile: ScreenTile;
   reels: boolean;
+  /** Set when the face cries (nothing matches): where its tear rolls. */
+  tear: Screen["tear"] | null;
+  index: number;
   left: string;
   right: string;
   reelStop: number;
@@ -62,6 +67,14 @@ function Tile({
             </span>
           ))}
         </div>
+      )}
+      {tear && !tile.more && (
+        <span
+          className="tear"
+          style={
+            { "--tx": tear.x, "--ty": tear.y, "--ts": tear.s, animationDelay: `${0.15 + index * 0.06}s` } as Vars
+          }
+        />
       )}
     </div>
   );
@@ -104,6 +117,8 @@ export function TvScreen({
                 key={row * screen.cols + col}
                 tile={tile}
                 reels={reels}
+                tear={mood === "sad" ? screen.tear : null}
+                index={row * screen.cols + col}
                 left={left}
                 right={right}
                 reelStop={reelStop}
@@ -112,9 +127,6 @@ export function TvScreen({
           </div>
         ))}
       </div>
-      {mood === "sad" && (
-        <span className="tear" style={{ "--tx": screen.tear.x, "--ty": screen.tear.y } as Vars} />
-      )}
       <span className="zz">z</span>
       <span className="glare" />
     </div>

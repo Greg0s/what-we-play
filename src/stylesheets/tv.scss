@@ -350,8 +350,8 @@
   position: absolute;
   left: calc(var(--tx) * var(--u));
   top: calc(var(--ty) * var(--u));
-  width: calc(5 * var(--u));
-  height: calc(7 * var(--u));
+  width: calc(5 * var(--ts) * var(--u));
+  height: calc(7 * var(--ts) * var(--u));
   background: #7fd8f0;
   border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   animation: tear 0.9s ease-in 0.15s backwards;
@@ -359,7 +359,7 @@
 
 @keyframes tear {
   from {
-    transform: translateY(calc(-14 * var(--u)));
+    transform: translateY(calc(-14 * var(--ts) * var(--u)));
     opacity: 0;
   }
 

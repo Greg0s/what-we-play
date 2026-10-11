@@ -89,8 +89,8 @@ export type Screen = {
   /** Tiles per row: the call is laid out row by row, so it can never wrap. */
   cols: number;
   solo: boolean;
-  /** Where the tear starts, from the screen's top-left corner. */
-  tear: { x: number; y: number };
+  /** Where each face's tear starts, from its tile's top-left corner, and its scale. */
+  tear: { x: number; y: number; s: number };
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -176,8 +176,10 @@ export function buildScreen(options: {
     cols,
     solo,
     tear: {
-      x: round(6 + tw / 2 + spread / 2 - 2.5),
-      y: round(6 + th * 0.58 + sadDrop + eh * 0.275 + (solo ? 14 : th * 0.06)),
+      x: round(tw / 2 + spread / 2 - 2.5),
+      y: round(th * 0.58 + sadDrop + eh * 0.275 + (solo ? 14 : th * 0.06)),
+      // A crowd's small faces get smaller tears.
+      s: round(clamp(eh / 20, 0.6, 1)),
     },
   };
 }
