@@ -1,16 +1,17 @@
 import { test, expect } from "@playwright/test";
-import { gamesForPlayerCount } from "../src/games";
+import { DEFAULT_PLAYERS, gamesForPlayerCount } from "../src/games";
 import { translations } from "../src/i18n/locales";
 import { en } from "../src/i18n/locales/en";
 import { rerollTier } from "../src/pickLines";
 
+const pickButton = en.pick.button(DEFAULT_PLAYERS);
 const names = gamesForPlayerCount(4).map((game) => game.name);
 
 test.describe("Pick for us — wide screens", () => {
   test("the Enter key draws a game into a drawer, the TV says so, and the sticker closes it", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByRole("button", { name: en.pick.button }).click();
+    await page.getByRole("button", { name: pickButton }).click();
 
     const drawer = page.getByRole("region", { name: /./ }).filter({ has: page.locator("#pick-name") });
     const name = page.locator("#pick-name");
@@ -35,7 +36,7 @@ test.describe("Pick for us — wide screens", () => {
   }) => {
     test.setTimeout(60_000);
     await page.goto("/");
-    await page.getByRole("button", { name: en.pick.button }).click();
+    await page.getByRole("button", { name: pickButton }).click();
 
     const name = page.locator("#pick-name");
     const say = page.locator(".tv-say");
@@ -78,7 +79,7 @@ test.describe("Pick for us — wide screens", () => {
     test.setTimeout(60_000);
     await page.goto("/");
     const name = page.locator("#pick-name");
-    const open = () => page.getByRole("button", { name: en.pick.button }).click();
+    const open = () => page.getByRole("button", { name: pickButton }).click();
     await open();
     await expect(name).toBeVisible();
     // Every game but one.
@@ -97,7 +98,7 @@ test.describe("Pick for us — wide screens", () => {
 
   test("Escape closes the drawer", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: en.pick.button }).click();
+    await page.getByRole("button", { name: pickButton }).click();
     await expect(page.locator("#pick-name")).toBeVisible();
 
     await page.keyboard.press("Escape");
@@ -108,10 +109,16 @@ test.describe("Pick for us — wide screens", () => {
     await page.goto("/");
     await page.getByPlaceholder(en.catalogue.searchPlaceholder).fill("zzzznotagame");
 
-    const key = page.getByRole("button", { name: en.pick.button });
+    const key = page.getByRole("button", { name: pickButton });
     await expect(key).toHaveAttribute("aria-disabled", "true");
     await key.click({ force: true });
     await expect(page.locator("#pick-name")).toHaveCount(0);
+  });
+
+  test("alone, the key picks for me, not for us", async ({ page }) => {
+    await page.goto("/games-for-1-player/");
+    await expect(page.getByRole("button", { name: en.pick.button(1) })).toBeVisible();
+    await expect(page.getByRole("button", { name: en.pick.button(2) })).toHaveCount(0);
   });
 });
 
@@ -170,7 +177,7 @@ test.describe("Pick for us — the TV's lines fit its bubble", () => {
     test(`on one line at ${width} px`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/");
-      await page.getByRole("button", { name: en.pick.button }).click();
+      await page.getByRole("button", { name: pickButton }).click();
       const say = page.locator(".tv-say");
       await expect(say).toBeVisible();
       const spills = await say.evaluate((el, lines) => {

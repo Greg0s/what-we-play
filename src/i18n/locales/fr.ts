@@ -104,7 +104,7 @@ export const fr: Translation = {
     fun: { chip: "Pour rire", band: "Pour rire" },
   },
   pick: {
-    button: "Choisis pour nous",
+    button: (players: number) => (players === 1 ? "Choisis pour moi" : "Choisis pour nous"),
     title: "Tirage au sort",
     noGame: "Aucun jeu à tirer au sort",
     firstLine: (players: number) =>

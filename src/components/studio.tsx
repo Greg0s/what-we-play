@@ -159,7 +159,7 @@ export function Studio({
             aria-disabled={pickDisabled}
           >
             <TbDice5 className="ret-enter__dice" aria-hidden="true" />
-            <span className="ret-enter__label">{t.pick.button}</span>
+            <span className="ret-enter__label">{t.pick.button(players)}</span>
             <TbCornerDownLeft className="ret-enter__arrow" aria-hidden="true" />
             {pickDisabled && <span className="sr">{t.pick.noGame}</span>}
           </button>
