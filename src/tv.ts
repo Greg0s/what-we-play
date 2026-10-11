@@ -191,6 +191,13 @@ export function eyeColor(index: number, genre: Genre | null): string {
 export const MAX_PAWNS = 10;
 
 /**
+ * How long a draw keeps `hop-a`/`hop-b` on the pawns: the CSS waits 380 ms for
+ * the floppy to land, staggers them 30 ms apart and hops for 520 ms, so the
+ * tenth lands at 1170 ms (see `mac.scss`).
+ */
+export const PAWN_HOP_MS = 1300;
+
+/**
  * Class lists of the ten pawn slots. `previous` is the player count just
  * before a change (null when nothing moves): newcomers drop in one by one and
  * leavers hop off from the last one, 45 ms apart.

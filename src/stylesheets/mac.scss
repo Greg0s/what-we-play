@@ -78,12 +78,32 @@
 .m3-pawn.p1{--i:0;--pc:#c9f6ff}.m3-pawn.p2{--i:1;--pc:#ffe14d}.m3-pawn.p3{--i:2;--pc:#ff9fd4}.m3-pawn.p4{--i:3;--pc:#8ee5b3}.m3-pawn.p5{--i:4;--pc:#ffb35c}
 .m3-pawn.p6{--i:5;--pc:#bba8ff}.m3-pawn.p7{--i:6;--pc:#ff9a86}.m3-pawn.p8{--i:7;--pc:#7fd8f0}.m3-pawn.p9{--i:8;--pc:#ffffff}.m3-pawn.p10{--i:9;--pc:#ffe14d}
 .m3-pawn.d1{--d:1}.m3-pawn.d2{--d:2}.m3-pawn.d3{--d:3}.m3-pawn.d4{--d:4}.m3-pawn.d5{--d:5}.m3-pawn.d6{--d:6}.m3-pawn.d7{--d:7}.m3-pawn.d8{--d:8}.m3-pawn.d9{--d:9}
-/* the pawns hop when the floppy lands: set hop-a / hop-b on .m3-set when the flight starts and keep it 1000 ms;
-   the 380 ms delay lands the first hop with the floppy */
-.m3-set.hop-a .m3-pb>svg{animation:m3-hopA .26s cubic-bezier(.3,1.4,.5,1) calc(380ms + var(--i)*30ms) both}
-.m3-set.hop-b .m3-pb>svg{animation:m3-hopB .26s cubic-bezier(.3,1.4,.5,1) calc(380ms + var(--i)*30ms) both}
-@keyframes m3-hopA{50%{transform:translateY(-18%)}}
-@keyframes m3-hopB{50%{transform:translateY(-18%)}}
+/* the pawns hop when the floppy lands: set hop-a / hop-b on .m3-set when the flight starts and keep it PAWN_HOP_MS
+   (src/tv.ts); the 380 ms delay lands the first hop with the floppy. A real jump: crouch, rise slowing down, stretch at
+   the top, fall speeding up, squash on landing, settle; the floor shadow shrinks while the pawn is up. */
+.m3-pb>svg{transform-origin:50% 100%}
+.m3-set.hop-a .m3-pb>svg{animation:m3-hopA .52s calc(380ms + var(--i)*30ms) both}
+.m3-set.hop-b .m3-pb>svg{animation:m3-hopB .52s calc(380ms + var(--i)*30ms) both}
+.m3-set.hop-a .m3-ps{animation:m3-hopsA .52s calc(380ms + var(--i)*30ms) both}
+.m3-set.hop-b .m3-ps{animation:m3-hopsB .52s calc(380ms + var(--i)*30ms) both}
+$m3-ps-at:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);
+@each $k in A, B {
+  @keyframes m3-hop#{$k}{
+    0%{transform:none;animation-timing-function:cubic-bezier(.3,0,.5,1)}
+    14%{transform:scale(1.1,.86);animation-timing-function:cubic-bezier(.2,.6,.35,1)}
+    48%{transform:translateY(-24%) scale(.95,1.06);animation-timing-function:cubic-bezier(.55,0,.8,.4)}
+    76%{transform:scale(1.12,.84);animation-timing-function:cubic-bezier(.3,0,.4,1)}
+    90%{transform:scale(.97,1.03);animation-timing-function:ease-in-out}
+    100%{transform:none}
+  }
+  @keyframes m3-hops#{$k}{
+    0%{transform:$m3-ps-at;animation-timing-function:cubic-bezier(.3,0,.5,1)}
+    14%{transform:$m3-ps-at scale(1.08);animation-timing-function:cubic-bezier(.2,.6,.35,1)}
+    48%{transform:$m3-ps-at scale(.6);animation-timing-function:cubic-bezier(.55,0,.8,.4)}
+    76%{transform:$m3-ps-at scale(1.1);animation-timing-function:cubic-bezier(.3,0,.4,1)}
+    100%{transform:$m3-ps-at}
+  }
+}
 /* 3D -> 2D: every pawn hops out, 15 ms apart (4 players gone in 225 ms, 10 in 315 ms) */
 .m3-set.is-leaving .m3-pawn{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .18s ease-in calc(var(--i)*15ms)}
 .m3-set.is-leaving .m3-pb>svg,.m3-set.is-leaving .m3-ps{opacity:0;transition:opacity .14s ease-in calc(var(--i)*15ms + 40ms)}
@@ -190,6 +210,6 @@
 .m3-bezel::after{content:"";position:absolute;left:calc(10*var(--u) - 3px);top:calc(9*var(--u) - 3px);width:calc(160*var(--u));height:calc(124*var(--u));border-radius:calc(9*var(--u));background:#05121f}
 
 @media (prefers-reduced-motion: reduce){
-  .m3-set .m3-pb,.m3-hop,.m3-set .m3-pb>svg{animation:none !important}
+  .m3-set .m3-pb,.m3-hop,.m3-set .m3-pb>svg,.m3-set .m3-ps{animation:none !important}
   .m3-pawn,.m3-sign,.m3-pb>svg,.m3-ps,.m3-board,.m3-stick{transition:none !important}
 }
