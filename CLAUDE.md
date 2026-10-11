@@ -175,7 +175,7 @@ with `skewX`; the figure stands a hair above the floor): animated planes are
 depth-sorted again every frame, and one crossing the floor's shadows flickers. On phones the banner's pawns use their own positions (the
 `max-width: 639px` and `399px` blocks in `mac.scss`): the tape is pinned
 left and the Mac right, so the crowd must fit the gap between them. Never put `filter`, `opacity`, `overflow` or `clip-path` on a
-`preserve-3d` node of the Mac (see `src/stylesheets/mac.scss`): it flattens it. The front face, a leaf, carries a no-op `filter` on purpose: it composites the screen's animated layers (face, eyes, glare) flat before they enter the 3D scene, otherwise moving eyes leave a thin seam across the screen.
+`preserve-3d` node of the Mac (see `src/stylesheets/mac.scss`): it flattens it. A pawn (or the « +N » sign) that has hopped off is `visibility: hidden` once its hop ends: faded but still in the scene, it hung in front of the screen and Firefox split the screen along its edges.
 
 ## The draw
 
