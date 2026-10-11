@@ -19,12 +19,8 @@
 
 /* ---------- the Mac: 220 w x 246 h x 200 d (u) ---------- */
 .m3-f{position:absolute;border:3px solid #17121c;backface-visibility:hidden}
-/* The screen's face, eyes and glare are composited layers of their own (they animate). Left as they are, Chrome draws each
-   one as a separate quad of the Mac's 3D scene, sorts and splits them against the others, and as the gaze moves them by a
-   fraction of a pixel the anti-aliased seams between them show as a thin vertical line across the screen. The no-op
-   filter makes the front a single surface: its layers are composited flat, then drawn in 3D as one quad. */
 .m3-front{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#5fcde8;
-  transform:translateZ(calc(100*var(--u)));filter:blur(0)}
+  transform:translateZ(calc(100*var(--u)))}
 .m3-back{left:calc(-110*var(--u));top:calc(-246*var(--u));width:calc(220*var(--u));height:calc(246*var(--u));background:#e2c78f;
   transform:rotateY(180deg) translateZ(calc(100*var(--u)))}
 .m3-right{left:calc(-100*var(--u));top:calc(-246*var(--u));width:calc(200*var(--u));height:calc(246*var(--u));background:#f2d9a6;
@@ -63,7 +59,7 @@
 /* ---------- pawns: B3D standees, one per player, colours = the 2D eye colours ---------- */
 .m3-pawn{left:calc(var(--pw)*-.5*var(--u));top:calc(var(--pw)*-1.4423*var(--u));width:calc(var(--pw)*var(--u));height:calc(var(--pw)*1.4423*var(--u));
   transform:translate3d(calc(var(--x)*var(--u)),0,calc(var(--z)*var(--u))) rotateY(var(--r));
-  transition:transform .42s cubic-bezier(.34,1.56,.64,1) calc(var(--d,0)*45ms)}
+  transition:transform .42s cubic-bezier(.34,1.56,.64,1) calc(var(--d,0)*45ms),visibility 0s}
 .m3-pb{width:100%;height:100%}
 /* 2D -> 3D: the pawns drop in one by one (B3D arrival keyframes). Only while .m3-set has .is-arriving, so a page
    that opens in 3D shows them standing (no animation on first render). */
@@ -86,7 +82,10 @@
 /* the eyes follow the TV's gaze (--gx, --gy on .m3-set, each −1…1) */
 .m3-peyes{transform-box:fill-box;transform-origin:50% 50%;
   transform:translate(calc(2.5px + var(--gx,0)*1.6px),calc(-1px + var(--gy,0)*1.6px));transition:transform .2s cubic-bezier(.23,1,.32,1)}
-.m3-pawn.is-out{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);transition:transform .2s ease-in calc(var(--d,0)*30ms)}
+/* Once off, a pawn leaves the scene (visibility, after its hop): left in it, faded out but still a plane hanging in front of
+   the screen, it made Firefox split the screen along its edges, a thin line that came and went as the eyes moved. */
+.m3-pawn.is-out{transform:translate3d(calc(var(--x)*var(--u)),calc(-150*var(--u)),calc(var(--z)*var(--u))) scale(.5);visibility:hidden;
+  transition:transform .2s ease-in calc(var(--d,0)*30ms),visibility 0s calc(.2s + var(--d,0)*30ms)}
 .m3-pawn.is-out .m3-pfig>svg,.m3-pawn.is-out .m3-ps{opacity:0;transition:opacity .15s ease-in calc(var(--d,0)*30ms)}
 .m3-pawn.p1{--i:0;--pc:#c9f6ff}.m3-pawn.p2{--i:1;--pc:#ffe14d}.m3-pawn.p3{--i:2;--pc:#ff9fd4}.m3-pawn.p4{--i:3;--pc:#8ee5b3}.m3-pawn.p5{--i:4;--pc:#ffb35c}
 .m3-pawn.p6{--i:5;--pc:#bba8ff}.m3-pawn.p7{--i:6;--pc:#ff9a86}.m3-pawn.p8{--i:7;--pc:#7fd8f0}.m3-pawn.p9{--i:8;--pc:#ffffff}.m3-pawn.p10{--i:9;--pc:#ffe14d}
@@ -166,12 +165,12 @@ $m3-ps-at:translate3d(calc(var(--pw)*.12*var(--u)),0,0) rotateX(90deg);
 .m3-set.is-leaving .m3-pfig>svg,.m3-set.is-leaving .m3-ps{opacity:0;transition:opacity .14s ease-in calc(var(--i)*15ms + 40ms)}
 
 /* ---------- more than 10 players: a « +N » standee ---------- */
-.m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),0,calc(var(--sz)*var(--u))) rotateY(8deg);transition:transform .42s cubic-bezier(.34,1.56,.64,1) .2s}
+.m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),0,calc(var(--sz)*var(--u))) rotateY(8deg);transition:transform .42s cubic-bezier(.34,1.56,.64,1) .2s,visibility 0s}
 .m3-board{position:absolute;left:calc(-30*var(--u));top:calc(-74*var(--u));width:calc(60*var(--u));height:calc(40*var(--u));display:grid;place-items:center;
   background:#ffffff;color:#17121c;border:var(--pst,3px) solid #17121c;border-radius:calc(8*var(--u));
   font-family:'Archivo',system-ui,sans-serif;font-stretch:125%;font-weight:900;font-size:calc(20*var(--u));line-height:1;white-space:nowrap;transition:opacity .2s .2s}
 .m3-stick{position:absolute;left:calc(-2*var(--u));top:calc(-36*var(--u));width:calc(4*var(--u));height:calc(36*var(--u));background:#17121c;transition:opacity .2s .2s}
-.m3-sign.is-out{transform:translate3d(calc(var(--sx)*var(--u)),calc(-150*var(--u)),calc(var(--sz)*var(--u))) scale(.5);transition:transform .2s ease-in}
+.m3-sign.is-out{transform:translate3d(calc(var(--sx)*var(--u)),calc(-150*var(--u)),calc(var(--sz)*var(--u))) scale(.5);visibility:hidden;transition:transform .2s ease-in,visibility 0s .2s}
 .m3-sign.is-out .m3-board,.m3-sign.is-out .m3-stick{opacity:0;transition:opacity .15s ease-in}
 .m3-set.is-leaving .m3-sign{transform:translate3d(calc(var(--sx)*var(--u)),calc(-150*var(--u)),calc(var(--sz)*var(--u))) scale(.5);transition:transform .2s ease-in}
 .m3-set.is-leaving .m3-board,.m3-set.is-leaving .m3-stick{opacity:0;transition:opacity .15s ease-in}
