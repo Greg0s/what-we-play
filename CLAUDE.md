@@ -169,7 +169,10 @@ blinks on its own rhythm, their eyes follow the TV's gaze, and they act out its
 mood (`pm-*` on `.m3-set`, from the `mood` prop of `Tv`): a bounce on a smile,
 a start on « wow », trampling with eyes up while the reels spin, a slump when
 nothing matches. The rocking lives on `.m3-pfig`, the draw's hop on its `svg`,
-so the two never cut each other short; reduced motion stills all of it. On phones the banner's pawns use their own positions (the
+so the two never cut each other short; reduced motion stills all of it. A
+pawn's base must never go below the floor (no `rotate` on `.m3-pfig`, it leans
+with `skewX`; the figure stands a hair above the floor): animated planes are
+depth-sorted again every frame, and one crossing the floor's shadows flickers. On phones the banner's pawns use their own positions (the
 `max-width: 639px` and `399px` blocks in `mac.scss`): the tape is pinned
 left and the Mac right, so the crowd must fit the gap between them. Never put `filter`, `opacity`, `overflow` or `clip-path` on a
 `preserve-3d` node of the Mac (see `src/stylesheets/mac.scss`): it flattens it.
