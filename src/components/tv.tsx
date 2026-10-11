@@ -1,11 +1,16 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { useRelief } from "../relief";
-import { pawnClasses } from "../tv";
+import { pawnClasses, type Mood } from "../tv";
 import "../stylesheets/tv.scss";
 import "../stylesheets/mac.scss";
 
 const PAWN_PATH =
   "M23 3.5a11.5 11.5 0 0 1 7.6 20.1c3.4.9 5.6 2.4 5.6 4 0 1.5-1.7 2.6-4.2 3.3 1.8 7.5 5.4 14 9.5 19.1v5.8H4.5V50c4.1-5.1 7.7-11.6 9.5-19.1-2.5-.7-4.2-1.8-4.2-3.3 0-1.6 2.2-3.1 5.6-4A11.5 11.5 0 0 1 23 3.5z";
+
+type Vars = CSSProperties & Record<`--${string}`, number>;
+
+/** The TV's moods the pawns act out (see mac.scss); any other leaves them idling. */
+const PAWN_MOODS: readonly Mood[] = ["happy", "wow", "sad", "reels"];
 
 const VENTS =
   "M252 306l6-4.4M262 299l6-4.4M272 292l6-4.4M282 285l6-4.4M292 278l6-4.4 M252 296l6-4.4M262 289l6-4.4M272 282l6-4.4M282 275l6-4.4M292 268l6-4.4 M252 286l6-4.4M262 279l6-4.4M272 272l6-4.4M282 265l6-4.4M292 258l6-4.4 M252 276l6-4.4M262 269l6-4.4M272 262l6-4.4M282 255l6-4.4M292 248l6-4.4";
@@ -25,6 +30,8 @@ export function Tv({
   hop = "",
   slot = "",
   pawnHop = "",
+  mood = "idle",
+  gaze = { x: 0, y: 0 },
   set,
   className = "",
   children,
@@ -40,6 +47,10 @@ export function Tv({
   slot?: string;
   /** `hop-a`/`hop-b`: the pawns hop when a floppy lands. */
   pawnHop?: string;
+  /** The pawns sway and blink at rest, bounce with the TV's passing moods and droop when nothing matches. */
+  mood?: Mood;
+  /** Where the TV looks (each axis −1…1): the pawns' eyes follow. */
+  gaze?: { x: number; y: number };
   /** Where the pawns stand: around the hero's Mac (its phone layout is in CSS), or the phone's pick screen. */
   set: "desk" | "pick";
   className?: string;
@@ -84,7 +95,8 @@ export function Tv({
         <div
           className={`m3-set relief-3d m3-${set}${arriving ? " is-arriving" : ""}${
             leaving ? " is-leaving" : ""
-          } ${pawnHop}`}
+          } ${pawnHop}${PAWN_MOODS.includes(mood) ? ` pm-${mood}` : ""}`}
+          style={{ "--gx": gaze.x, "--gy": gaze.y } as Vars}
         >
           <div className="m3-world">
             <div className={`m3-hop ${hop} ${slot}`}>
@@ -116,14 +128,16 @@ export function Tv({
               <div key={i} className={classes}>
                 <div className="m3-pb">
                   <i className="m3-ps" />
-                  <svg viewBox="0 0 46 66">
-                    <path className="m3-pbody" d={PAWN_PATH} />
-                    <rect className="m3-pbase" x="2.5" y="55" width="41" height="9" rx="3.5" />
-                    <g className="m3-peyes">
-                      <rect x="17" y="10" width="3.6" height="8.5" rx="1" />
-                      <rect x="25.4" y="10" width="3.6" height="8.5" rx="1" />
-                    </g>
-                  </svg>
+                  <div className="m3-pfig">
+                    <svg viewBox="0 0 46 66">
+                      <path className="m3-pbody" d={PAWN_PATH} />
+                      <rect className="m3-pbase" x="2.5" y="55" width="41" height="9" rx="3.5" />
+                      <g className="m3-peyes">
+                        <rect x="17" y="10" width="3.6" height="8.5" rx="1" />
+                        <rect x="25.4" y="10" width="3.6" height="8.5" rx="1" />
+                      </g>
+                    </svg>
+                  </div>
                 </div>
               </div>
             ))}

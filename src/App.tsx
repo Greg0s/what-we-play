@@ -198,6 +198,10 @@ function App({ route }: { route: Route }) {
           ? "happy"
           : "idle";
 
+  // The pawns act out the TV's passing moods but not the open drawer's smile:
+  // they already hop when its floppy lands.
+  const pawnMood: Mood = mood === "happy" && tv.flash !== "happy" ? "idle" : mood;
+
   const colorAt = (index: number) => {
     if (pick.phase) return DEFAULT_EYE;
     if (drawerOpen && pick.pick) return GENRE_COLORS[pick.pick.genre];
@@ -303,6 +307,8 @@ function App({ route }: { route: Route }) {
               hop={pick.classes.hop || (bump.popFrom >= 0 ? (bump.n % 2 ? "jp-a" : "jp-b") : "")}
               slot={pick.classes.slot}
               pawnHop={pick.classes.pawnHop}
+              mood={pawnMood}
+              gaze={tv.gaze}
               screen2d={<TvScreen screen={screen2d} mood={mood} share={filters.screenShare} {...reels} />}
               screen3d={<TvScreen screen={screen3d} mood={mood} share={filters.screenShare} {...reels} />}
             />
