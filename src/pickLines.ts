@@ -64,7 +64,7 @@ function dealLine(memory: LineMemory, situation: string, count: number): number 
 const same = (a: Say, b: Say | null) => b !== null && JSON.stringify(a) === JSON.stringify(b);
 
 /**
- * The line for a draw: the first one, the end of a round, or one of the
+ * The line for a draw: the end of a round, the first one, or one of the
  * current tier, dealt from `memory` so none repeats before the others have
  * come up. `reroll` counts the rerolls since the draw opened (0 = the first draw).
  */
@@ -78,13 +78,15 @@ export function chooseSay(
     memory,
   }: { reroll: number; edge: Edge; size: number; previous: Say | null; memory: LineMemory },
 ): Say {
-  if (reroll === 0) return { kind: "first" };
+  // The deck outlives a closed draw: reopened, its first game can be the
+  // round's last one or start it over, and that wins over the greeting.
   const few = size <= FEW_GAMES;
   if (few && edge === "again" && !same({ kind: "few" }, previous)) return { kind: "few" };
   if (!few && edge === "last") return { kind: "last" };
   if (!few && edge === "again") {
     return { kind: "again", index: dealLine(memory, "again", t.pick.againLines.length) };
   }
+  if (reroll === 0) return { kind: "first" };
   const tier = rerollTier(reroll);
   return { kind: "reroll", tier, index: dealLine(memory, `reroll-${tier}`, t.pick.rerollLines[tier].length) };
 }

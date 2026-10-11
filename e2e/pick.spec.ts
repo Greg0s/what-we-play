@@ -74,6 +74,27 @@ test.describe("Pick for us — wide screens", () => {
     expect(en.pick.againLines).toContain(await say.textContent());
   });
 
+  test("closing keeps the deck: reopened on the round's last game, the TV says so", async ({ page }) => {
+    test.setTimeout(60_000);
+    await page.goto("/");
+    const name = page.locator("#pick-name");
+    const open = () => page.getByRole("button", { name: en.pick.button }).click();
+    await open();
+    await expect(name).toBeVisible();
+    // Every game but one.
+    for (let draw = 1; draw < names.length - 1; draw++) {
+      const shown = (await name.textContent()) ?? "";
+      await page.getByRole("button", { name: en.pick.reroll }).click();
+      await expect(name).not.toHaveText(shown);
+    }
+    await page.getByRole("button", { name: en.pick.close }).click();
+    await expect(name).toHaveCount(0);
+
+    await open();
+    await expect(name).toBeVisible();
+    await expect(page.locator(".tv-say")).toHaveText(en.pick.lastLine);
+  });
+
   test("Escape closes the drawer", async ({ page }) => {
     await page.goto("/");
     await page.getByRole("button", { name: en.pick.button }).click();

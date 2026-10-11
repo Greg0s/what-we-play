@@ -188,9 +188,10 @@ translates it: `firstLine`, then on rerolls a line of the current tier of
 `rerollLines` (tiers take over at `REROLL_TIERS`, from cheerful to fed up).
 Lines are dealt like the games: none of a tier (or of `againLines`) comes
 back before the others of it have, never the same twice in a row — a
-`LineMemory` held by `App.tsx` for the whole visit, shared by both draws. The deck's edges win over the tier:
-`lastLine` with the last game not drawn yet, one of `againLines` when it
-starts over — or `fewLine` instead, when the list has `FEW_GAMES` or fewer.
+`LineMemory` held by `App.tsx` for the whole visit, shared by both draws. The deck's edges win over the tier, and over `firstLine` too
+(closing the draw doesn't reset the deck, so a reopened one can start on an
+edge): `lastLine` with the last game not drawn yet, one of `againLines` when
+it starts over — or `fewLine` instead, when the list has `FEW_GAMES` or fewer.
 **Lines must be short**: the drawer's bubble holds a single line of about
 25 characters (`white-space: nowrap`), the phone's three. An e2e test checks
 every line of every locale; shorten a line rather than widen the bubble.
