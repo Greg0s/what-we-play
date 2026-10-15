@@ -372,6 +372,20 @@
     "accountNeeded": false
   },
   {
+    "id": "lyrix",
+    "name": "Lyrix",
+    "minPlayers": 1,
+    "maxPlayers": -1,
+    "link": "https://lyrix-eyg.pages.dev/",
+    "genre": "music",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
     "id": "ethnoguessr",
     "name": "EthnoGuessr",
     "minPlayers": 1,

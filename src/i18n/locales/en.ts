@@ -202,6 +202,7 @@ export const en = {
     "gartic-phone": "Telephone Game with drawings and texts.",
     "linkterpol": "Guess if the portrait is from LinkedIn or from Interpol.",
     "pedantix": "Discover the Wikipedia page.",
+    "lyrix": "Uncover the lyrics to guess the song.",
     "cemantix": "Discover the word.",
     "brandcolorgame": "Guess the brand's color.",
     "blindtest-gg":
@@ -266,6 +267,7 @@ export const en = {
     "pedantix": [
       "wikipedia", "words", "semantic", "daily", "riddle", "culture", "french",
     ],
+    "lyrix": ["music", "songs", "lyrics", "pedantix", "daily", "riddle", "artists"],
     "cemantix": [
       "words", "semantic", "semantle", "daily", "riddle", "vocabulary", "french",
     ],

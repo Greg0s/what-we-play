@@ -199,6 +199,7 @@ export const es: Translation = {
     "gartic-phone": "El juego del teléfono con dibujos y frases.",
     "linkterpol": "Adivina si el retrato es de LinkedIn o de Interpol.",
     "pedantix": "Descubre la página de Wikipedia.",
+    "lyrix": "Descubre la letra para adivinar la canción.",
     "cemantix": "Descubre la palabra.",
     "brandcolorgame": "Adivina el color de la marca.",
     "blindtest-gg":
@@ -263,6 +264,7 @@ export const es: Translation = {
     ],
     "linkterpol": ["linkedin", "interpol", "caras", "retratos", "criminales", "gracioso"],
     "pedantix": ["palabras", "semántica", "diario", "acertijo", "cultura", "francés"],
+    "lyrix": ["música", "canciones", "letras", "pedantix", "diario", "acertijo", "artistas"],
     "cemantix": ["palabras", "semántica", "diario", "acertijo", "vocabulario", "francés"],
     "brandcolorgame": ["logos", "marcas", "colores", "diseño", "marketing", "memoria"],
     "blindtest-gg": [
