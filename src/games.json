@@ -309,7 +309,7 @@
     "link": "https://pedantix.certitudes.org/",
     "genre": "words",
     "solo": true,
-    "soloWithStrangers": true,
+    "soloWithStrangers": false,
     "multiplayer": true,
     "screenShare": true,
     "mobileFriendly": true,
