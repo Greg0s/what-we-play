@@ -486,5 +486,33 @@
     "screenShare": false,
     "mobileFriendly": true,
     "accountNeeded": true
+  },
+  {
+    "id": "gameguessr",
+    "name": "GameGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 50,
+    "link": "https://terracid.fr/gameguessr/",
+    "genre": "movies",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": true
+  },
+  {
+    "id": "serieguessr",
+    "name": "SerieGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 50,
+    "link": "https://terracid.fr/serieguessr/",
+    "genre": "movies",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": true
   }
 ]

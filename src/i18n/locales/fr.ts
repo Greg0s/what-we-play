@@ -213,6 +213,8 @@ export const fr: Translation = {
     "gamedle": "Devine le jeu vidéo à partir d'une capture pixelisée, de sa jaquette, d'un personnage ou de mots-clés.",
     "doggoguessr": "Devine d'où vient une race de chien sur une carte du monde.",
     "movieguessr": "Devine le film à partir d'un plan pris au hasard. Défi du jour, solo ou salons jusqu'à 50 joueurs.",
+    "gameguessr": "Devine le jeu vidéo à partir d'une capture prise au hasard. Mêmes salons et défi du jour que MovieGuessr.",
+    "serieguessr": "Devine la série à partir d'un plan pris au hasard. Mêmes salons et défi du jour que MovieGuessr.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
@@ -275,5 +277,7 @@ export const fr: Translation = {
     "gamedle": ["jeu vidéo", "quiz", "quotidien", "wordle", "deviner", "culture"],
     "doggoguessr": ["chien", "race", "géographie", "carte", "quotidien", "deviner"],
     "movieguessr": ["film", "cinéma", "quiz", "quotidien", "deviner", "culture"],
+    "gameguessr": ["jeu vidéo", "capture", "quiz", "quotidien", "deviner", "movieguessr"],
+    "serieguessr": ["série", "télé", "quiz", "quotidien", "deviner", "movieguessr"],
   },
 };

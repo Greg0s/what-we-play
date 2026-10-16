@@ -214,6 +214,8 @@ export const es: Translation = {
     "gamedle": "Adivina el videojuego a partir de una captura pixelada, su portada, un personaje o palabras clave.",
     "doggoguessr": "Adivina de dónde viene una raza de perro en un mapa del mundo.",
     "movieguessr": "Adivina la película a partir de un plano al azar. Reto diario, solo o salas de hasta 50 jugadores.",
+    "gameguessr": "Adivina el videojuego a partir de una captura al azar. Mismas salas y reto diario que MovieGuessr.",
+    "serieguessr": "Adivina la serie a partir de un plano al azar. Mismas salas y reto diario que MovieGuessr.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -278,5 +280,7 @@ export const es: Translation = {
     "gamedle": ["videojuego", "quiz", "diario", "wordle", "adivinar", "trivia"],
     "doggoguessr": ["perro", "raza", "geografía", "mapa", "diario", "adivinar"],
     "movieguessr": ["película", "cine", "quiz", "diario", "adivinar", "trivia"],
+    "gameguessr": ["videojuego", "captura", "quiz", "diario", "adivinar", "movieguessr"],
+    "serieguessr": ["serie", "televisión", "quiz", "diario", "adivinar", "movieguessr"],
   },
 };
