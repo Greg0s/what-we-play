@@ -199,6 +199,7 @@ export const es: Translation = {
     "gartic-phone": "El juego del teléfono con dibujos y frases.",
     "linkterpol": "Adivina si el retrato es de LinkedIn o de Interpol.",
     "pedantix": "Descubre la página de Wikipedia.",
+    "lyrix": "Descubre la letra para adivinar la canción.",
     "cemantix": "Descubre la palabra.",
     "brandcolorgame": "Adivina el color de la marca.",
     "blindtest-gg":
@@ -213,6 +214,8 @@ export const es: Translation = {
     "gamedle": "Adivina el videojuego a partir de una captura pixelada, su portada, un personaje o palabras clave.",
     "doggoguessr": "Adivina de dónde viene una raza de perro en un mapa del mundo.",
     "movieguessr": "Adivina la película a partir de un plano al azar. Reto diario, solo o salas de hasta 50 jugadores.",
+    "gameguessr": "Adivina el videojuego a partir de una captura al azar.",
+    "serieguessr": "Adivina la serie a partir de un plano al azar.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -263,6 +266,7 @@ export const es: Translation = {
     ],
     "linkterpol": ["linkedin", "interpol", "caras", "retratos", "criminales", "gracioso"],
     "pedantix": ["palabras", "semántica", "diario", "acertijo", "cultura", "francés"],
+    "lyrix": ["música", "canciones", "letras", "pedantix", "diario", "acertijo", "artistas"],
     "cemantix": ["palabras", "semántica", "diario", "acertijo", "vocabulario", "francés"],
     "brandcolorgame": ["logos", "marcas", "colores", "diseño", "marketing", "memoria"],
     "blindtest-gg": [
@@ -276,5 +280,7 @@ export const es: Translation = {
     "gamedle": ["videojuego", "quiz", "diario", "wordle", "adivinar", "trivia"],
     "doggoguessr": ["perro", "raza", "geografía", "mapa", "diario", "adivinar"],
     "movieguessr": ["película", "cine", "quiz", "diario", "adivinar", "trivia"],
+    "gameguessr": ["videojuego", "captura", "quiz", "diario", "adivinar", "movieguessr"],
+    "serieguessr": ["serie", "televisión", "quiz", "diario", "adivinar", "movieguessr"],
   },
 };

@@ -202,6 +202,7 @@ export const en = {
     "gartic-phone": "Telephone Game with drawings and texts.",
     "linkterpol": "Guess if the portrait is from LinkedIn or from Interpol.",
     "pedantix": "Discover the Wikipedia page.",
+    "lyrix": "Uncover the lyrics to guess the song.",
     "cemantix": "Discover the word.",
     "brandcolorgame": "Guess the brand's color.",
     "blindtest-gg":
@@ -216,6 +217,8 @@ export const en = {
     "gamedle": "Guess the video game from a pixelated screenshot, its cover, a character or keywords.",
     "doggoguessr": "Guess where a dog breed comes from on a world map.",
     "movieguessr": "Guess the movie from a random shot. Daily challenge, solo, or rooms of up to 50 players.",
+    "gameguessr": "Guess the video game from a random screenshot.",
+    "serieguessr": "Guess the TV series from a random shot.",
   },
   gameKeywords: {
     "uwufufu": [
@@ -266,6 +269,7 @@ export const en = {
     "pedantix": [
       "wikipedia", "words", "semantic", "daily", "riddle", "culture", "french",
     ],
+    "lyrix": ["music", "songs", "lyrics", "pedantix", "daily", "riddle", "artists"],
     "cemantix": [
       "words", "semantic", "semantle", "daily", "riddle", "vocabulary", "french",
     ],
@@ -281,6 +285,8 @@ export const en = {
     "gamedle": ["video game", "quiz", "daily", "wordle", "guess", "trivia"],
     "doggoguessr": ["dog", "breed", "geography", "map", "daily", "guess"],
     "movieguessr": ["movie", "film", "cinema", "quiz", "daily", "guess"],
+    "gameguessr": ["video game", "screenshot", "quiz", "daily", "guess", "movieguessr"],
+    "serieguessr": ["tv series", "show", "quiz", "daily", "guess", "movieguessr"],
   },
 } as const;
 
