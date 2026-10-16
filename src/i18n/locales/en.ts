@@ -217,8 +217,8 @@ export const en = {
     "gamedle": "Guess the video game from a pixelated screenshot, its cover, a character or keywords.",
     "doggoguessr": "Guess where a dog breed comes from on a world map.",
     "movieguessr": "Guess the movie from a random shot. Daily challenge, solo, or rooms of up to 50 players.",
-    "gameguessr": "Guess the video game from a random screenshot. Same rooms and daily challenge as MovieGuessr.",
-    "serieguessr": "Guess the TV series from a random shot. Same rooms and daily challenge as MovieGuessr.",
+    "gameguessr": "Guess the video game from a random screenshot.",
+    "serieguessr": "Guess the TV series from a random shot.",
   },
   gameKeywords: {
     "uwufufu": [
