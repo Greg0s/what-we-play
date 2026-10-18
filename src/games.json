@@ -428,6 +428,20 @@
     "accountNeeded": false
   },
   {
+    "id": "songspot",
+    "name": "Songspot",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://songspot.net/",
+    "genre": "music",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
     "id": "fermi",
     "name": "Fermi",
     "minPlayers": 1,
