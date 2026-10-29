@@ -194,6 +194,7 @@ export const en = {
       "Party trivia game mixing pop culture, images, and quick guesses.",
     "rentguessr": "Guess rent price based on accommodations images.",
     "openguessr": "Guess locations on a map based on Street View images.",
+    "maptap": "Place cities and landmarks on a world map, alone or in a versus duel.",
     "squiz":
       "Online quiz game with multiple categories and fast-paced challenges.",
     "codenames":
@@ -257,6 +258,9 @@ export const en = {
     ],
     "openguessr": [
       "geoguessr", "geography", "map", "street view", "travel", "countries", "world",
+    ],
+    "maptap": [
+      "geography", "map", "world", "cities", "landmarks", "countries", "daily",
     ],
     "squiz": ["quiz", "trivia", "general knowledge", "questions", "culture", "kahoot"],
     "codenames": [

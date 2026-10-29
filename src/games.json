@@ -528,5 +528,19 @@
     "screenShare": false,
     "mobileFriendly": true,
     "accountNeeded": true
+  },
+  {
+    "id": "maptap",
+    "name": "MapTap",
+    "minPlayers": 1,
+    "maxPlayers": 2,
+    "link": "https://maptap.gg/",
+    "genre": "geography",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]

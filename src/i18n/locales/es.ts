@@ -192,6 +192,8 @@ export const es: Translation = {
       "Adivina el precio del alquiler a partir de fotos de viviendas.",
     "openguessr":
       "Adivina lugares en el mapa a partir de imágenes de Street View.",
+    "maptap":
+      "Coloca ciudades y monumentos en un mapa del mundo, solo o en duelo.",
     "squiz": "Quiz en línea con muchas categorías y partidas trepidantes.",
     "codenames":
       "Da pistas ingeniosas para que tu equipo acierte las palabras correctas del tablero.",
@@ -254,6 +256,9 @@ export const es: Translation = {
     ],
     "openguessr": [
       "geoguessr", "geografía", "mapa", "street view", "viajes", "países", "mundo",
+    ],
+    "maptap": [
+      "geografía", "mapa", "mundo", "ciudades", "monumentos", "países", "diario",
     ],
     "squiz": [
       "quiz", "trivia", "cultura general", "preguntas", "conocimientos", "kahoot",

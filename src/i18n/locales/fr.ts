@@ -190,6 +190,7 @@ export const fr: Translation = {
       "Jeu de culture générale mêlant pop culture, images et réponses rapides.",
     rentguessr: "Devine le prix du loyer à partir de photos de logements.",
     openguessr: "Devine des lieux sur une carte à partir d'images Street View.",
+    maptap: "Place des villes et des monuments sur une carte du monde, seul ou en duel.",
     squiz:
       "Quiz en ligne avec de nombreuses catégories et des parties rythmées.",
     codenames:
@@ -255,6 +256,9 @@ export const fr: Translation = {
     ],
     "openguessr": [
       "geoguessr", "géographie", "carte", "street view", "voyage", "pays", "monde",
+    ],
+    "maptap": [
+      "géographie", "carte", "monde", "villes", "monuments", "pays", "quotidien",
     ],
     "squiz": ["quiz", "culture générale", "questions", "connaissances", "kahoot"],
     "codenames": [
