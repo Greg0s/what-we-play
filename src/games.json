@@ -361,7 +361,7 @@
     "id": "what-the-tune",
     "name": "What the Tune",
     "minPlayers": 1,
-    "maxPlayers": 10,
+    "maxPlayers": 255,
     "link": "https://whatthetune.com/",
     "genre": "music",
     "solo": true,
@@ -547,7 +547,7 @@
     "id": "curvytron2",
     "name": "Curvytron2",
     "minPlayers": 1,
-    "maxPlayers": -1,
+    "maxPlayers": 255,
     "link": "https://curvytron2.com/",
     "localizedLinks": {
       "fr": "https://curvytron2.com/fr/"
