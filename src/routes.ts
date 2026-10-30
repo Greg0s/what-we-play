@@ -1,7 +1,7 @@
 import { DEFAULT_LANGUAGE, LANGUAGES, type Language } from "./i18n/config";
 import { DEFAULT_PLAYERS } from "./games";
 
-export const SITE_URL = "https://whatweplay.gregoiretinn.es";
+export const SITE_URL = "https://whatweplay.mintymoon.app";
 
 /**
  * Player counts that get their own page. Past ten the catalogue barely changes,

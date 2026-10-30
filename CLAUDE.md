@@ -1,6 +1,6 @@
 # a-quoi-on-joue (What we play?)
 
-Front-end site listing online games (solo or multiplayer) to help quickly find something to play based on the number of players. Deployed on GitHub Pages: https://whatweplay.gregoiretinn.es/
+Front-end site listing online games (solo or multiplayer) to help quickly find something to play based on the number of players. Deployed on GitHub Pages: https://whatweplay.mintymoon.app/
 
 ## Keeping this file up to date
 

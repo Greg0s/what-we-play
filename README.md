@@ -4,7 +4,7 @@ Find easily new games to play online with your friends (or alone)!
 
 Indicate the number of players and find games to have fun :)
 
-Visit the website: https://whatweplay.gregoiretinn.es/
+Visit the website: https://whatweplay.mintymoon.app/
 
 ## Languages
 
