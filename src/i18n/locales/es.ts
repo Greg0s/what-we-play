@@ -219,6 +219,7 @@ export const es: Translation = {
     "movieguessr": "Adivina la película a partir de un plano al azar. Reto diario, solo o salas de hasta 50 jugadores.",
     "gameguessr": "Adivina el videojuego a partir de una captura al azar.",
     "serieguessr": "Adivina la serie a partir de un plano al azar.",
+    "curvytron2": "Un snake multijugador: guía una curva que crece sin chocar con las paredes ni los rastros. Gana el último que siga vivo.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -289,5 +290,6 @@ export const es: Translation = {
     "movieguessr": ["película", "cine", "quiz", "diario", "adivinar", "trivia"],
     "gameguessr": ["videojuego", "captura", "quiz", "diario", "adivinar", "movieguessr"],
     "serieguessr": ["serie", "televisión", "quiz", "diario", "adivinar", "movieguessr"],
+    "curvytron2": ["curva", "serpiente", "tron", "achtung", "arcade", "multijugador", "último vivo", "reflejos", "divertido"],
   },
 };
