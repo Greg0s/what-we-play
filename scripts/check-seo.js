@@ -53,7 +53,7 @@ if (!sitemapDeclaration) fail("robots.txt ne déclare pas de Sitemap");
 
 const origin = sitemapDeclaration
   ? new URL(sitemapDeclaration).origin
-  : "https://whatweplay.gregoiretinn.es";
+  : "https://whatweplay.mintymoon.app";
 
 // ---------------------------------------------------------------- pages
 

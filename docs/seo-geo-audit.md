@@ -276,7 +276,7 @@ User-agent: Google-Extended
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://whatweplay.gregoiretinn.es/sitemap.xml
+Sitemap: https://whatweplay.mintymoon.app/sitemap.xml
 ```
 
 C'est une décision, pas une évidence technique : autoriser ces robots, c'est
@@ -335,10 +335,10 @@ cohérente — mais elle se choisit.
 
 **À faire par vous — je n'ai pas accès à vos comptes.**
 
-1. **Google Search Console** : ajouter la propriété `whatweplay.gregoiretinn.es`
+1. **Google Search Console** : ajouter la propriété `whatweplay.mintymoon.app`
    (préférer la propriété *domaine*, vérifiée par enregistrement DNS TXT chez le
-   registraire de `gregoiretinn.es`), puis soumettre
-   `https://whatweplay.gregoiretinn.es/sitemap.xml`. C'est aussi là que se
+   registraire de `mintymoon.app`), puis soumettre
+   `https://whatweplay.mintymoon.app/sitemap.xml`. C'est aussi là que se
    vérifie que les `hreflang` sont acceptés (rapport « Ciblage international »)
    et que les données structurées passent.
 2. **Bing Webmaster Tools** : même chose ; l'import depuis Search Console évite
