@@ -221,7 +221,7 @@ export const en = {
     "movieguessr": "Guess the movie from a random shot. Daily challenge, solo, or rooms of up to 50 players.",
     "gameguessr": "Guess the video game from a random screenshot.",
     "serieguessr": "Guess the TV series from a random shot.",
-    "curvytron2": "Multiplayer snake: steer a growing curve, avoid walls and trails. Last one alive wins.",
+    "curvytron2": "A mix of snake and Tron: steer a growing curve without touching walls or trails. Last one alive wins.",
   },
   gameKeywords: {
     "uwufufu": [

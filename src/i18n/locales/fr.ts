@@ -217,7 +217,7 @@ export const fr: Translation = {
     "movieguessr": "Devine le film à partir d'un plan pris au hasard. Défi du jour, solo ou salons jusqu'à 50 joueurs.",
     "gameguessr": "Devine le jeu vidéo à partir d'une capture prise au hasard.",
     "serieguessr": "Devine la série à partir d'un plan pris au hasard.",
-    "curvytron2": "Un snake multijoueur : dirige une courbe qui grandit sans toucher les murs ni les traînées. Le dernier en vie gagne.",
+    "curvytron2": "Un mélange de snake et de Tron : dirige une courbe qui grandit sans toucher les murs ni les traînées. Le dernier en vie gagne.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
