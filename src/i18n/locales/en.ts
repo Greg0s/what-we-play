@@ -221,6 +221,7 @@ export const en = {
     "movieguessr": "Guess the movie from a random shot. Daily challenge, solo, or rooms of up to 50 players.",
     "gameguessr": "Guess the video game from a random screenshot.",
     "serieguessr": "Guess the TV series from a random shot.",
+    "curvytron2": "Multiplayer snake: steer a growing curve, avoid walls and trails. Last one alive wins.",
   },
   gameKeywords: {
     "uwufufu": [
@@ -293,6 +294,7 @@ export const en = {
     "movieguessr": ["movie", "film", "cinema", "quiz", "daily", "guess"],
     "gameguessr": ["video game", "screenshot", "quiz", "daily", "guess", "movieguessr"],
     "serieguessr": ["tv series", "show", "quiz", "daily", "guess", "movieguessr"],
+    "curvytron2": ["curve", "snake", "tron", "achtung", "arcade", "multiplayer", "last alive", "reflex", "funny"],
   },
 } as const;
 

@@ -542,5 +542,22 @@
     "screenShare": false,
     "mobileFriendly": true,
     "accountNeeded": false
+  },
+  {
+    "id": "curvytron2",
+    "name": "Curvytron2",
+    "minPlayers": 1,
+    "maxPlayers": -1,
+    "link": "https://curvytron2.com/",
+    "localizedLinks": {
+      "fr": "https://curvytron2.com/fr/"
+    },
+    "genre": "fun",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": false,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]
