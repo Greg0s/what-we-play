@@ -38,4 +38,18 @@ test.describe("Theme switcher", () => {
 
     await context.close();
   });
+
+  // Safari tints its toolbar with theme-color: it must follow the theme from
+  // the first paint, which only the inline script in index.html can do.
+  test("tints the browser's toolbar dark before any bundle runs", async ({ browser }) => {
+    const context = await browser.newContext({ colorScheme: "dark" });
+    const page = await context.newPage();
+    // Block the app's bundle: only the inline script is left to set it.
+    await page.route("**/assets/*.js", (route) => route.abort());
+
+    await page.goto("/");
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute("content", "#141017");
+
+    await context.close();
+  });
 });

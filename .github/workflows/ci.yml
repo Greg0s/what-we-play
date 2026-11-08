@@ -52,10 +52,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-chromium-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          key: playwright-chromium-webkit-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
 
-      - name: Install Playwright browser
-        run: pnpm exec playwright install --with-deps chromium
+      # WebKit is Safari's engine: the suite runs in both (playwright.config.ts).
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium webkit
 
       # Runs against the dist/ the previous step built: games render, search,
       # filters, the player-count control, the language and theme switchers,

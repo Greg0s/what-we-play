@@ -18,8 +18,10 @@
     height: 18px;
   }
 
-  &:hover {
-    transform: translateY(-1px);
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-1px);
+    }
   }
 
   &:active {
@@ -252,9 +254,11 @@
     height: 20px;
   }
 
-  &:hover {
-    transform: rotate(0deg) translate(-1px, -1px);
-    box-shadow: 4px 4px 0 var(--color-shadow);
+  @media (hover: hover) {
+    &:hover {
+      transform: rotate(0deg) translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--color-shadow);
+    }
   }
 
   &:active {

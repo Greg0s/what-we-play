@@ -19,6 +19,8 @@ function applyTheme(theme: ThemeMode) {
     document.documentElement.removeAttribute("data-theme");
   }
 
+  // Same colours as the inline script in index.html, which sets the dark one
+  // before the first paint.
   document
     .querySelector('meta[name="theme-color"]')
     ?.setAttribute("content", theme === "dark" ? "#141017" : "#ffffff");

@@ -77,6 +77,32 @@ body {
 }
 
 /*
+ * Safari and iOS. `color-scheme` lets native bits (the search field's caret
+ * and autofill, scrollbars, the overscroll area) follow the site's theme
+ * rather than the OS one. iPhones inflate text in landscape unless told not
+ * to. Every press has its own look (keys sink, cards and chips shift), so
+ * iOS's grey tap flash is turned off, and `manipulation` keeps a quick double
+ * tap (a reroll, two keys in a row) from zooming the page.
+ */
+:root {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+a,
+button,
+input,
+label {
+  touch-action: manipulation;
+}
+
+/*
  * Theme colors are CSS variables, so switching `data-theme` already repaints
  * every element that reads one — this only makes that repaint fade instead of
  * snap. Scoped to color/border properties so it can't interfere with the
@@ -227,9 +253,12 @@ button {
     flex-shrink: 0;
   }
 
-  &:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0 var(--color-shadow);
+  /* Only where a pointer really hovers: a tap leaves :hover stuck on touch screens. */
+  @media (hover: hover) {
+    &:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--color-shadow);
+    }
   }
 
   &:active {
@@ -240,13 +269,6 @@ button {
   &.is-icon {
     width: 44px;
     padding: 0;
-  }
-}
-
-@media (hover: none) {
-  .b-btn:hover {
-    transform: none;
-    box-shadow: 3px 3px 0 var(--color-shadow);
   }
 }
 
