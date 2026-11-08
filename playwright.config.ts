@@ -25,6 +25,12 @@ export default defineConfig({
       name: "chromium",
       use: { ...devices["Desktop Chrome"] },
     },
+    // Safari's engine: the whole suite again, so a layout guard or a flow
+    // that only breaks in WebKit (iPhone, iPad, Mac) fails here too.
+    {
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
+    },
   ],
   webServer: {
     command: "pnpm run preview",

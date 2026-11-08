@@ -98,9 +98,11 @@
     background-color: var(--color-soft);
     transition: background-color 0.2s;
 
-    &:hover {
-      background-color: $yellow;
-      color: $ink;
+    @media (hover: hover) {
+      &:hover {
+        background-color: $yellow;
+        color: $ink;
+      }
     }
   }
 }

@@ -50,3 +50,14 @@ test.describe("SEO essentials", () => {
     });
   }
 });
+
+// iOS fills a home-screen icon's transparent parts with black, and the logo is
+// black on transparent: the touch icon is its own opaque file.
+test("the iOS home-screen icon is served", async ({ page, request }) => {
+  await page.goto("/");
+  const href = await page.locator('link[rel="apple-touch-icon"]').getAttribute("href");
+  expect(href).toBe("/apple-touch-icon.png");
+  const response = await request.get(href!);
+  expect(response.status()).toBe(200);
+  expect(response.headers()["content-type"]).toContain("image/png");
+});

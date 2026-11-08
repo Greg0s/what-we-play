@@ -69,7 +69,9 @@ Two constraints follow, and breaking either is silent:
 
 Playwright e2e tests (`e2e/`, run with `pnpm run test:e2e`) exercise the
 built `dist/` through `vite preview`, not the dev server: hydration, lazy
-favicons and per-page SEO tags only exist in that output. The exhaustive
+favicons and per-page SEO tags only exist in that output. The suite runs
+twice, in Chromium and in WebKit (Safari's engine); CI installs both, and
+`--project=chromium` skips WebKit where it isn't installed. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
 the keypad, the options and genres, the draw (drawer and phone screen, no repeats), the
@@ -158,7 +160,10 @@ language switcher: `localStorage` (`what-we-play:theme`) once chosen,
 `prefers-color-scheme` before that. `index.html` carries an inline script
 that re-implements that same lookup before `<head>` finishes parsing, since
 it runs before React and can't import `src/theme/config.ts` — without it,
-dark mode would flash light before hydration. If the storage key or default
+dark mode would flash light before hydration. It also sets the dark
+`theme-color` (Safari tints its toolbar with it), the same colour
+`ThemeProvider` writes afterwards; `color-scheme` follows `data-theme` in
+`App.scss`. If the storage key or default
 logic in `src/theme/config.ts` changes, update that inline script by hand.
 
 ## 2D / 3D
@@ -215,6 +220,16 @@ it starts over — or `fewLine` instead, when the list has `FEW_GAMES` or fewer.
 **Lines must be short**: the drawer's bubble holds a single line of about
 25 characters (`white-space: nowrap`), the phone's three. An e2e test checks
 every line of every locale; shorten a line rather than widen the bubble.
+
+## Safari and iOS
+
+- Hover effects sit inside `@media (hover: hover)`: on a touch screen a tap
+  leaves `:hover` stuck, so a card or chip stayed lifted after the tap.
+- `App.scss` turns off iOS's grey tap flash, landscape text inflation, and
+  double-tap zoom on links and buttons (`touch-action: manipulation`), which a
+  quick reroll or two keys in a row used to trigger.
+- The home-screen icon is `public/apple-touch-icon.png` (180 × 180, opaque):
+  iOS paints an icon's transparent parts black, and the logo is black.
 
 ## Load animation
 

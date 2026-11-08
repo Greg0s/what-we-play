@@ -98,9 +98,11 @@
     box-shadow 0.12s ease,
     opacity 0.2s;
 
-  &:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 4px 4px 0 var(--color-shadow);
+  @media (hover: hover) {
+    &:hover {
+      transform: translate(-1px, -1px);
+      box-shadow: 4px 4px 0 var(--color-shadow);
+    }
   }
 
   &.is-on {
@@ -165,8 +167,10 @@
     background-color 0.15s,
     color 0.15s;
 
-  &:hover {
-    background: var(--color-soft);
+  @media (hover: hover) {
+    &:hover {
+      background: var(--color-soft);
+    }
   }
 
   &.is-on {
@@ -255,9 +259,11 @@
     transform 0.15s ease,
     box-shadow 0.15s ease;
 
-  &:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 9px 9px 0 var(--color-shadow);
+  @media (hover: hover) {
+    &:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0 var(--color-shadow);
+    }
   }
 
   &:active {
@@ -265,9 +271,11 @@
     box-shadow: 2px 2px 0 var(--color-shadow);
   }
 
-  &:hover .game__play {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  @media (hover: hover) {
+    &:hover .game__play {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
   }
 
   &__band {

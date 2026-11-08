@@ -272,9 +272,11 @@
     box-shadow 0.1s ease,
     background-color 0.15s ease;
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 0 $ink;
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 0 $ink;
+    }
   }
 
   &:active,
@@ -311,9 +313,11 @@
     box-shadow 0.1s ease,
     opacity 0.2s;
 
-  &:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 0 $ink;
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 0 $ink;
+    }
   }
 
   &:active,

@@ -6,7 +6,12 @@
 
     <!-- Icons -->
     <link rel="icon" type="image/png" href="/what-we-play.png" />
-    <link rel="apple-touch-icon" href="/what-we-play.png" />
+    <!--
+      iOS fills an icon's transparent corners with black, and the logo is black
+      on transparent: the home-screen icon is its own opaque 180 × 180 file.
+    -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="What we play?" />
     <meta name="theme-color" content="#ffffff" />
 
     <!--
@@ -27,7 +32,14 @@
             stored === "dark" ||
             (stored !== "light" &&
               window.matchMedia("(prefers-color-scheme: dark)").matches);
-          if (dark) document.documentElement.setAttribute("data-theme", "dark");
+          if (dark) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            // Safari tints its toolbar with this: dark from the first paint,
+            // not only once React's ThemeProvider takes over (same colour).
+            document
+              .querySelector('meta[name="theme-color"]')
+              .setAttribute("content", "#141017");
+          }
           // Same for the TV: in 3D, show the Mac rather than the flat TV from the
           // first paint. Key duplicated from src/relief/config.ts; 2D is the default.
           if (localStorage.getItem("what-we-play:relief") === "3d")
