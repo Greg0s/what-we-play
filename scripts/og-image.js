@@ -10,7 +10,7 @@
  *
  * Then bump PREVIEW_VERSION in src/pageMeta.ts: social sites cache an image by
  * its URL. Needs a Chromium for Playwright and network access to Google Fonts
- * (Honk and Archivo). Set CHROMIUM_PATH to use a Chromium other than
+ * (Archivo; Honk is self-hosted). Set CHROMIUM_PATH to use a Chromium other than
  * Playwright's.
  */
 import { readFile, writeFile } from "node:fs/promises";

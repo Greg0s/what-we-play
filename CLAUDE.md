@@ -118,10 +118,18 @@ to change together.
 Easy to undo by accident — see `docs/seo-geo-audit.md` for the
 measurements:
 
-- The Google Fonts request is two families: Archivo, a variable font asked
+- The Google Fonts request is one family: Archivo, a variable font asked
   for over its `wdth` 62..125 and `wght` 400..900 axes (one file per subset,
-  whatever the range), and Honk. No italic, no third family: each one costs
-  real, measured kilobytes.
+  whatever the range). No italic, no second family: each one costs real,
+  measured kilobytes.
+- Honk is self-hosted (`src/assets/fonts/`, `@font-face` in `App.scss`)
+  because its colours are COLRv1, which Safari can't draw: Google's file
+  showed a plain black stencil there. Two builds of the same Latin subset,
+  picked with `tech()`: Google's COLRv1 file (30 kB) for Chrome and Firefox,
+  an OpenType-SVG build (85 kB, nanoemoji's `maximum_color`, COLR/CPAL
+  stripped) for Safari. Each browser downloads only one. A glyph outside
+  that subset falls back to `system-ui`; to add characters, re-subset
+  Honk from Google Fonts and rebuild both files the same way.
 - The banner has no photo any more (the TV and the gradient are CSS and
   inline SVG), so there is nothing to preload: `scripts/prerender.js` no
   longer touches the template beyond the head and the root.
