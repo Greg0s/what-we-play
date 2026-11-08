@@ -31,6 +31,31 @@
   --color-studio: linear-gradient(180deg, #221a33 0%, #3a2147 45%, #5b2556 80%, #6e2a5e 100%);
 }
 
+/*
+ * Honk, the TV's voice (the H1, the « 3D » tag, the modal's title), is
+ * self-hosted rather than asked of Google Fonts. Its colours and extrusion
+ * are COLRv1, which Safari (iOS and macOS) does not draw: it fell back to the
+ * glyphs' plain outlines, a black stencil with no gradient. So it comes in
+ * two builds of the same Latin subset, same metrics:
+ * - honk-colrv1: Google's own file, for Chrome, Edge and Firefox;
+ * - honk-svg: the same glyphs as OpenType-SVG (made with nanoemoji's
+ *   `maximum_color`, then stripped of COLR/CPAL), which Safari draws.
+ * `tech()` lets each browser download only the one it can draw. The first
+ * `src` is for browsers that don't parse `tech()` (Safari before 17): they
+ * drop the second declaration and keep the SVG build.
+ * Licence: src/assets/fonts/Honk-OFL.txt.
+ */
+@font-face {
+  font-family: "Honk";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("./assets/fonts/honk-svg.woff2") format("woff2");
+  src:
+    url("./assets/fonts/honk-colrv1.woff2") format("woff2") tech(color-COLRv1),
+    url("./assets/fonts/honk-svg.woff2") format("woff2") tech(color-SVG);
+}
+
 /* Reset everything */
 *,
 *::before,
