@@ -37,6 +37,7 @@ pnpm run check    # re-run just the check-seo audit against an existing dist/
 pnpm run lint     # ESLint, config in eslint.config.js
 pnpm run preview  # serve the built dist/ (also what e2e tests run against)
 pnpm run og-image # redraw the link previews from the built dist/ (needs Chromium + Google Fonts)
+pnpm run splash-screens # redraw the iOS launch screens and their tags in index.html (needs Chromium)
 pnpm run test:e2e # Playwright — run `pnpm run build` first, it does not build for you
 ```
 
@@ -74,7 +75,7 @@ twice, in Chromium and in WebKit (Safari's engine); CI installs both, and
 `--project=chromium` skips WebKit where it isn't installed. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
-the keypad, the options and genres, the manifest and the app opening offline (Chromium only), the draw (drawer and phone screen, no repeats), the
+the keypad, the options and genres, the manifest, icon and launch-screen sizes, the app opening offline (Chromium only), the draw (drawer and phone screen, no repeats), the
 3D glasses, and four layout guards: the TV's call stays inside its screen at
 every player count, the H1 holds on two lines above the keypad in every
 language (`Studio` shrinks it when Honk renders a line too wide), and on
@@ -244,6 +245,14 @@ circle) and `apple-touch-icon.png`, all the logo on opaque white, drawn from
 `what-we-play.png`; redraw them together if the logo changes. The iOS status
 bar stays `default`: `black-translucent` would put the page under it and
 call for `viewport-fit=cover` and safe-area padding.
+
+iOS launch screens (`public/splash/`, the logo on white, one per iPhone and
+iPad screen size × orientation) and their `apple-touch-startup-image` tags
+between the `splash` markers of `index.html` both come from
+`scripts/splash-screens.js`: rerun it when the logo changes or Apple ships a
+new screen size (add it to `DEVICES`). iOS only shows an image whose size
+matches the screen exactly; without one it shows plain white. They are not
+precached: iOS fetches the matching one itself.
 
 `main.tsx` registers `/sw.js` in the build only. The worker
 (`scripts/service-worker.js`, filled in and written to `dist/` by

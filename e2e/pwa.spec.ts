@@ -26,6 +26,19 @@ test("the manifest makes the site installable", async ({ page, request }) => {
   const purposes = manifest.icons.map((icon: { purpose: string }) => icon.purpose);
   expect(purposes).toContain("maskable");
 
+  // iOS launch screens: each image is exactly the size its media query names.
+  const splashes = page.locator('link[rel="apple-touch-startup-image"]');
+  expect(await splashes.count()).toBeGreaterThan(0);
+  for (const link of await splashes.all()) {
+    const media = (await link.getAttribute("media"))!;
+    const [, width, height, ratio, orientation] = media.match(
+      /device-width: (\d+)px\) and \(device-height: (\d+)px\) and \(-webkit-device-pixel-ratio: (\d)\) and \(orientation: (\w+)\)/,
+    )!;
+    const [w, h] = [Number(width) * Number(ratio), Number(height) * Number(ratio)];
+    const expected = orientation === "portrait" ? `${w}x${h}` : `${h}x${w}`;
+    expect(await pngSize(request, (await link.getAttribute("href"))!)).toBe(expected);
+  }
+
   // iOS before 16.4 ignores the manifest.
   await expect(page.locator('meta[name="apple-mobile-web-app-capable"]')).toHaveAttribute(
     "content",
