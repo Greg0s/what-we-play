@@ -11,6 +11,19 @@
       on transparent: the home-screen icon is its own opaque 180 × 180 file.
     -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!--
+      Installable app: the manifest names it, gives Android and desktop their
+      icons (a maskable one for Android's shapes) and opens it standalone, at
+      "/", which then follows the visitor's language. iOS reads the manifest
+      too since 16.4; the apple-* tags cover older versions and set the name
+      under the icon. The status bar stays "default" (dark text over the page's
+      theme-color): "black-translucent" would slide the page under it.
+    -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="What we play?" />
     <meta name="theme-color" content="#ffffff" />
 

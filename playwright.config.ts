@@ -19,6 +19,9 @@ export default defineConfig({
   use: {
     baseURL: "http://localhost:4173",
     trace: "on-first-retry",
+    // The build registers a service worker that caches pages and assets: off
+    // everywhere but e2e/pwa.spec.ts, so a test sees the network it routes.
+    serviceWorkers: "block",
   },
   projects: [
     {

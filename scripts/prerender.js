@@ -8,7 +8,8 @@
  * player count a real URL of its own.
  */
 import { execFileSync } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -87,7 +88,37 @@ for (const page of pages) {
 await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap());
 await writeFile(path.join(distDir, "llms.txt"), buildLlmsTxt());
 
+/**
+ * The service worker (see scripts/service-worker.js): precaches every built
+ * asset, the icons and each language's landing page, under a version that
+ * changes with any of them, so each deploy replaces the old caches.
+ */
+const landings = pages.filter((page) => page.isHome).map((page) => page.path);
+const assets = (await readdir(path.join(distDir, "assets"))).map((file) => `/assets/${file}`);
+const precache = [
+  ...landings,
+  ...assets,
+  "/manifest.webmanifest",
+  "/icon-192.png",
+  "/icon-512.png",
+  "/apple-touch-icon.png",
+];
+const versionHash = createHash("sha256");
+for (const url of precache) {
+  versionHash.update(url);
+  versionHash.update(await readFile(path.join(distDir, url, url.endsWith("/") ? "index.html" : "")));
+}
+const workerTemplate = await readFile(path.join(root, "scripts", "service-worker.js"), "utf8");
+const worker = workerTemplate
+  .replace('"__VERSION__"', JSON.stringify(versionHash.digest("hex").slice(0, 12)))
+  .replace("/*__PRECACHE__*/ []", JSON.stringify(precache))
+  .replace('/*__LANDINGS__*/ ["/"]', JSON.stringify(landings));
+if (worker.includes("__")) {
+  throw new Error("scripts/service-worker.js : un emplacement n'a pas été rempli");
+}
+await writeFile(path.join(distDir, "sw.js"), worker);
+
 console.log(
-  `prerender: ${pages.length} pages écrites dans dist/, sitemap.xml et llms.txt régénérés` +
+  `prerender: ${pages.length} pages écrites dans dist/, sitemap.xml et llms.txt régénérés, sw.js (${precache.length} fichiers en cache)` +
     (dateModified ? `, dateModified=${dateModified}` : ", sans dateModified (pas d'historique git)")
 );

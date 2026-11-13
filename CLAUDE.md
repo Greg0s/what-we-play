@@ -23,7 +23,7 @@ Structure:
 - `src/components/` — `Studio` (the banner: the bubble with the H1, the TV, the cord, the sticker and the keypad, whose keys are real links to each player-count page and whose Enter key draws a game), `Tv` + `TvScreen` (the mascot, flat and 3D), `PickDrawer` (the draw on wide screens), `PickScreen` (the draw on phones), `Floppy`, `Games` (search, genres, options, cards), `Game` (card), `GlassesSwitch`, `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal, portalled to `<body>` so its backdrop also covers the floating « Pick for us » button).
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
 - `src/routes.ts` — the URL scheme (see URLs below). `src/pageMeta.ts` — per-page title/description. `src/structuredData.ts` — per-page JSON-LD.
-- `src/entry-server.tsx` + `scripts/prerender.js` — build-time render into `dist/<path>/index.html`, `sitemap.xml`, `llms.txt`. `scripts/check-seo.js` — audits the built `dist/` (see Rendering below).
+- `src/entry-server.tsx` + `scripts/prerender.js` — build-time render into `dist/<path>/index.html`, `sitemap.xml`, `llms.txt`, and `sw.js` from the `scripts/service-worker.js` template (see Installable app below). `scripts/check-seo.js` — audits the built `dist/` (see Rendering below).
 - `scripts/og-image.js` — draws the link previews, `public/what-we-play-preview-<lang>.jpg` (1200 × 630, one per language), from the built banner: its real bubble, sticker and 3D Mac with four pawns, rearranged by injected CSS. Nothing pressable is drawn (no keypad, no « Pick for us »). The title is « What we play? » in every language; the tape, the sticker and the alt are `preview` in the locale files. Not part of the build: rerun it by hand when the banner's look or that text changes, then bump `PREVIEW_VERSION` in `src/pageMeta.ts` so social sites drop their cached copy.
 - `e2e/` — Playwright tests against the built `dist/` (`playwright.config.ts` at the repo root). `src/stylesheets/` — the rest of the Sass, roughly one file per feature.
 
@@ -74,13 +74,15 @@ twice, in Chromium and in WebKit (Safari's engine); CI installs both, and
 `--project=chromium` skips WebKit where it isn't installed. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
-the keypad, the options and genres, the draw (drawer and phone screen, no repeats), the
+the keypad, the options and genres, the manifest and the app opening offline (Chromium only), the draw (drawer and phone screen, no repeats), the
 3D glasses, and four layout guards: the TV's call stays inside its screen at
 every player count, the H1 holds on two lines above the keypad in every
 language (`Studio` shrinks it when Honk renders a line too wide), and on
 phones (360 and 412 px) the 3D pawns and « +N » sign stay clear of the
 keypad's tape, its keys and the bubble, and every line the TV can say with a
-draw fits its bubble. The favicon test needs `www.google.com`: it fails behind a proxy
+draw fits its bubble. Service workers are blocked in every test but
+`e2e/pwa.spec.ts` (`serviceWorkers` in `playwright.config.ts`), so a cached
+file never hides what a test routes. The favicon test needs `www.google.com`: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only
@@ -230,6 +232,28 @@ every line of every locale; shorten a line rather than widen the bubble.
   quick reroll or two keys in a row used to trigger.
 - The home-screen icon is `public/apple-touch-icon.png` (180 × 180, opaque):
   iOS paints an icon's transparent parts black, and the logo is black.
+
+## Installable app (PWA)
+
+`public/manifest.webmanifest` (a single one for all languages, `start_url: "/"`,
+which then follows the visitor's language) plus the `apple-*` and
+`mobile-web-app-capable` tags in `index.html` make the site installable,
+standalone, on Android, desktop and iOS. Icons: `icon-192.png`,
+`icon-512.png`, `icon-maskable-512.png` (the logo inside Android's safe
+circle) and `apple-touch-icon.png`, all the logo on opaque white, drawn from
+`what-we-play.png`; redraw them together if the logo changes. The iOS status
+bar stays `default`: `black-translucent` would put the page under it and
+call for `viewport-fit=cover` and safe-area padding.
+
+`main.tsx` registers `/sw.js` in the build only. The worker
+(`scripts/service-worker.js`, filled in and written to `dist/` by
+`prerender.js`) precaches every file of `dist/assets/`, the icons and each
+language's landing page, under a version hashed from them; a deploy installs
+a new one that takes over at once and drops the old caches. Pages are network
+first and kept once visited; offline, a page never visited redirects to its
+language's landing, so the markup always matches the URL (see Rendering).
+Assets are cache first, Google Fonts kept as fetched, the games' favicons not
+cached. Offline means the catalogue opens, not that the games do.
 
 ## Load animation
 
