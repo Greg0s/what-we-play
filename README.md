@@ -56,6 +56,10 @@ The banner's TV asks the page's question and reacts to what you do. The 3D
 glasses next to the theme switcher turn it into a 3D Mac with one pawn per
 player; the choice is remembered like the theme.
 
+The site installs as an app (Add to Home Screen on iPhone and Android, the
+install button in Chrome and Edge), and once visited it opens without a
+network: the catalogue is there, the games themselves still need one.
+
 ## Planned features
 
 - Add game images

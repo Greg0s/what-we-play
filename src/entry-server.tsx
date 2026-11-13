@@ -71,6 +71,8 @@ export type RenderedPage = {
   /** Site path, e.g. `/fr/jeux-a-4-joueurs/`. */
   path: string;
   language: string;
+  /** A language's landing page: the service worker precaches these. */
+  isHome: boolean;
   head: string;
   html: string;
   /** Games this page is expected to list, for the build to verify. */
@@ -93,6 +95,7 @@ export function renderPage(route: Route, options: RenderOptions = {}): RenderedP
   return {
     path: buildPath(route),
     language: route.language,
+    isHome: route.isHome,
     head: renderHead(route, options.dateModified),
     html,
     gameNames: gamesForPlayerCount(route.players).map((game) => game.name),

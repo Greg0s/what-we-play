@@ -32,3 +32,14 @@ if (container.hasChildNodes()) {
 } else {
   createRoot(container).render(app);
 }
+
+// The service worker (written into dist/ by scripts/prerender.js) lets the
+// installed app open without a network. Only in the build: `vite dev` has no
+// sw.js, and a worker caching dev files would get in the way.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      // Private mode or blocked storage: the site works the same without it.
+    });
+  });
+}
