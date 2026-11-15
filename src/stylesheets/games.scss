@@ -23,11 +23,12 @@
     transform 0.12s ease,
     box-shadow 0.12s ease;
 
+  /* Focus shows as the bar lifting, not as the blue ring: a text field
+     matches :focus-visible on a tap too, so the ring circled the bar on
+     phones every time it was touched. */
   &:focus-within {
     transform: translate(-2px, -2px);
     box-shadow: 6px 6px 0 var(--color-shadow);
-    outline: 3px solid #2f6bff;
-    outline-offset: 3px;
   }
 
   input {
