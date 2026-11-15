@@ -142,7 +142,14 @@ ${pages}
 `;
 }
 
-export function buildSitemap(): string {
+/**
+ * `lastModified`: when the catalogue or its copy last changed (the same date as
+ * the JSON-LD's `dateModified`). Every page is drawn from those two sources, so
+ * it is true of each of them; without it, no `<lastmod>` rather than the build
+ * clock, which would change on every deploy and teach crawlers to ignore it.
+ */
+export function buildSitemap(lastModified?: string): string {
+  const lastmod = lastModified ? `\n    <lastmod>${lastModified}</lastmod>` : "";
   const entries = allRoutes()
     .map((route) => {
       const links = alternates(route)
@@ -152,7 +159,7 @@ export function buildSitemap(): string {
         )
         .join("\n");
 
-      return `  <url>\n    <loc>${buildUrl(route)}</loc>\n${links}\n  </url>`;
+      return `  <url>\n    <loc>${buildUrl(route)}</loc>${lastmod}\n${links}\n  </url>`;
     })
     .join("\n");
 

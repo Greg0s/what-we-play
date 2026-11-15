@@ -85,7 +85,7 @@ for (const page of pages) {
   await writeFile(path.join(fileDir, "index.html"), withLang);
 }
 
-await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap());
+await writeFile(path.join(distDir, "sitemap.xml"), buildSitemap(dateModified));
 await writeFile(path.join(distDir, "llms.txt"), buildLlmsTxt());
 
 /**
