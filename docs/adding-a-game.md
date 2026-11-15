@@ -57,6 +57,18 @@ site serves French or Spanish at a URL of its own, add `localizedLinks`
 picks its language from the browser or a setting needs nothing. Check each
 URL actually opens in that language.
 
+### Icon
+
+Cards show the icon Google's favicon service has for `link`'s host
+(`https://www.google.com/s2/favicons?domain=<host>&sz=64`). Open that URL:
+if it returns 404 (Google's grey globe), Google has no icon for the site
+(`e2e/favicons.spec.ts` fails on it too).
+Then download the site's own icon (its `<link rel="icon">` or
+`apple-touch-icon`; a logo cropped to its emblem if it has none), save it as
+`public/favicons/<id>.png` (64 × 64, transparent or square) or `.svg`, and
+set `"favicon": "/favicons/<id>.png"` on the entry, right after `link` (or
+`localizedLinks`).
+
 ## 2. Add the entry to `src/games.json`
 
 Append it at the end of the array, with the keys in this order:

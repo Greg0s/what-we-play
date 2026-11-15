@@ -15,7 +15,7 @@
  *   under the same name.
  * - Google Fonts: the stylesheet is refreshed in the background, the font
  *   files are kept. The games' favicons (www.google.com) are left to the
- *   browser's HTTP cache.
+ *   browser's HTTP cache (those of /favicons/ are our own files).
  *
  * VERSION changes with any precached file, so a deploy installs a new worker,
  * which takes over at once and drops the old caches.
