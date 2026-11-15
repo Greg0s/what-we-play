@@ -559,5 +559,55 @@
     "screenShare": false,
     "mobileFriendly": true,
     "accountNeeded": false
+  },
+  {
+    "id": "1-in-8-billion",
+    "name": "1 in 8 Billion",
+    "minPlayers": 1,
+    "maxPlayers": 1,
+    "link": "https://1in8b.life/en/",
+    "localizedLinks": {
+      "fr": "https://1in8b.life/fr/",
+      "es": "https://1in8b.life/es/"
+    },
+    "genre": "fun",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": false,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
+    "id": "timeguessr",
+    "name": "TimeGuessr",
+    "minPlayers": 1,
+    "maxPlayers": 2,
+    "link": "https://timeguessr.com/",
+    "localizedLinks": {
+      "fr": "https://timeguessr.com/fr",
+      "es": "https://timeguessr.com/es"
+    },
+    "genre": "geography",
+    "solo": true,
+    "soloWithStrangers": true,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
+  },
+  {
+    "id": "abyssion",
+    "name": "Abyssion",
+    "minPlayers": 1,
+    "maxPlayers": 2,
+    "link": "https://abyssion.fr/",
+    "genre": "trivia",
+    "solo": true,
+    "soloWithStrangers": false,
+    "multiplayer": true,
+    "screenShare": true,
+    "mobileFriendly": true,
+    "accountNeeded": false
   }
 ]

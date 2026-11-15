@@ -50,6 +50,10 @@ sets the card's colour and the « Feel like… » chip it falls under), then a
 description and search keywords for it in every locale
 (`gameDescriptions`, `gameKeywords`).
 
+The full checklist, from a game's URL to the pull request (how to choose
+each field, how to word the description and keywords), is in
+[docs/adding-a-game.md](docs/adding-a-game.md).
+
 ## The TV, in 2D or in 3D
 
 The banner's TV asks the page's question and reacts to what you do. The 3D

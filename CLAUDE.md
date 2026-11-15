@@ -16,7 +16,7 @@ treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
 Structure:
 
-- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on.
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
 - `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/catalogue.ts` — what the list shows: player count, search, genre and the four options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below). `src/relief/` — the 2D/3D TV (see below).
@@ -288,4 +288,6 @@ on every PR, so a broken build or user-facing flow is caught before `main`.
 
 - [docs/seo-geo-audit.md](docs/seo-geo-audit.md) — the SEO/GEO audit behind
   the Rendering, URLs, Structured data and Performance choices above.
+- [docs/adding-a-game.md](docs/adding-a-game.md) — adding a game: how to
+  fill each field of `games.json`, and the description and keywords.
 - [README.md](README.md) — adding a language, planned features.
