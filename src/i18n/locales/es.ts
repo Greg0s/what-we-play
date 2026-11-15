@@ -220,6 +220,9 @@ export const es: Translation = {
     "gameguessr": "Adivina el videojuego a partir de una captura al azar.",
     "serieguessr": "Adivina la serie a partir de un plano al azar.",
     "curvytron2": "Un snake multijugador: guía una curva que crece sin chocar con las paredes ni los rastros. Gana el último que siga vivo.",
+    "1-in-8-billion": "Nace al azar entre los bebés del día, en algún lugar de la Tierra, y vive una vida entera hecha de estadísticas reales.",
+    "timeguessr": "Adivina dónde y cuándo se tomó una foto histórica. Solo, reto diario o duelos 1 contra 1.",
+    "abyssion": "Cada día, siete preguntas « Nombra un… »: cuanto más rara tu respuesta, más hondo te hundes. En francés; duelos 1 contra 1 con cuenta.",
   },
   gameKeywords: {
     "uwufufu": ["torneo", "votar", "favorito", "clasificación", "opinión", "debate"],
@@ -291,5 +294,8 @@ export const es: Translation = {
     "gameguessr": ["videojuego", "captura", "quiz", "diario", "adivinar", "movieguessr"],
     "serieguessr": ["serie", "televisión", "quiz", "diario", "adivinar", "movieguessr"],
     "curvytron2": ["curva", "serpiente", "tron", "achtung", "arcade", "multijugador", "último vivo", "reflejos", "divertido"],
+    "1-in-8-billion": ["1 entre 8 mil millones", "vida", "simulación", "nacimiento", "países", "estadísticas", "mundo", "historia"],
+    "timeguessr": ["historia", "foto", "año", "fecha", "mapa", "geografía", "diario", "adivinar", "geoguessr"],
+    "abyssion": ["cultura general", "nombra un", "respuestas raras", "diario", "francés", "clasificación", "submarino"],
   },
 };

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FaMagnifyingGlass, FaSliders, FaXmark } from "react-icons/fa6";
 import { activeFilterCount, type CatalogueView, type Filters, type GenreChoice } from "../catalogue";
-import { GENRES, gameLink } from "../games";
+import { GENRES, gameFavicon, gameLink } from "../games";
 import { useTranslation } from "../i18n";
 import { cardTags } from "../ui";
 import { Game } from "./game";
@@ -160,6 +160,7 @@ export function Games({
             genreLabel={t.genres[game.genre].band}
             description={gameDescription(game.id)}
             playLink={gameLink(game, language)}
+            favicon={gameFavicon(game)}
             playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
             tags={cardTags(game, t)}
             playLabel={t.catalogue.play}

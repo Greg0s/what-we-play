@@ -16,8 +16,8 @@ treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
 Structure:
 
-- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on.
-- `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), optional `favicon` (a file of `public/favicons/`, for the few sites Google's favicon service has no icon for; otherwise the card asks Google for `link`'s host), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
+- `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `gameFavicon`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
 - `src/catalogue.ts` — what the list shows: player count, search, genre and the four options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below). `src/relief/` — the 2D/3D TV (see below).
 - `src/components/` — `Studio` (the banner: the bubble with the H1, the TV, the cord, the sticker and the keypad, whose keys are real links to each player-count page and whose Enter key draws a game), `Tv` + `TvScreen` (the mascot, flat and 3D), `PickDrawer` (the draw on wide screens), `PickScreen` (the draw on phones), `Floppy`, `Games` (search, genres, options, cards), `Game` (card), `GlassesSwitch`, `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal, portalled to `<body>` so its backdrop also covers the floating « Pick for us » button).
@@ -83,7 +83,7 @@ phones (360 and 412 px) the 3D pawns and « +N » sign stay clear of the
 keypad's tape, its keys and the bubble, and every line the TV can say with a
 draw fits its bubble. Service workers are blocked in every test but
 `e2e/pwa.spec.ts` (`serviceWorkers` in `playwright.config.ts`), so a cached
-file never hides what a test routes. The favicon test needs `www.google.com`: it fails behind a proxy
+file never hides what a test routes. The favicon tests (every card's icon loads; no game falls back to Google's grey globe, which comes with a 404) need `www.google.com` and the `t0`–`t3.gstatic.com` hosts it redirects to: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only
@@ -261,8 +261,8 @@ language's landing page, under a version hashed from them; a deploy installs
 a new one that takes over at once and drops the old caches. Pages are network
 first and kept once visited; offline, a page never visited redirects to its
 language's landing, so the markup always matches the URL (see Rendering).
-Assets are cache first, Google Fonts kept as fetched, the games' favicons not
-cached. Offline means the catalogue opens, not that the games do.
+Assets are cache first, Google Fonts kept as fetched, the games' favicons from
+Google not cached (those of `public/favicons/` are same-origin, so cache first). Offline means the catalogue opens, not that the games do.
 
 ## Load animation
 
@@ -288,4 +288,6 @@ on every PR, so a broken build or user-facing flow is caught before `main`.
 
 - [docs/seo-geo-audit.md](docs/seo-geo-audit.md) — the SEO/GEO audit behind
   the Rendering, URLs, Structured data and Performance choices above.
+- [docs/adding-a-game.md](docs/adding-a-game.md) — adding a game: how to
+  fill each field of `games.json`, and the description and keywords.
 - [README.md](README.md) — adding a language, planned features.

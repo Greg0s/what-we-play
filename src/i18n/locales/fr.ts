@@ -218,6 +218,9 @@ export const fr: Translation = {
     "gameguessr": "Devine le jeu vidéo à partir d'une capture prise au hasard.",
     "serieguessr": "Devine la série à partir d'un plan pris au hasard.",
     "curvytron2": "Un snake multijoueur : dirige une courbe qui grandit sans toucher les murs ni les traînées. Le dernier en vie gagne.",
+    "1-in-8-billion": "Nais au hasard parmi les bébés du jour, quelque part sur Terre, et vis toute une vie tirée de vraies statistiques.",
+    "timeguessr": "Devine où et quand une photo historique a été prise. Solo, défi du jour ou duels en 1 contre 1.",
+    "abyssion": "Chaque jour, sept questions « Cite un… » : plus ta réponse est rare, plus tu coules profond. Duels en 1 contre 1 avec un compte.",
   },
   gameKeywords: {
     "uwufufu": ["tournoi", "vote", "préféré", "favori", "classement", "opinion", "débat"],
@@ -287,5 +290,8 @@ export const fr: Translation = {
     "gameguessr": ["jeu vidéo", "capture", "quiz", "quotidien", "deviner", "movieguessr"],
     "serieguessr": ["série", "télé", "quiz", "quotidien", "deviner", "movieguessr"],
     "curvytron2": ["courbe", "serpent", "tron", "achtung", "arcade", "multijoueur", "dernier en vie", "réflexes", "rigolo"],
+    "1-in-8-billion": ["1 sur 8 milliards", "vie", "simulation", "naissance", "pays", "statistiques", "monde", "histoire"],
+    "timeguessr": ["histoire", "photo", "année", "date", "carte", "géographie", "quotidien", "deviner", "geoguessr"],
+    "abyssion": ["culture générale", "cite un", "réponses rares", "quotidien", "classement", "ligue", "sous-marin"],
   },
 };

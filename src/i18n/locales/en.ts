@@ -222,6 +222,9 @@ export const en = {
     "gameguessr": "Guess the video game from a random screenshot.",
     "serieguessr": "Guess the TV series from a random shot.",
     "curvytron2": "Multiplayer snake: steer a growing curve, avoid walls and trails. Last one alive wins.",
+    "1-in-8-billion": "Be born as a random baby somewhere on Earth and live one whole life, built from real statistics.",
+    "timeguessr": "Guess where and when a historical photo was taken. Solo, daily challenge, or 1v1 duels.",
+    "abyssion": "Each day, seven « name a… » questions: the rarer your answer, the deeper you sink. In French; 1v1 duels with an account.",
   },
   gameKeywords: {
     "uwufufu": [
@@ -295,6 +298,9 @@ export const en = {
     "gameguessr": ["video game", "screenshot", "quiz", "daily", "guess", "movieguessr"],
     "serieguessr": ["tv series", "show", "quiz", "daily", "guess", "movieguessr"],
     "curvytron2": ["curve", "snake", "tron", "achtung", "arcade", "multiplayer", "last alive", "reflex", "funny"],
+    "1-in-8-billion": ["life", "simulation", "birth", "countries", "statistics", "world", "story"],
+    "timeguessr": ["history", "photo", "year", "date", "map", "geography", "daily", "guess", "geoguessr"],
+    "abyssion": ["general knowledge", "name a", "rare answers", "daily", "french", "leaderboard", "submarine"],
   },
 } as const;
 

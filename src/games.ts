@@ -22,6 +22,12 @@ export type Game = {
    * their translations by URL. Languages missing here use `link`.
    */
   localizedLinks?: Partial<Record<Language, string>>;
+  /**
+   * The game's icon, served from `public/` (e.g. `/favicons/abyssion.png`),
+   * for the sites Google's favicon service has no icon for. Without it, the
+   * card asks Google for the icon of `link`'s host.
+   */
+  favicon?: string;
   genre: Genre;
   /** Playable with just yourself. */
   solo: boolean;
@@ -53,6 +59,13 @@ export const DEFAULT_PLAYERS = 4;
 /** Where to send someone reading the site in `language`. */
 export function gameLink(game: Game, language: Language): string {
   return game.localizedLinks?.[language] ?? game.link;
+}
+
+/** The icon shown on the game's card. */
+export function gameFavicon(game: Game): string {
+  if (game.favicon) return game.favicon;
+  const { hostname } = new URL(game.link);
+  return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
 }
 
 export function matchesPlayerCount(game: Game, players: number): boolean {
