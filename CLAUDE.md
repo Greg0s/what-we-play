@@ -83,7 +83,7 @@ phones (360 and 412 px) the 3D pawns and « +N » sign stay clear of the
 keypad's tape, its keys and the bubble, and every line the TV can say with a
 draw fits its bubble. Service workers are blocked in every test but
 `e2e/pwa.spec.ts` (`serviceWorkers` in `playwright.config.ts`), so a cached
-file never hides what a test routes. The favicon test needs `www.google.com`: it fails behind a proxy
+file never hides what a test routes. The favicon test needs `www.google.com` and the `t0`–`t3.gstatic.com` hosts it redirects to: it fails behind a proxy
 that blocks it, not because of the code.
 Tests import shared logic from `src/` (`gamesForPlayerCount`, locale files,
 `pageMeta`) instead of hardcoding expected counts or strings, so a test only

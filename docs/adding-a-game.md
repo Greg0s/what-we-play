@@ -121,7 +121,8 @@ pnpm run build        # fails on a bad genre, a missing locale key, or a page le
 pnpm run test:e2e     # after the build
 ```
 
-The favicon test loads every card's icon from `www.google.com`; behind a
+The favicon test loads every card's icon from `www.google.com`, which
+redirects to `t0`–`t3.gstatic.com`; behind a
 proxy that blocks it, it fails for that reason alone.
 
 Nothing else needs changing: the pages, sitemap, `llms.txt`, JSON-LD and the
