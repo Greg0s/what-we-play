@@ -110,7 +110,13 @@ Every page carries JSON-LD from `src/structuredData.ts`, written into the
 static HTML. `maxPlayers: -1` is expressed by *omitting* `maxValue`, never
 by inventing a number. `dateModified` comes from the last commit touching
 `src/games.json` or `src/i18n/locales`, not the build clock — this is why
-the deploy workflow checks out with `fetch-depth: 0`.
+the deploy workflow checks out with `fetch-depth: 0`. The same date is every
+URL's `<lastmod>` in `sitemap.xml`; without git history both are omitted.
+
+Titles of player-count pages put the query first and the site's name last
+(« 21 jeux en ligne à jouer à 4 entre amis — À quoi on joue ? »), and their
+description ends with the names of the three games made most for that count
+(narrowest player range, `src/pageMeta.ts`), so no two read alike.
 
 Claims in the copy and markup (`isAccessibleForFree`, "nothing to install")
 mirror what the README says about the catalogue. If that stops being true

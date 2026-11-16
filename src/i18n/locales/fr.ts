@@ -4,15 +4,15 @@ export const fr: Translation = {
   meta: {
     title: "À quoi on joue ? Trouve un jeu à jouer en ligne avec tes amis !",
     description:
-      "Trouve le meilleur jeu à jouer en ligne avec tes amis selon le nombre de joueurs.",
+      "Trouve le meilleur jeu à jouer en ligne avec tes amis selon le nombre de joueurs : des jeux navigateur gratuits, sans rien à installer, en solo ou à plusieurs.",
     countTitle: (games: number, players: number) =>
       players === 1
         ? `${games} jeux en ligne à jouer seul`
-        : `${games} jeux en ligne à jouer à ${players}`,
-    countDescription: (games: number, players: number) =>
+        : `${games} jeux en ligne à jouer à ${players} entre amis`,
+    countDescription: (games: number, players: number, examples: string[]) =>
       players === 1
-        ? `${games} jeux navigateur à jouer en solo, tous gratuits et sans rien à installer.`
-        : `${games} jeux navigateur pour ${players} joueurs, tous gratuits et sans rien à installer.`,
+        ? `${games} jeux navigateur à jouer en solo, tous gratuits et sans rien à installer : ${examples.join(", ")}…`
+        : `${games} jeux navigateur pour ${players} joueurs, tous gratuits et sans rien à installer : ${examples.join(", ")}…`,
   },
   header: {
     title: "À quoi on joue ?",

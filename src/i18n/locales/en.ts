@@ -8,15 +8,15 @@ export const en = {
   meta: {
     title: "What we play? Find a game to play online with your friends!",
     description:
-      "Find the best game to play online with your friends based on player count.",
+      "Find the best game to play online with your friends based on player count: free browser games with nothing to install, solo or as a group.",
     countTitle: (games: number, players: number) =>
       players === 1
         ? `${games} online games to play alone`
-        : `${games} online games to play with ${players} players`,
-    countDescription: (games: number, players: number) =>
+        : `${games} online games for ${players} players with friends`,
+    countDescription: (games: number, players: number, examples: string[]) =>
       players === 1
-        ? `${games} browser games you can play on your own, all free and with nothing to install.`
-        : `${games} browser games for ${players} players, all free and with nothing to install.`,
+        ? `${games} browser games you can play on your own, all free and with nothing to install: ${examples.join(", ")}…`
+        : `${games} browser games for ${players} players, all free and with nothing to install: ${examples.join(", ")}…`,
   },
   header: {
     /** The site's name, as used in page titles and the top bar. */
@@ -314,7 +314,8 @@ export type Translation = {
     description: string;
     /** Title of a player-count page, given how many games it lists. */
     countTitle: (games: number, players: number) => string;
-    countDescription: (games: number, players: number) => string;
+    /** `examples`: the names of the first few games the page lists. */
+    countDescription: (games: number, players: number, examples: string[]) => string;
   };
   header: {
     /** The site's name: page titles, the top bar. */

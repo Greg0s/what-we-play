@@ -354,6 +354,21 @@ cohérente — mais elle se choisit.
 Le premier déploiement sur `main` est ce qui rend tout cela réel : tant que la
 branche n'est pas fusionnée, la production sert toujours la page vide.
 
+### Phase 5 — titres, descriptions et `lastmod` (novembre 2026) — ✅ faite
+
+- **Titres des pages de comptage : la requête d'abord, le nom du site ensuite.**
+  « 21 jeux en ligne à jouer à 4 entre amis — À quoi on joue ? » au lieu de
+  « À quoi on joue ? — 21 jeux en ligne à jouer à 4 ». Google coupe un titre par
+  la fin, et personne ne cherche le nom du site avant de le connaître.
+- **Descriptions de 120 à 160 caractères** au lieu de ~75 : celles des accueils
+  disent « gratuits, sans rien à installer, en solo ou à plusieurs », celles des
+  pages de comptage se terminent par trois noms de jeux, choisis parmi ceux dont
+  la plage de joueurs est la plus étroite autour du nombre de la page — elles ne
+  se ressemblent donc plus d'une page à l'autre.
+- **`<lastmod>` dans le sitemap**, la date du dernier commit qui touche le
+  catalogue ou les textes : celle du `dateModified` du JSON-LD, que la phase 2
+  attendait pour l'ajouter.
+
 ## 4. Par où commencer
 
 | Ordre | Action | Effort | Impact SEO | Impact GEO |
