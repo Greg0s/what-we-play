@@ -145,6 +145,12 @@ measurements:
   inline SVG), so there is nothing to preload: `scripts/prerender.js` no
   longer touches the template beyond the head and the root.
 
+## Analytics
+
+Umami, loaded by a `defer` script tag in `index.html`'s `<head>` (so every
+prerendered page carries it) from `umami-y1mc.vercel.app`. The service worker
+leaves that host alone: the script and its events always go to the network.
+
 ## Internationalization
 
 English, French, Spanish (`src/i18n/locales/`). `en.ts` is the reference
