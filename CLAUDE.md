@@ -150,6 +150,8 @@ measurements:
 Umami, loaded by a `defer` script tag in `index.html`'s `<head>` (so every
 prerendered page carries it) from `umami-y1mc.vercel.app`. The service worker
 leaves that host alone: the script and its events always go to the network.
+`data-domains` limits counting to the live site, so `localhost` (dev,
+`preview`, e2e) is never tracked.
 
 ## Internationalization
 
