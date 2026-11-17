@@ -4,6 +4,7 @@ import type { Game as GameData } from "../games";
 import type { CardTag } from "../ui";
 
 export function Game({
+  id,
   name,
   genre,
   genreLabel,
@@ -14,6 +15,7 @@ export function Game({
   tags,
   playLabel,
 }: {
+  id: string;
   name: string;
   genre: GameData["genre"];
   genreLabel: string;
@@ -25,7 +27,15 @@ export function Game({
   playLabel: string;
 }) {
   return (
-    <a target="_blank" rel="noopener" href={playLink} className="game">
+    <a
+      target="_blank"
+      rel="noopener"
+      href={playLink}
+      className="game"
+      data-umami-event="Play game"
+      data-umami-event-game={id}
+      data-umami-event-from="list"
+    >
       <span className={`game__band gc-${genre}`}>
         <span className="game__genre">{genreLabel}</span>
         <span className="game__range">

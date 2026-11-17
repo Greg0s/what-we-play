@@ -35,6 +35,8 @@ export function ThemeSwitcher() {
       aria-label={label}
       className="b-btn is-icon theme-switcher"
       onClick={handleClick}
+      data-umami-event="Theme"
+      data-umami-event-to={next}
     >
       <Icon
         className={

@@ -20,6 +20,8 @@ export function GlassesSwitch() {
       aria-pressed={on}
       aria-label={on ? t.relief.to2d : t.relief.to3d}
       onClick={toggle}
+      data-umami-event="3D glasses"
+      data-umami-event-to={on ? "2d" : "3d"}
     >
       <svg width="32" height="20" viewBox="0 0 32 20" aria-hidden="true">
         <path className="sw-arm" d="M3 8 1.2 3.4M29 8l1.8-4.6" />

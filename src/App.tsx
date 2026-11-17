@@ -366,6 +366,8 @@ function App({ route }: { route: Route }) {
           type="button"
           className="fab"
           onClick={openPickScreen}
+          data-umami-event="Pick"
+          data-umami-event-players={players}
           aria-disabled={count === 0}
           aria-haspopup="dialog"
         >

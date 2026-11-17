@@ -147,6 +147,8 @@ export function Studio({
                 href={key.href}
                 aria-current={key.current ? "page" : undefined}
                 onClick={key.onClick}
+                data-umami-event="Player count"
+                data-umami-event-players={key.label}
               >
                 {key.label}
               </a>
@@ -156,6 +158,8 @@ export function Studio({
             type="button"
             className={`ret ret-enter${pickBusy ? " is-busy" : ""}`}
             onClick={onPick}
+            data-umami-event="Pick"
+            data-umami-event-players={players}
             aria-disabled={pickDisabled}
           >
             <TbDice5 className="ret-enter__dice" aria-hidden="true" />

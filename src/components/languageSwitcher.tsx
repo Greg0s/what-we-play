@@ -100,6 +100,8 @@ export function LanguageSwitcher() {
                 code === language ? " is-selected" : ""
               }`}
               onClick={() => choose(code)}
+              data-umami-event="Language"
+              data-umami-event-to={code}
               onKeyDown={(event) => moveFocus(event, index)}
             >
               <span>{LANGUAGE_NAMES[code]}</span>

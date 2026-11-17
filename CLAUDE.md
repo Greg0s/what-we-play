@@ -145,6 +145,23 @@ measurements:
   inline SVG), so there is nothing to preload: `scripts/prerender.js` no
   longer touches the template beyond the head and the root.
 
+## Analytics
+
+Umami, loaded by a `defer` script tag in `index.html`'s `<head>` (so every
+prerendered page carries it) from `umami-y1mc.vercel.app`. The service worker
+leaves that host alone: the script and its events always go to the network.
+`data-domains` limits counting to the live site, so `localhost` (dev,
+`preview`, e2e) is never tracked.
+
+Clicks are tracked declaratively, with Umami's `data-umami-event` (plus
+`data-umami-event-<prop>`) attributes on the elements themselves, no JS
+call: they render the same on the server and in the browser, so they cost
+nothing at hydration. Events: `Play game` (`game`, `from`: list or pick),
+`Pick` and `Reroll` (`players`), `Player count` (`players`), `Genre` and
+`Option` (`to`: on or off), `Reset filters`, `Language`, `Theme`, `3D glasses`
+(`to`), `How it works`, `Portfolio`. Keep event names in English and stable:
+renaming one splits its history in Umami.
+
 ## Internationalization
 
 English, French, Spanish (`src/i18n/locales/`). `en.ts` is the reference

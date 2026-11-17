@@ -99,6 +99,9 @@ export function Games({
               className={`genre${on ? " is-on" : chip.count === 0 ? " is-off" : ""}`}
               aria-pressed={on}
               onClick={() => onGenre(chip.key)}
+              data-umami-event="Genre"
+              data-umami-event-genre={chip.key}
+              data-umami-event-to={on ? "off" : "on"}
             >
               <span className={`genre__dot gc-${chip.key}`} aria-hidden="true" />
               {chip.label}
@@ -119,12 +122,15 @@ export function Games({
             className={`opt${filters[key] ? " is-on" : ""}`}
             aria-pressed={filters[key]}
             onClick={() => onFilter(key)}
+            data-umami-event="Option"
+            data-umami-event-option={key}
+            data-umami-event-to={filters[key] ? "off" : "on"}
           >
             {optionLabel[key]}
           </button>
         ))}
         {filterCount > 0 && (
-          <button type="button" className="options__reset" onClick={onResetFilters}>
+          <button type="button" className="options__reset" onClick={onResetFilters} data-umami-event="Reset filters">
             {t.catalogue.resetFilters}
           </button>
         )}
@@ -155,6 +161,7 @@ export function Games({
         {list.map((game) => (
           <Game
             key={game.id}
+            id={game.id}
             name={game.name}
             genre={game.genre}
             genreLabel={t.genres[game.genre].band}
@@ -179,7 +186,13 @@ export function Games({
           <p className="empty__title">{hasQuery ? t.catalogue.emptyTitle(query.trim()) : t.catalogue.emptyFilters}</p>
           <p className="empty__hint">{t.catalogue.emptyHint}</p>
           {filterCount > 0 && (
-            <button type="button" className="b-btn empty__reset" onClick={onResetFilters}>
+            <button
+              type="button"
+              className="b-btn empty__reset"
+              onClick={onResetFilters}
+              data-umami-event="Reset filters"
+              data-umami-event-from="no results"
+            >
               {t.catalogue.resetFilters}
             </button>
           )}
