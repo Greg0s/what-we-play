@@ -291,6 +291,9 @@ export function PickScreen({
                         href={gameLink(game, language)}
                         target="_blank"
                         rel="noopener"
+                        data-umami-event="Play game"
+                        data-umami-event-game={game.id}
+                        data-umami-event-from="pick"
                         onTouchStart={onCheer}
                         onFocus={onCheer}
                       >
@@ -317,7 +320,11 @@ export function PickScreen({
 
         <div className="ps-actions">
           {/* Nothing to reroll until the first ticket is out: the button waits, holding its place. */}
-          <button type="button" className={`reroll${pickId ? "" : " is-wait"}`} onClick={reroll}>
+          <button type="button" className={`reroll${pickId ? "" : " is-wait"}`}
+            onClick={reroll}
+            data-umami-event="Reroll"
+            data-umami-event-players={players}
+          >
             <TbDice5 aria-hidden="true" />
             {t.pick.reroll}
           </button>

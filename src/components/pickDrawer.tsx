@@ -86,12 +86,24 @@ export function PickDrawer({
             </div>
           </div>
           <div className="d-stub">
-            <a className="ink-btn" href={gameLink(game, language)} target="_blank" rel="noopener">
+            <a
+              className="ink-btn"
+              href={gameLink(game, language)}
+              target="_blank"
+              rel="noopener"
+              data-umami-event="Play game"
+              data-umami-event-game={game.id}
+              data-umami-event-from="pick"
+            >
               {t.pick.launch}
               <TbArrowUpRight aria-hidden="true" />
               <span className="sr">, {t.pick.newTab}</span>
             </a>
-            <button type="button" className={`ret ret-row${rerollBusy ? " is-busy" : ""}`} onClick={onReroll}>
+            <button type="button" className={`ret ret-row${rerollBusy ? " is-busy" : ""}`}
+              onClick={onReroll}
+              data-umami-event="Reroll"
+              data-umami-event-players={players}
+            >
               <TbDice5 aria-hidden="true" />
               {t.pick.reroll}
             </button>

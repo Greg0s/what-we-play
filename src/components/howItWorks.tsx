@@ -61,6 +61,7 @@ export function HowItWorks() {
         type="button"
         className="b-btn how-it-works-trigger"
         onClick={show}
+        data-umami-event="How it works"
         aria-label={t.howItWorks.trigger}
       >
         <FaCircleQuestion className="how-it-works-trigger__icon" />
@@ -92,7 +93,7 @@ export function HowItWorks() {
               <p>{t.howItWorks.intro}</p>
               <p>
                 {t.howItWorks.paragraph1.before}
-                <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">
+                <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer" data-umami-event="Portfolio">
                   {t.howItWorks.paragraph1.linkText}
                 </a>
                 {t.howItWorks.paragraph1.after}
