@@ -2,6 +2,7 @@ export { Game } from "./game";
 export { Games } from "./games";
 export { GlassesSwitch } from "./glassesSwitch";
 export { HowItWorks } from "./howItWorks";
+export { InstallPrompt } from "./installPrompt";
 export { LanguageSwitcher } from "./languageSwitcher";
 export { PickDrawer } from "./pickDrawer";
 export { PickScreen } from "./pickScreen";

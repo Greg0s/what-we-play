@@ -164,6 +164,20 @@ export const fr: Translation = {
     close: "Fermer le tirage",
     back: "Retour à la liste",
   },
+  install: {
+    title: "Garde-nous sous la main",
+    native: "Installe À quoi on joue ? et ouvre-le en un geste, même hors ligne.",
+    ios: {
+      before: "Touche ",
+      share: "Partager",
+      middle: " (parfois dans le menu ⋯), puis ",
+      add: "Sur l’écran d’accueil",
+      after: ".",
+    },
+    accept: "Installer",
+    later: "Plus tard",
+    close: "Fermer",
+  },
   gameDescriptions: {
     uwufufu: "Vote dans des tournois sur des sujets variés.",
     "wikipedia-speedruns":
