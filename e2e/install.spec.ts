@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { fr } from "../src/i18n/locales/fr";
-import { RETURN_DWELL_MS, STORAGE_KEY } from "../src/install/config";
+import { RETURN_DWELL_MS, SESSION_KEY, STORAGE_KEY } from "../src/install/config";
 
 /** A returning visitor: one past visit on record, this one makes two. */
 async function seed(page: Page, state: Record<string, unknown>) {
@@ -28,11 +28,26 @@ async function fireInstallable(page: Page, outcome: "accepted" | "dismissed" = "
 
 const card = (page: Page) => page.locator(".install");
 
+/**
+ * The invitation's timers start once the app has hydrated, which takes longer
+ * in WebKit: moving the clock before that would skip past timers not yet set.
+ * The visit is counted in the same effect, so its mark says they are.
+ */
+async function hydrated(page: Page) {
+  await page.waitForFunction((key) => sessionStorage.getItem(key) !== null, SESSION_KEY);
+}
+
+/** Its entrance moves it; measure it where it rests. */
+async function settled(page: Page) {
+  await card(page).evaluate((element) => Promise.all(element.getAnimations().map((a) => a.finished)));
+}
+
 test.describe("where the browser can install", () => {
   test("a returning visitor is invited after browsing a while, and can install", async ({ page }) => {
     await page.clock.install();
     await seed(page, { visits: 1 });
     await page.goto("/fr/");
+    await hydrated(page);
     await fireInstallable(page);
 
     await page.clock.fastForward(RETURN_DWELL_MS - 2_000);
@@ -51,6 +66,7 @@ test.describe("where the browser can install", () => {
   test("a first visit that opened no game is left alone", async ({ page }) => {
     await page.clock.install();
     await page.goto("/fr/");
+    await hydrated(page);
     await fireInstallable(page);
     await page.clock.fastForward(RETURN_DWELL_MS * 3);
     await expect(card(page)).toHaveCount(0);
@@ -59,6 +75,7 @@ test.describe("where the browser can install", () => {
   test("a first visit is invited on coming back from a second game", async ({ page, context }) => {
     await page.clock.install();
     await page.goto("/fr/");
+    await hydrated(page);
     await fireInstallable(page);
     // The games open in new tabs: stop them there, only the click matters.
     await context.route((url) => url.hostname !== "localhost", (route) => route.abort());
@@ -80,6 +97,7 @@ test.describe("where the browser can install", () => {
     await page.clock.install();
     await seed(page, { visits: 1 });
     await page.goto("/fr/");
+    await hydrated(page);
     await fireInstallable(page);
     await page.clock.fastForward(RETURN_DWELL_MS + 1_000);
     await card(page).getByRole("button", { name: fr.install.later }).click();
@@ -89,6 +107,7 @@ test.describe("where the browser can install", () => {
     const next = await context.newPage();
     await next.clock.install();
     await next.goto("/fr/");
+    await hydrated(next);
     await fireInstallable(next);
     await next.clock.fastForward(RETURN_DWELL_MS * 2);
     await expect(card(next)).toHaveCount(0);
@@ -106,10 +125,12 @@ test.describe("iOS Safari", () => {
     await page.clock.install();
     await seed(page, { visits: 1 });
     await page.goto("/fr/");
+    await hydrated(page);
     await page.clock.fastForward(RETURN_DWELL_MS + 1_000);
 
     await expect(card(page)).toContainText(fr.install.ios.share);
     await expect(card(page)).toContainText(fr.install.ios.add);
+    await settled(page);
     const box = (await card(page).boundingBox())!;
     const fab = (await page.locator(".fab").boundingBox())!;
     expect(box.y + box.height).toBeLessThanOrEqual(fab.y);
@@ -127,6 +148,8 @@ test.describe("iOS Safari", () => {
     await page.clock.install();
     await seed(page, { visits: 5 });
     await page.goto("/fr/");
+    // The app never counts a visit there: it notes it is installed instead.
+    await page.waitForFunction((key) => localStorage.getItem(key)?.includes('"installed":true'), STORAGE_KEY);
     await page.clock.fastForward(RETURN_DWELL_MS * 2);
     await expect(card(page)).toHaveCount(0);
   });
