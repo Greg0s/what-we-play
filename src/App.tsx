@@ -7,6 +7,7 @@ import {
   Games,
   GlassesSwitch,
   HowItWorks,
+  InstallPrompt,
   LanguageSwitcher,
   PickDrawer,
   PickScreen,
@@ -376,6 +377,8 @@ function App({ route }: { route: Route }) {
           {count === 0 && <span className="sr">{t.pick.noGame}</span>}
         </button>
       </div>
+
+      <InstallPrompt />
 
       {pickScreen && (
         <PickScreen

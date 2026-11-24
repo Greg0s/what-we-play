@@ -2,9 +2,13 @@ import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import { LanguageProvider } from "./i18n";
+import { captureInstallPrompt } from "./install";
 import { parseRoute } from "./routes";
 import { ReliefProvider } from "./relief";
 import { ThemeProvider } from "./theme";
+
+// Chromium can say the app is installable before React is up: hold that now.
+captureInstallPrompt();
 
 const container = document.getElementById("root")!;
 

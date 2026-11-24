@@ -169,6 +169,20 @@ export const en = {
     close: "Close the draw",
     back: "Back to the list",
   },
+  install: {
+    title: "Keep us at hand",
+    native: "Install What we play? and open it in one tap, even offline.",
+    ios: {
+      before: "Tap ",
+      share: "Share",
+      middle: ", then ",
+      add: "Add to Home Screen",
+      after: ".",
+    },
+    accept: "Install",
+    later: "Not now",
+    close: "Close",
+  },
   gameDescriptions: {
     "uwufufu": "Vote in tournaments about various subjects",
     "wikipedia-speedruns":
@@ -427,6 +441,17 @@ export type Translation = {
     note: (count: number, players: number | null) => string;
     close: string;
     back: string;
+  };
+  /** The invitation to install the app (src/components/installPrompt.tsx). */
+  install: {
+    title: string;
+    /** Where the browser has its own install dialog (Chrome, Edge, Android). */
+    native: string;
+    /** iOS Safari has none: the steps, with the names of Safari's own buttons. */
+    ios: { before: string; share: string; middle: string; add: string; after: string };
+    accept: string;
+    later: string;
+    close: string;
   };
   gameDescriptions: Record<GameId, string>;
   /**

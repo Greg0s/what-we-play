@@ -164,6 +164,20 @@ export const es: Translation = {
     close: "Cerrar el sorteo",
     back: "Volver a la lista",
   },
+  install: {
+    title: "Siempre a mano",
+    native: "Instala ¿A qué jugamos? y ábrelo de un toque, incluso sin conexión.",
+    ios: {
+      before: "Toca ",
+      share: "Compartir",
+      middle: " y luego ",
+      add: "Añadir a pantalla de inicio",
+      after: ".",
+    },
+    accept: "Instalar",
+    later: "Ahora no",
+    close: "Cerrar",
+  },
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",
     "wikipedia-speedruns":
