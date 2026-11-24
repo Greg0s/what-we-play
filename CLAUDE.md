@@ -182,7 +182,9 @@ the attribute's absence); every themed color is a `--color-*` custom
 property in `App.scss` (page, card, line, shadow, text, muted, soft, deck,
 studio gradient). The TV, the keys and the floppies keep fixed inks
 (`src/stylesheets/_variables.scss`): only their solid shadows turn pink at
-night. The genre colours live there too, as `$genre-colors`. Persistence and first-visit detection mirror the
+night. The genre colours live there too, as `$genre-colors`. The install
+invitation is fixed inks as well (`$blush`, pink shadow, cream at night), so it
+never reads as one more game card. Persistence and first-visit detection mirror the
 language switcher: `localStorage` (`what-we-play:theme`) once chosen,
 `prefers-color-scheme` before that. `index.html` carries an inline script
 that re-implements that same lookup before `<head>` finishes parsing, since
