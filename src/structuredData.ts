@@ -15,6 +15,17 @@ import { SITE_URL, buildUrl, type Route } from "./routes";
 
 type JsonLd = Record<string, unknown>;
 
+/** The site's one name, as og:site_name and the manifest spell it. */
+export const SITE_NAME = translations.en.header.title;
+
+/** The H1 in the other languages, then the bare domain label. */
+function siteAlternateNames(): string[] {
+  const localized = Object.values(translations)
+    .map((t) => t.header.title)
+    .filter((name) => name !== SITE_NAME);
+  return [...new Set(localized), "whatweplay"];
+}
+
 function videoGame(game: Game, description: string, language: Language): JsonLd {
   return {
     "@type": "VideoGame",
@@ -53,6 +64,7 @@ export function structuredData(
     name: title,
     description,
     inLanguage: route.language,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
     ...(options.dateModified ? { dateModified: options.dateModified } : {}),
     mainEntity: {
       "@type": "ItemList",
@@ -73,12 +85,18 @@ export function structuredData(
   const blocks: JsonLd[] = [page];
 
   if (route.isHome) {
+    // What Google shows as the site's name in its results. Without it, it
+    // falls back to the domain (or to the parent domain's name, mintymoon),
+    // and appends that to titles. One name for the whole site, the same in
+    // every language and on every landing, like og:site_name and the
+    // manifest; the localized names go in alternateName.
     blocks.push({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
-      url,
-      name: t.header.title,
+      url: `${SITE_URL}/`,
+      name: SITE_NAME,
+      alternateName: siteAlternateNames(),
       description: t.meta.description,
       inLanguage: route.language,
     });

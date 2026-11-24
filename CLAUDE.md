@@ -114,8 +114,16 @@ by inventing a number. `dateModified` comes from the last commit touching
 the deploy workflow checks out with `fetch-depth: 0`. The same date is every
 URL's `<lastmod>` in `sitemap.xml`; without git history both are omitted.
 
-Titles of player-count pages put the query first and the site's name last
-(« 21 jeux en ligne à jouer à 4 entre amis — À quoi on joue ? »), and their
+The landings carry a `WebSite` block that names the site for Google's
+results: one `name` in every language, « What we play? » (`SITE_NAME`, as
+`og:site_name` and the manifest), `url` the root, the localized names in
+`alternateName`. Without it Google showed the bare domain as the site's name
+and appended the parent domain's (« - mintymoon ») to titles.
+
+Titles of player-count pages put the query first and the site's name last,
+separated by « | » (« 21 jeux en ligne à jouer à 4 entre amis | À quoi on
+joue ? »). No em-dash in titles, descriptions or alts: it reads as
+machine-written in a results page. Their
 description ends with the names of the three games made most for that count
 (narrowest player range, `src/pageMeta.ts`), so no two read alike.
 

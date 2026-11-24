@@ -387,6 +387,22 @@ produisent du contenu que personne ne lirait.
 La phase 0 peut partir tout de suite : indépendante, sans risque, et elle répare
 au passage un bug visible pour les humains — les aperçus de partage sans image.
 
+### Phase 6 : nom du site dans Google (novembre 2026)
+
+Constat dans les résultats Google : le domaine affiché à la place d'un nom de
+site, un titre réécrit en « … — À quoi on joue ? - mintymoon ».
+
+- **`WebSite` complet sur les accueils** : un seul `name`, « What we play? »,
+  dans toutes les langues (comme `og:site_name` et le manifeste), `url` la
+  racine, les noms localisés en `alternateName`. Google n'accepte qu'un nom
+  par site ; sans `WebSite` lisible, il retombait sur le domaine et sur le nom
+  du domaine parent, « mintymoon », qu'il ajoutait au titre.
+- **Plus de tiret long** dans les titres (« | » à la place), ni dans les `alt`
+  des aperçus et `llms.txt`.
+
+Effet visible seulement après un nouveau passage du robot ; l'inspection d'URL
+de la Search Console peut le demander.
+
 ## Méthode et limites
 
 Audit statique du dépôt à la révision `1a2665e` et du build de production généré
