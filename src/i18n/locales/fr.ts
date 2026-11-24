@@ -170,7 +170,7 @@ export const fr: Translation = {
     ios: {
       before: "Touche ",
       share: "Partager",
-      middle: " (parfois dans le menu ⋯), puis ",
+      middle: ", puis ",
       add: "Sur l’écran d’accueil",
       after: ".",
     },

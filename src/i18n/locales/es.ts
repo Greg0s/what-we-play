@@ -170,7 +170,7 @@ export const es: Translation = {
     ios: {
       before: "Toca ",
       share: "Compartir",
-      middle: " (a veces en el menú ⋯) y luego ",
+      middle: " y luego ",
       add: "Añadir a pantalla de inicio",
       after: ".",
     },

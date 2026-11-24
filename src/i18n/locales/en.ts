@@ -175,7 +175,7 @@ export const en = {
     ios: {
       before: "Tap ",
       share: "Share",
-      middle: " (sometimes under ⋯), then ",
+      middle: ", then ",
       add: "Add to Home Screen",
       after: ".",
     },
