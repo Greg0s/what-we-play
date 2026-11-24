@@ -78,6 +78,7 @@ export const fr: Translation = {
     screenShare: "Partage d'écran",
     mobileFriendly: "Jouable sur mobile",
     noAccountNeeded: "Sans compte",
+    fresh: "Nouveau",
     resetFilters: "Tout effacer",
     resultCount: (count: number) => (count === 1 ? "1 jeu" : `${count} jeux`),
     scopeForPlayers: (players: number) =>
@@ -89,10 +90,16 @@ export const fr: Translation = {
     tagScreenShare: "Partage d'écran",
     tagAccount: "Compte requis",
     tagNotMobile: "Pas sur mobile",
+    tagNew: "Nouveau",
     play: "Jouer",
     emptyTitle: (query: string) => `Rien pour « ${query} »`,
     emptyFilters: "Aucun jeu ne coche toutes ces cases",
     emptyHint: "La télé a fouillé partout. Essaie « dessin », « musique », ou retire une option.",
+  },
+  news: {
+    line: (count: number) => (count === 1 ? "Psst, une nouveauté !" : `Psst, ${count} nouveautés !`),
+    see: "Voir",
+    show: "Voir les nouveaux jeux",
   },
   genres: {
     drawing: { chip: "Dessin", band: "Dessin" },

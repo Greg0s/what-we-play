@@ -13,6 +13,12 @@ export type Genre = (typeof GENRES)[number];
 export type Game = {
   id: string;
   name: string;
+  /**
+   * The day the game joined the catalogue, `YYYY-MM-DD`. It decides which
+   * games are « New » (src/fresh.ts). The games already there when the
+   * history starts all share its first day.
+   */
+  added: string;
   minPlayers: number;
   /** `-1` means the game has no upper limit. */
   maxPlayers: number;
@@ -50,6 +56,10 @@ export const games: Game[] = gamesData as Game[];
 for (const game of games) {
   if (!(GENRES as readonly string[]).includes(game.genre)) {
     throw new Error(`Unknown genre "${game.genre}" for ${game.id} in src/games.json`);
+  }
+  // Same reasoning: a missing or malformed date would quietly never be « New ».
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(game.added ?? "") || Number.isNaN(Date.parse(game.added))) {
+    throw new Error(`Missing or malformed "added" date for ${game.id} in src/games.json (expected YYYY-MM-DD)`);
   }
 }
 

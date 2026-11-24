@@ -7,7 +7,7 @@ import { cardTags } from "../ui";
 import { Game } from "./game";
 import "../stylesheets/games.scss";
 
-const OPTION_KEYS = ["strangers", "screenShare", "mobile", "noAccount"] as const;
+const OPTION_KEYS = ["strangers", "screenShare", "mobile", "noAccount", "fresh"] as const;
 
 /**
  * Everything under the banner: the search, the « Feel like… » genres, the
@@ -25,6 +25,7 @@ export function Games({
   filters,
   onFilter,
   onResetFilters,
+  fresh,
 }: {
   players: number;
   view: CatalogueView;
@@ -37,10 +38,12 @@ export function Games({
   filters: Filters;
   onFilter: (key: keyof Filters) => void;
   onResetFilters: () => void;
+  /** The games that wear « New » for this visitor. */
+  fresh: ReadonlySet<string>;
 }) {
   const { t, language, gameDescription } = useTranslation();
   const [optionsOpen, setOptionsOpen] = useState(false);
-  const { base, list, hasQuery } = view;
+  const { base, list, freshCount, hasQuery } = view;
   const filterCount = activeFilterCount(filters);
 
   const optionLabel: Record<keyof Filters, string> = {
@@ -48,7 +51,10 @@ export function Games({
     screenShare: t.catalogue.screenShare,
     mobile: t.catalogue.mobileFriendly,
     noAccount: t.catalogue.noAccountNeeded,
+    fresh: t.catalogue.fresh,
   };
+  // « New » is only offered while the list has new games (or it is on, so it can be turned off).
+  const optionKeys = OPTION_KEYS.filter((key) => key !== "fresh" || freshCount > 0 || filters.fresh);
 
   const genreNote = genre === "all" ? "" : ` · ${t.genres[genre].band}`;
   const scope = hasQuery
@@ -115,7 +121,7 @@ export function Games({
         <span id="options-label" className="eyebrow">
           {t.catalogue.optionsLabel}
         </span>
-        {OPTION_KEYS.map((key) => (
+        {optionKeys.map((key) => (
           <button
             key={key}
             type="button"
@@ -127,6 +133,7 @@ export function Games({
             data-umami-event-to={filters[key] ? "off" : "on"}
           >
             {optionLabel[key]}
+            {key === "fresh" && <span className="opt__count">{freshCount}</span>}
           </button>
         ))}
         {filterCount > 0 && (
@@ -170,6 +177,7 @@ export function Games({
             favicon={gameFavicon(game)}
             playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
             tags={cardTags(game, t)}
+            fresh={fresh.has(game.id) ? t.catalogue.tagNew : null}
             playLabel={t.catalogue.play}
           />
         ))}

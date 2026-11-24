@@ -13,6 +13,7 @@ export function Game({
   favicon,
   playerRange,
   tags,
+  fresh,
   playLabel,
 }: {
   id: string;
@@ -24,6 +25,8 @@ export function Game({
   favicon: string;
   playerRange: string;
   tags: CardTag[];
+  /** The « New » tag's label, or null for a game that isn't new. */
+  fresh: string | null;
   playLabel: string;
 }) {
   return (
@@ -52,6 +55,7 @@ export function Game({
         </span>
         <span className="game__desc">{description}</span>
         <span className="game__meta">
+          {fresh && <span className="game__tag is-new">{fresh}</span>}
           {tags.map((tag) => (
             <span key={tag.label} className={`game__tag${tag.warn ? " is-warn" : ""}`}>
               {tag.label}

@@ -82,6 +82,7 @@ export const en = {
     screenShare: "Screen share",
     mobileFriendly: "Mobile friendly",
     noAccountNeeded: "No account",
+    fresh: "New",
     resetFilters: "Clear all",
     resultCount: (count: number) => (count === 1 ? "1 game" : `${count} games`),
     scopeForPlayers: (players: number) =>
@@ -93,10 +94,16 @@ export const en = {
     tagScreenShare: "Screen share",
     tagAccount: "Account needed",
     tagNotMobile: "Not on mobile",
+    tagNew: "New",
     play: "Play",
     emptyTitle: (query: string) => `Nothing for “${query}”`,
     emptyFilters: "No game ticks all these boxes",
     emptyHint: "The TV searched everywhere. Try “drawing”, “music”, or remove an option.",
+  },
+  news: {
+    line: (count: number) => (count === 1 ? "Psst, a new game!" : `Psst, ${count} new games!`),
+    see: "See",
+    show: "Show the new games",
   },
   genres: {
     drawing: { chip: "Drawing", band: "Drawing" },
@@ -395,6 +402,8 @@ export type Translation = {
     screenShare: string;
     mobileFriendly: string;
     noAccountNeeded: string;
+    /** The « New » option (src/fresh.ts). */
+    fresh: string;
     resetFilters: string;
     resultCount: (count: number) => string;
     scopeForPlayers: (players: number) => string;
@@ -406,10 +415,18 @@ export type Translation = {
     tagScreenShare: string;
     tagAccount: string;
     tagNotMobile: string;
+    tagNew: string;
     play: string;
     emptyTitle: (query: string) => string;
     emptyFilters: string;
     emptyHint: string;
+  };
+  /** The TV announcing games added since the last visit. `line` must stay short: it shares the TV's one-line bubble with `see`. */
+  news: {
+    line: (count: number) => string;
+    /** The bubble's button; `show` is its accessible name. */
+    see: string;
+    show: string;
   };
   /** `chip` on the genre buttons, `band` on cards and floppies. */
   genres: Record<Genre, { chip: string; band: string }>;

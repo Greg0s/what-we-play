@@ -178,6 +178,13 @@
     background: var(--color-text);
     color: var(--color-page);
   }
+
+  /* How many games « New » would show. */
+  &__count {
+    margin-left: 7px;
+    opacity: 0.65;
+    font-variant-numeric: tabular-nums;
+  }
 }
 
 .options-toggle {
@@ -383,6 +390,14 @@
     &.is-warn {
       background: transparent;
       border: 1.5px dashed var(--color-line);
+    }
+
+    /* « New »: the only tag that isn't about how the game plays, so the only one in colour. Fixed inks, like the stickers. */
+    &.is-new {
+      background: $yellow;
+      color: $ink;
+      border: 1.5px solid $ink;
+      font-weight: 800;
     }
   }
 

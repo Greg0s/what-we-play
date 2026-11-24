@@ -16,9 +16,9 @@ treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
 Structure:
 
-- `src/games.json` — the game data (no translatable text): `id`, `name`, `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), optional `favicon` (a file of `public/favicons/`, for the few sites Google's favicon service has no icon for; otherwise the card asks Google for `link`'s host), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `added` (the day it joined the catalogue, `YYYY-MM-DD`; a missing or malformed one fails the build; the games already there when the git history starts all carry its first day, 2026-09-07, and are never « New »), `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), optional `favicon` (a file of `public/favicons/`, for the few sites Google's favicon service has no icon for; otherwise the card asks Google for `link`'s host), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
 - `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `gameFavicon`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
-- `src/catalogue.ts` — what the list shows: player count, search, genre and the four options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
+- `src/catalogue.ts` — what the list shows: player count, search, genre and the options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account, and « New », offered only while the list has new games). `src/fresh.ts` + `src/useLastVisit.ts` — which games are « New » (see New games below). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below). `src/relief/` — the 2D/3D TV (see below). `src/install/` — when to invite the visitor to install the app (see Installable app below).
 - `src/components/` — `Studio` (the banner: the bubble with the H1, the TV, the cord, the sticker and the keypad, whose keys are real links to each player-count page and whose Enter key draws a game), `Tv` + `TvScreen` (the mascot, flat and 3D), `PickDrawer` (the draw on wide screens), `PickScreen` (the draw on phones), `Floppy`, `Games` (search, genres, options, cards), `Game` (card), `GlassesSwitch`, `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal, portalled to `<body>` so its backdrop also covers the floating « Pick for us » button), `InstallPrompt` (the invitation to install the app).
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
@@ -75,7 +75,7 @@ twice, in Chromium and in WebKit (Safari's engine); CI installs both, and
 `--project=chromium` skips WebKit where it isn't installed. The exhaustive
 SEO audit across all 33 pages is still `scripts/check-seo.js`, which gates
 the build — the e2e suite only smoke-tests a few representative pages, plus
-the keypad, the options and genres, the manifest, icon and launch-screen sizes, the app opening offline (Chromium only), the draw (drawer and phone screen, no repeats), the
+the keypad, the options and genres, the « New » tags, option and TV announcement (a returning visitor is faked through `localStorage`), the manifest, icon and launch-screen sizes, the app opening offline (Chromium only), the draw (drawer and phone screen, no repeats), the
 3D glasses, the install invitation (who sees it and when, through a faked
 `beforeinstallprompt` and an iPhone user agent, on Playwright's clock), and four layout guards: the TV's call stays inside its screen at
 every player count, the H1 holds on two lines above the keypad in every
@@ -159,7 +159,7 @@ Clicks are tracked declaratively, with Umami's `data-umami-event` (plus
 call: they render the same on the server and in the browser, so they cost
 nothing at hydration. Events: `Play game` (`game`, `from`: list or pick),
 `Pick` and `Reroll` (`players`), `Player count` (`players`), `Genre` and
-`Option` (`to`: on or off), `Reset filters`, `Language`, `Theme`, `3D glasses`
+`Option` (`to`: on or off), `See new games` (`players`), `Reset filters`, `Language`, `Theme`, `3D glasses`
 (`to`), `How it works`, `Portfolio`, `Install prompt` (`step`: shown, accept, later, accepted, declined; `platform`: native or ios) and `App installed`. The install ones that no click carries (shown, the browser dialog's answer, the install itself) go through `umami.track` from `src/install/useInstallPrompt.ts`, guarded since the script may not be there. Keep event names in English and stable:
 renaming one splits its history in Umami.
 
@@ -173,6 +173,29 @@ translation is missing. Keywords are never displayed: the search
 (`src/catalogue.ts`, fed by `App.tsx`) matches name, description, keywords,
 genre and tag labels, ignoring case and accents — adding a game means giving it keywords in every locale. To add a language, see the
 "Adding a language" section of the [README](README.md).
+
+## New games
+
+One label, « New » (a yellow tag first in the card's tag row), for two
+reasons the visitor doesn't need told apart (`src/fresh.ts`):
+
+- the last `LATEST_COUNT` (5) games added to the whole catalogue, for
+  everyone. Counted over the catalogue, never per player count, so a page
+  where few new games fit never reaches back to launch-day games. Pure data,
+  so the prerender draws these tags;
+- for a returning visitor, every game added since their previous visit.
+  `useLastVisit` reads it once per browser session (`sessionStorage`), from
+  `localStorage` (`what-we-play:visits`); coming back within `VISIT_GAP_MS`
+  (3 h) continues the same visit. Effect only, so these tags join after
+  hydration.
+
+The « New » option, with its count, shows only while the list has new games
+(or while it is on), and lists them newest first. The TV announces new games
+in its bubble (on phones, a yellow strip under the banner, since the bubble
+is hidden there) only when something *arrived since the last visit* fits the
+player count — otherwise a regular would hear about the same five games every
+visit. Its count is what « See » then shows: it clears the search, the genre
+and the other options, turns « New » on and scrolls to the results.
 
 ## Theming
 

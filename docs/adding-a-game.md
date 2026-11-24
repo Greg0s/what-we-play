@@ -77,6 +77,7 @@ Append it at the end of the array, with the keys in this order:
 {
   "id": "timeguessr",
   "name": "TimeGuessr",
+  "added": "2026-11-15",
   "minPlayers": 1,
   "maxPlayers": 2,
   "link": "https://timeguessr.com/",
@@ -97,6 +98,11 @@ Append it at the end of the array, with the keys in this order:
 - `id`: lowercase kebab-case, unique, stable (it keys the locale entries).
 - `name`: the game's own name as the site writes it. It is not translated,
   so put a translated title in the keywords instead (see below).
+- `added`: the day the game goes online, `YYYY-MM-DD` (a missing or malformed
+  date fails the build). The last five games added wear a « New » tag for
+  everyone, and a returning visitor also sees as new every game added since
+  their last visit (`src/fresh.ts`). Appending at the end of the array
+  matters too: on the same day, the game further down counts as the newer.
 - Two-space indentation, no trailing comma.
 
 ## 3. Describe it in every locale
