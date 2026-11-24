@@ -397,7 +397,7 @@ site, un titre réécrit en « … — À quoi on joue ? - mintymoon ».
   racine, les noms localisés en `alternateName`. Google n'accepte qu'un nom
   par site ; sans `WebSite` lisible, il retombait sur le domaine et sur le nom
   du domaine parent, « mintymoon », qu'il ajoutait au titre.
-- **Plus de tiret long** dans les titres (« | » à la place), ni dans les `alt`
+- **Plus de tiret long** dans les titres (un trait d'union « - » à la place), ni dans les `alt`
   des aperçus et `llms.txt`.
 
 Effet visible seulement après un nouveau passage du robot ; l'inspection d'URL
