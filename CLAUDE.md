@@ -100,9 +100,15 @@ generated from `routes.ts`, so adding a language or a player count updates
 every page and the sitemap at once. `vite.config.ts` sets `base: "/"` for
 this reason — a relative base would resolve `./assets/…` against `/fr/` and
 404. In the browser, a prefixed URL wins outright; only unprefixed pages
-fall back to the visitor's preference, via `replaceState` (also used by the
-10+ stepper) so Back doesn't fill up with one entry per change; a key of the
-keypad pushes a history entry. The phone's pick screen has no URL: it is an
+fall back to the visitor's preference. A small inline script in their head
+(`renderLanguageRedirect` in `src/entry-server.tsx`, the same lookup as
+`detectLanguage`) does it with `location.replace` to the page's own
+`hreflang` link, before anything paints: swapping the language after
+hydration left Chrome reading an English page and offering to translate
+« from English » what it showed in French (the installed app opens at `/`).
+`App.tsx` keeps the old swap, with `replaceState`, as a fallback (dev server,
+blocked storage). The 10+ stepper also uses `replaceState` so Back doesn't
+fill up with one entry per change; a key of the keypad pushes a history entry. The phone's pick screen has no URL: it is an
 overlay, not a page.
 
 ## Structured data
