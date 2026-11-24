@@ -50,7 +50,7 @@ export function pageMeta(route: Route): PageMeta {
     .slice(0, DESCRIPTION_EXAMPLES)
     .map(({ game }) => game.name);
   return {
-    title: `${meta.countTitle(games.length, route.players)} — ${header.title}`,
+    title: `${meta.countTitle(games.length, route.players)} - ${header.title}`,
     description: meta.countDescription(games.length, route.players, examples),
   };
 }

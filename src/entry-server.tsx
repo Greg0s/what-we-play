@@ -120,7 +120,7 @@ export function buildLlmsTxt(): string {
             ? en.content.playerRange(game.minPlayers, game.maxPlayers)
             : `${game.minPlayers}-${game.maxPlayers} players`;
       const description = en.gameDescriptions[game.id as keyof typeof en.gameDescriptions];
-      return `- [${game.name}](${game.link}) — ${range}. ${description}`;
+      return `- [${game.name}](${game.link}): ${range}. ${description}`;
     })
     .join("\n");
 
