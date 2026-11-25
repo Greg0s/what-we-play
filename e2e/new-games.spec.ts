@@ -33,7 +33,8 @@ test.describe("New games", () => {
     const expected = gamesForPlayerCount(players).filter((game) => latestIds.has(game.id));
     await expect(page.locator(".grid .game__tag.is-new")).toHaveCount(expected.length);
     for (const game of expected) {
-      await expect(page.locator(`.game[data-umami-event-game="${game.id}"] .is-new`)).toHaveText(en.catalogue.tagNew);
+      const card = page.locator(".grid .game", { has: page.getByRole("heading", { name: game.name, level: 3, exact: true }) });
+      await expect(card.locator(".is-new")).toHaveText(en.catalogue.tagNew);
     }
   });
 

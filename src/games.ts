@@ -47,6 +47,12 @@ export type Game = {
   mobileFriendly: boolean;
   /** Requires creating or signing into an account to play. */
   accountNeeded: boolean;
+  /**
+   * The « Coup de cœur du moment »: listed first, with a pink tag and a small
+   * TV with heart eyes. At most one game at a time. Its note, if any, lives in
+   * the locale files (`featuredNotes`); without one the TV is only a drawing.
+   */
+  featured?: boolean;
 };
 
 export const games: Game[] = gamesData as Game[];
@@ -61,6 +67,11 @@ for (const game of games) {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(game.added ?? "") || Number.isNaN(Date.parse(game.added))) {
     throw new Error(`Missing or malformed "added" date for ${game.id} in src/games.json (expected YYYY-MM-DD)`);
   }
+}
+// « Du moment »: one favourite at a time, so a forgotten flag can't make two.
+const featured = games.filter((game) => game.featured);
+if (featured.length > 1) {
+  throw new Error(`Only one game can be "featured" in src/games.json, found ${featured.map((game) => game.id).join(", ")}`);
 }
 
 /** Player count the site opens on, and the one the home page is prerendered at. */

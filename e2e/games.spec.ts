@@ -1,6 +1,12 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Locator } from "@playwright/test";
 import { DEFAULT_PLAYERS, gameLink, gamesForPlayerCount } from "../src/games";
 import { en } from "../src/i18n/locales/en";
+
+/**
+ * A card's link: the card itself, or, on a « Coup de cœur » with a note (whose
+ * TV is a button, which a link can't hold), its title's link.
+ */
+const cardLink = (card: Locator) => card.and(card.page().locator("a.game")).or(card.locator("a.game__link"));
 
 test.describe("Game catalogue", () => {
   test("shows the games for the default player count on load", async ({ page }) => {
@@ -21,9 +27,10 @@ test.describe("Game catalogue", () => {
     await page.goto("/");
 
     const first = page.locator(".grid .game").first();
-    await expect(first).toHaveAttribute("href", /^https?:\/\//);
-    await expect(first).toHaveAttribute("target", "_blank");
-    await expect(first).toHaveAttribute("rel", "noopener");
+    const link = cardLink(first);
+    await expect(link).toHaveAttribute("href", /^https?:\/\//);
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener");
     await expect(first.locator(".game__genre")).toBeVisible();
     await expect(first.locator(".game__range")).toBeVisible();
   });
@@ -36,7 +43,7 @@ test.describe("Game catalogue", () => {
       const card = page.locator(".grid .game", {
         has: page.getByRole("heading", { name: game.name, level: 3, exact: true }),
       });
-      await expect(card).toHaveAttribute("href", gameLink(game, "fr"));
+      await expect(cardLink(card)).toHaveAttribute("href", gameLink(game, "fr"));
     }
   });
 });

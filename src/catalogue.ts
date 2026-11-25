@@ -68,9 +68,12 @@ export function viewCatalogue(options: {
 
   const inGenre = (game: Game) => genre === "all" || game.genre === genre;
   const freshCount = base.filter((game) => inGenre(game) && fresh.has(game.id)).length;
-  // Just the new ones: newest first, since that is what the visitor came to see.
   if (filters.fresh) {
+    // Just the new ones: newest first, since that is what the visitor came to see.
     base = base.filter((game) => fresh.has(game.id)).sort((a, b) => b.added.localeCompare(a.added));
+  } else {
+    // Otherwise the « Coup de cœur » leads.
+    base = [...base.filter((game) => game.featured), ...base.filter((game) => !game.featured)];
   }
 
   const list = base.filter(inGenre);

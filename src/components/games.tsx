@@ -41,7 +41,7 @@ export function Games({
   /** The games that wear « New » for this visitor. */
   fresh: ReadonlySet<string>;
 }) {
-  const { t, language, gameDescription } = useTranslation();
+  const { t, language, gameDescription, featuredNote } = useTranslation();
   const [optionsOpen, setOptionsOpen] = useState(false);
   const { base, list, freshCount, hasQuery } = view;
   const filterCount = activeFilterCount(filters);
@@ -178,6 +178,16 @@ export function Games({
             playerRange={t.content.playerRange(game.minPlayers, game.maxPlayers)}
             tags={cardTags(game, t)}
             fresh={fresh.has(game.id) ? t.catalogue.tagNew : null}
+            featured={
+              game.featured
+                ? {
+                    label: t.catalogue.tagFeatured,
+                    note: featuredNote(game.id),
+                    noteTitle: t.featured.noteTitle,
+                    readNote: t.featured.readNote,
+                  }
+                : null
+            }
             playLabel={t.catalogue.play}
           />
         ))}

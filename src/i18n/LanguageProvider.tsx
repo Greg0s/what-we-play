@@ -37,6 +37,8 @@ export function LanguageProvider({
         t.gameDescriptions[gameId as GameId] ??
         en.gameDescriptions[gameId as GameId] ??
         "",
+      featuredNote: (gameId) =>
+        t.featuredNotes[gameId as GameId] ?? translations.en.featuredNotes[gameId as GameId] ?? null,
       gameKeywords: (gameId) =>
         t.gameKeywords[gameId as GameId] ??
         en.gameKeywords[gameId as GameId] ??

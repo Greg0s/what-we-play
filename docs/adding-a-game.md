@@ -146,3 +146,23 @@ proxy that blocks it, it fails for that reason alone.
 Nothing else needs changing: the pages, sitemap, `llms.txt`, JSON-LD and the
 draw all read `games.json`. Open a pull request listing the games added and
 any field that was a guess.
+
+## The « Coup de cœur du moment »
+
+One game at a time can carry `"featured": true` (as the last key of its
+entry; two fails the build). It leads every list it is on, with a pink
+« Coup de cœur du moment » tag and a small TV with heart eyes beside its name.
+To move it, take the key off one game and put it on another.
+
+The TV can also say a short note about the game, signed by the TV (its name
+is still to come: « la télé » until then). The note is text to translate, so
+it lives with the descriptions: add a line to `featuredNotes` in each locale,
+keyed by the `id`. Only the languages that have one show it (a missing one
+falls back to English). Two or three sentences at most, in the TV's voice.
+Without any note, the TV is just a drawing and opens the game like the rest
+of the card.
+
+```ts
+// featuredNotes, in fr.ts
+"gartic-phone": "On l’a lancé « pour une partie » un vendredi soir, on a fini à 2 h du matin.",
+```

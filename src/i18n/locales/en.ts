@@ -95,6 +95,7 @@ export const en = {
     tagAccount: "Account needed",
     tagNotMobile: "Not on mobile",
     tagNew: "New",
+    tagFeatured: "Current favourite",
     play: "Play",
     emptyTitle: (query: string) => `Nothing for “${query}”`,
     emptyFilters: "No game ticks all these boxes",
@@ -104,6 +105,11 @@ export const en = {
     line: (count: number) => (count === 1 ? "Psst, a new game!" : `Psst, ${count} new games!`),
     see: "See",
     show: "Show the new games",
+  },
+  // « The TV » stands in until the TV has a name of its own.
+  featured: {
+    noteTitle: "A word from the TV",
+    readNote: "Read the TV's note",
   },
   genres: {
     drawing: { chip: "Drawing", band: "Drawing" },
@@ -190,6 +196,7 @@ export const en = {
     later: "Not now",
     close: "Close",
   },
+  featuredNotes: {},
   gameDescriptions: {
     "uwufufu": "Vote in tournaments about various subjects",
     "wikipedia-speedruns":
@@ -416,6 +423,8 @@ export type Translation = {
     tagAccount: string;
     tagNotMobile: string;
     tagNew: string;
+    /** The pink tag of the « Coup de cœur » (`featured` in games.json). */
+    tagFeatured: string;
     play: string;
     emptyTitle: (query: string) => string;
     emptyFilters: string;
@@ -427,6 +436,11 @@ export type Translation = {
     /** The bubble's button; `show` is its accessible name. */
     see: string;
     show: string;
+  };
+  /** The note the « Coup de cœur »'s small TV says in a bubble. `readNote` is its button's accessible name. */
+  featured: {
+    noteTitle: string;
+    readNote: string;
   };
   /** `chip` on the genre buttons, `band` on cards and floppies. */
   genres: Record<Genre, { chip: string; band: string }>;
@@ -470,6 +484,12 @@ export type Translation = {
     later: string;
     close: string;
   };
+  /**
+   * The note on the « Coup de cœur » (`featured` in games.json), signed by the
+   * TV. Optional, per game and per language, falling back to English: without
+   * one, the card's small TV is just a drawing.
+   */
+  featuredNotes: Partial<Record<GameId, string>>;
   gameDescriptions: Record<GameId, string>;
   /**
    * Extra search terms per game, for what its name and description don't say

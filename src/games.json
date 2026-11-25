@@ -306,7 +306,8 @@
     "multiplayer": true,
     "screenShare": false,
     "mobileFriendly": true,
-    "accountNeeded": false
+    "accountNeeded": false,
+    "featured": true
   },
   {
     "id": "linkterpol",

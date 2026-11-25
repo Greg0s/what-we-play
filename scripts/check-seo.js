@@ -81,7 +81,7 @@ for (const file of await htmlFiles()) {
         (m) => [m[1], m[2]]
       )
     ),
-    cards: (html.match(/class="game"/g) ?? []).length,
+    cards: (html.match(/class="game(?: [^"]*)?"/g) ?? []).length,
     jsonLd: [...html.matchAll(
       /<script type="application\/ld\+json">(.*?)<\/script>/gs
     )].map((m) => m[1]),

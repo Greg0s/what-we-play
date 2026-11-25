@@ -91,6 +91,7 @@ export const es: Translation = {
     tagAccount: "Requiere cuenta",
     tagNotMobile: "No en móvil",
     tagNew: "Nuevo",
+    tagFeatured: "Flechazo del momento",
     play: "Jugar",
     emptyTitle: (query: string) => `Nada para «${query}»`,
     emptyFilters: "Ningún juego cumple todas estas condiciones",
@@ -100,6 +101,11 @@ export const es: Translation = {
     line: (count: number) => (count === 1 ? "¡Psst, una novedad!" : `¡Psst, ${count} novedades!`),
     see: "Ver",
     show: "Ver los juegos nuevos",
+  },
+  // « La tele » hasta que la tele tenga nombre.
+  featured: {
+    noteTitle: "La nota de la tele",
+    readNote: "Leer la nota de la tele",
   },
   genres: {
     drawing: { chip: "Dibujo", band: "Dibujo" },
@@ -185,6 +191,7 @@ export const es: Translation = {
     later: "Ahora no",
     close: "Cerrar",
   },
+  featuredNotes: {},
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",
     "wikipedia-speedruns":
