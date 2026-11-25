@@ -171,10 +171,15 @@ leaves that host alone: the script and its events always go to the network.
 Clicks are tracked declaratively, with Umami's `data-umami-event` (plus
 `data-umami-event-<prop>`) attributes on the elements themselves, no JS
 call: they render the same on the server and in the browser, so they cost
-nothing at hydration. Events: `Play game` (`game`, `from`: list or pick),
+nothing at hydration. Never on a same-tab link the app routes itself (the
+keypad's keys): Umami's click listener runs first, in the capture phase, and
+follows such a link's `href` itself once the event is sent, so every click
+reloaded the page. Those are tracked from their click handler with `track`
+(`src/analytics.ts`); an e2e test stubs Umami's click rule to catch a
+regression. Events: `Play game` (`game`, `from`: list or pick),
 `Pick` and `Reroll` (`players`), `Player count` (`players`), `Genre` and
 `Option` (`to`: on or off), `See new games` (`players`), `Read note` (`game`; every click of the « Coup de cœur »'s TV), `Reset filters`, `Language`, `Theme`, `3D glasses`
-(`to`), `How it works`, `Portfolio`, `Install prompt` (`step`: shown, accept, later, accepted, declined; `platform`: native or ios) and `App installed`. The install ones that no click carries (shown, the browser dialog's answer, the install itself) go through `umami.track` from `src/install/useInstallPrompt.ts`, guarded since the script may not be there. Keep event names in English and stable:
+(`to`), `How it works`, `Portfolio`, `Install prompt` (`step`: shown, accept, later, accepted, declined; `platform`: native or ios) and `App installed`. The install ones that no click carries (shown, the browser dialog's answer, the install itself) go through `track` (`src/analytics.ts`, guarded since the script may not be there) from `src/install/useInstallPrompt.ts`, and `Player count` from the keypad's click handler in `App.tsx`. Keep event names in English and stable:
 renaming one splits its history in Umami.
 
 ## Internationalization

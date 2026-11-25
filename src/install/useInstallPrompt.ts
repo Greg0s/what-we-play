@@ -9,16 +9,12 @@ import {
   updateInstallState,
   readInstallState,
 } from "./config";
+import { track } from "../analytics";
 import { heldInstallPrompt, onInstallPrompt, releaseInstallPrompt } from "./nativePrompt";
 
 /** `native`: the browser's own install dialog is ready. `ios`: Safari, where we explain the steps. */
 export type InstallOffer = "native" | "ios";
 
-type Umami = { track: (event: string, data?: Record<string, string>) => void };
-
-function track(event: string, data?: Record<string, string>) {
-  (window as Window & { umami?: Umami }).umami?.track(event, data);
-}
 
 /** A game opened, from a card or a draw: the same attribute Umami counts. */
 const PLAY_SELECTOR = '[data-umami-event="Play game"]';

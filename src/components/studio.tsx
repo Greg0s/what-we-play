@@ -165,8 +165,6 @@ export function Studio({
                 href={key.href}
                 aria-current={key.current ? "page" : undefined}
                 onClick={key.onClick}
-                data-umami-event="Player count"
-                data-umami-event-players={key.label}
               >
                 {key.label}
               </a>
