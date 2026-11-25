@@ -18,6 +18,50 @@ test.describe("Player count keypad", () => {
     await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(2).length);
   });
 
+  test("a key still switches in place with Umami loaded, and is counted", async ({ page }) => {
+    // Umami's tracker, reduced to its click rule: in the capture phase, a
+    // same-tab link carrying `data-umami-event` is followed by Umami itself
+    // (`location.href = href`) once the event is sent, which reloaded the page.
+    await page.route("https://umami-y1mc.vercel.app/script.js", (route) =>
+      route.fulfill({
+        contentType: "text/javascript",
+        body: `
+          window.umamiEvents = [];
+          window.umami = { track: (name, data) => { window.umamiEvents.push({ name, data }); return Promise.resolve(); } };
+          document.addEventListener("click", (e) => {
+            const el = e.target.closest("a, button");
+            const name = el && el.getAttribute("data-umami-event");
+            if (!name) return;
+            const data = {};
+            for (const attr of el.getAttributeNames()) {
+              const match = attr.match(/^data-umami-event-([\\w-]+)$/);
+              if (match) data[match[1]] = el.getAttribute(attr);
+            }
+            if (el.tagName === "A" && el.href && el.target !== "_blank") {
+              e.preventDefault();
+              window.umami.track(name, data).then(() => { location.href = el.href; });
+            } else {
+              window.umami.track(name, data);
+            }
+          }, true);
+        `,
+      }),
+    );
+    await page.goto("/");
+    await page.waitForFunction(() => "umami" in window);
+    await page.evaluate(() => ((window as Window & { stayed?: boolean }).stayed = true));
+
+    const keypad = page.getByRole("navigation", { name: en.header.playerCount });
+    await keypad.getByRole("link", { name: "3", exact: true }).click();
+    await expect(page).toHaveURL(/\/games-for-3-players\/$/);
+    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(3).length);
+
+    expect(await page.evaluate(() => (window as Window & { stayed?: boolean }).stayed)).toBe(true);
+    expect(await page.evaluate(() => (window as Window & { umamiEvents?: unknown[] }).umamiEvents)).toEqual([
+      { name: "Player count", data: { players: "3" } },
+    ]);
+  });
+
   test("10+ opens a stepper that goes past ten and floors at ten", async ({ page }) => {
     await page.goto("/games-for-9-players/");
 

@@ -3,6 +3,7 @@ import { TbDice5 } from "react-icons/tb";
 import "./App.scss";
 import "./stylesheets/intro.scss";
 import logo from "../what-we-play.png";
+import { track } from "./analytics";
 import {
   Games,
   GlassesSwitch,
@@ -194,6 +195,8 @@ function App({ route }: { route: Route }) {
     href: buildPath({ language, players: key, isHome: false }),
     current: key === 10 ? players >= 10 : players === key,
     onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+      // From code, not `data-umami-event`: on this link Umami would reload the page.
+      track("Player count", { players: key === 10 ? "10+" : String(key) });
       if (!isPlainClick(event)) return;
       event.preventDefault();
       changePlayers(key === 10 ? Math.max(10, players) : key, "pushState");
