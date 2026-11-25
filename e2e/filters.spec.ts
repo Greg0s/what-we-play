@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { games, gamesForPlayerCount, matchesPlayerCount } from "../src/games";
 import { en } from "../src/i18n/locales/en";
 
-const cards = (page: Page) => page.locator(".grid .game:not(.is-extra)");
+const cards = (page: Page) => page.locator(".grid .game");
 
 test.describe("Options and genres", () => {
   test("the no-account option keeps only games playable without signing up", async ({ page }) => {

@@ -46,7 +46,7 @@ export function Games({
 }) {
   const { t, language, gameDescription, featuredNote } = useTranslation();
   const [optionsOpen, setOptionsOpen] = useState(false);
-  const { base, list, freshCount, extra, hasQuery } = view;
+  const { base, list, freshCount, hasQuery } = view;
   const filterCount = activeFilterCount(filters);
 
   const optionLabel: Record<keyof Filters, string> = {
@@ -168,10 +168,9 @@ export function Games({
       </div>
 
       <div className="grid">
-        {(extra ? [extra, ...list] : list).map((game) => (
+        {list.map((game) => (
           <Game
             key={game.id}
-            extra={game === extra}
             id={game.id}
             name={game.name}
             genre={game.genre}

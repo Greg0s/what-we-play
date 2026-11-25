@@ -81,8 +81,7 @@ for (const file of await htmlFiles()) {
         (m) => [m[1], m[2]]
       )
     ),
-    // The « Coup de cœur » shown outside its player count (is-extra) is not one of the page's games.
-    cards: (html.match(/class="game(?: [^"]*)?"/g) ?? []).filter((card) => !card.includes("is-extra")).length,
+    cards: (html.match(/class="game(?: [^"]*)?"/g) ?? []).length,
     jsonLd: [...html.matchAll(
       /<script type="application\/ld\+json">(.*?)<\/script>/gs
     )].map((m) => m[1]),

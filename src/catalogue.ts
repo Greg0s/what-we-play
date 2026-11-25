@@ -31,13 +31,6 @@ export type CatalogueView = {
   list: Game[];
   /** « New » games the list would show with the « New » option off: the option's count. */
   freshCount: number;
-  /**
-   * The « Coup de cœur », shown ahead of `list` although it isn't in it: on
-   * opening, it shows even where the player count leaves it out, until the
-   * visitor narrows the list themselves (search, genre, options). Not counted,
-   * never drawn by « Pick for us ».
-   */
-  extra: Game | null;
   hasQuery: boolean;
   /**
    * The player count is ignored: while searching, or with screen share on
@@ -86,10 +79,7 @@ export function viewCatalogue(options: {
   }
 
   const list = base.filter(inGenre);
-  const narrowed = hasQuery || genre !== "all" || activeFilterCount(filters) > 0;
-  const extra =
-    narrowed || list.some((game) => game.id === featured) ? null : (games.find((game) => game.id === featured) ?? null);
-  return { base, list, freshCount, extra, hasQuery, wide };
+  return { base, list, freshCount, hasQuery, wide };
 }
 
 export function activeFilterCount(filters: Filters): number {

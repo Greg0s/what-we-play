@@ -14,7 +14,7 @@ test.describe("Game catalogue", () => {
 
     await page.goto("/");
 
-    await expect(page.locator(".grid .game:not(.is-extra)")).toHaveCount(expected.length);
+    await expect(page.locator(".grid .game")).toHaveCount(expected.length);
     for (const game of expected) {
       await expect(page.getByRole("heading", { name: game.name, level: 3 })).toBeVisible();
     }

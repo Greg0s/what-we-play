@@ -1,6 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
 import { featuredId } from "../src/featured";
-import { GENRES, games, gameLink, matchesPlayerCount } from "../src/games";
+import { games, gameLink, matchesPlayerCount } from "../src/games";
 import { en, type Translation } from "../src/i18n/locales/en";
 import { PLAYER_COUNT_PAGES, buildPath } from "../src/routes";
 
@@ -22,28 +22,11 @@ test.describe("Coup de cœur", () => {
     await expect(page.locator(".grid .game__tv")).toHaveCount(1);
   });
 
-  test("on opening it leads every page, even one its player count leaves out", async ({ page }) => {
+  test("it is the same game on every page it fits, and nowhere else", async ({ page }) => {
     for (const count of [1, 4, 10]) {
       await page.goto(buildPath({ language: "en", players: count, isHome: false }));
-      const fits = matchesPlayerCount(featured, count);
-      await expect(page.locator(".grid .game.is-featured")).toHaveCount(1);
-      await expect(card(page).locator("h3")).toHaveText(featured.name);
-      // Outside its player count it is shown, but isn't one of the page's games.
-      await expect(card(page)).toHaveClass(fits ? /^(?!.*is-extra)/ : /is-extra/);
+      await expect(page.locator(".grid .game.is-featured")).toHaveCount(matchesPlayerCount(featured, count) ? 1 : 0);
     }
-  });
-
-  test("the visitor's own search, genre or options hide it when it doesn't match", async ({ page }) => {
-    await page.goto(path);
-    const other = GENRES.find((genre) => genre !== featured.genre)!;
-    await page.locator(".genre", { hasText: en.genres[other].chip }).click();
-    await expect(page.locator(".grid .game.is-featured")).toHaveCount(0);
-
-    await page.locator(".genre", { hasText: en.catalogue.allGenres }).click();
-    await expect(card(page).locator("h3")).toHaveText(featured.name);
-
-    await page.getByPlaceholder(en.catalogue.searchPlaceholder).fill("zzzz-no-such-game");
-    await expect(page.locator(".grid .game.is-featured")).toHaveCount(0);
   });
 
   test("without a note, the TV opens the game like the rest of the card", async ({ page }) => {
