@@ -26,6 +26,7 @@ export function Games({
   onFilter,
   onResetFilters,
   fresh,
+  featured,
 }: {
   players: number;
   view: CatalogueView;
@@ -40,6 +41,8 @@ export function Games({
   onResetFilters: () => void;
   /** The games that wear « New » for this visitor. */
   fresh: ReadonlySet<string>;
+  /** The « Coup de cœur »'s id (src/featured.ts). */
+  featured: string;
 }) {
   const { t, language, gameDescription, featuredNote } = useTranslation();
   const [optionsOpen, setOptionsOpen] = useState(false);
@@ -179,7 +182,7 @@ export function Games({
             tags={cardTags(game, t)}
             fresh={fresh.has(game.id) ? t.catalogue.tagNew : null}
             featured={
-              game.featured
+              game.id === featured
                 ? {
                     label: t.catalogue.tagFeatured,
                     note: featuredNote(game.id),

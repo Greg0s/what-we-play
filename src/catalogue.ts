@@ -51,10 +51,12 @@ export function viewCatalogue(options: {
   filters: Filters;
   /** The games that wear « New » for this visitor (src/fresh.ts). */
   fresh: ReadonlySet<string>;
+  /** The « Coup de cœur »'s id (src/featured.ts): it leads the list. */
+  featured: string;
   /** Everything the search may match for a game, in the page's language. */
   searchText: (game: Game) => string;
 }): CatalogueView {
-  const { players, query, genre, filters, fresh, searchText } = options;
+  const { players, query, genre, filters, fresh, featured, searchText } = options;
   const needle = normalizeForSearch(query.trim());
   const hasQuery = needle.length > 0;
   const wide = hasQuery || filters.screenShare;
@@ -73,7 +75,7 @@ export function viewCatalogue(options: {
     base = base.filter((game) => fresh.has(game.id)).sort((a, b) => b.added.localeCompare(a.added));
   } else {
     // Otherwise the « Coup de cœur » leads.
-    base = [...base.filter((game) => game.featured), ...base.filter((game) => !game.featured)];
+    base = [...base.filter((game) => game.id === featured), ...base.filter((game) => game.id !== featured)];
   }
 
   const list = base.filter(inGenre);

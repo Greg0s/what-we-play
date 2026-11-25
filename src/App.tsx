@@ -18,6 +18,7 @@ import {
 } from "./components/";
 import { cardTags, isPlainClick, type PadKey } from "./ui";
 import { NO_FILTERS, viewCatalogue, type Filters, type GenreChoice } from "./catalogue";
+import { featuredId } from "./featured";
 import { arrivedIds, freshIds } from "./fresh";
 import { DEFAULT_PLAYERS, games, gamesForPlayerCount, type Game } from "./games";
 import { useTranslation } from "./i18n";
@@ -41,6 +42,9 @@ import { useTvMood } from "./useTvMood";
  * a player-count change appear without replaying the entrance.
  */
 const INTRO_DURATION_MS = 1500;
+
+/** The week's « Coup de cœur », fixed at build time so the prerender and the browser agree. */
+const FEATURED_ID = featuredId(__BUILD_DAY__);
 
 /** The keypad's keys; « 10+ » opens a stepper for bigger groups. */
 const PAD = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -146,7 +150,7 @@ function App({ route }: { route: Route }) {
   const arrived = useMemo(() => arrivedIds(since), [since]);
 
   const view = useMemo(
-    () => viewCatalogue({ players, query, genre, filters, fresh, searchText }),
+    () => viewCatalogue({ players, query, genre, filters, fresh, featured: FEATURED_ID, searchText }),
     [players, query, genre, filters, fresh, searchText],
   );
   const count = view.list.length;
@@ -411,6 +415,7 @@ function App({ route }: { route: Route }) {
           onFilter={(key) => setFilters((current) => ({ ...current, [key]: !current[key] }))}
           onResetFilters={() => setFilters(NO_FILTERS)}
           fresh={fresh}
+          featured={FEATURED_ID}
         />
       </main>
 

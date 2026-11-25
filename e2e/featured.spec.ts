@@ -1,23 +1,32 @@
 import { test, expect, type Page } from "@playwright/test";
-import { games, gameLink } from "../src/games";
+import { featuredId } from "../src/featured";
+import { games, gameLink, matchesPlayerCount } from "../src/games";
 import { en, type Translation } from "../src/i18n/locales/en";
+import { PLAYER_COUNT_PAGES, buildPath } from "../src/routes";
 
-const featured = games.find((game) => game.featured);
-const note = featured ? (en as Translation).featuredNotes[featured.id as keyof Translation["featuredNotes"]] : undefined;
-const path = featured ? `/games-for-${Math.max(2, featured.minPlayers)}-players/` : "/";
+// The build draws the week's game from its own day: run the tests the week of the build.
+const featured = games.find((game) => game.id === featuredId(new Date().toISOString().slice(0, 10)))!;
+const note = (en as Translation).featuredNotes[featured.id as keyof Translation["featuredNotes"]];
+const players = PLAYER_COUNT_PAGES.find((count) => matchesPlayerCount(featured, count))!;
+const path = buildPath({ language: "en", players, isHome: false });
 
 const card = (page: Page) => page.locator(".grid .game").first();
 const tv = (page: Page) => card(page).locator(".game__tv");
 
 test.describe("Coup de cœur", () => {
-  test.skip(!featured, "no game is featured in games.json");
-
   test("the featured game leads the list, with its tag and the small TV", async ({ page }) => {
     await page.goto(path);
-    await expect(card(page).locator("h3")).toHaveText(featured!.name);
+    await expect(card(page).locator("h3")).toHaveText(featured.name);
     await expect(card(page).locator(".game__tag.is-featured")).toHaveText(en.catalogue.tagFeatured);
     await expect(tv(page)).toBeVisible();
     await expect(page.locator(".grid .game__tv")).toHaveCount(1);
+  });
+
+  test("it is the same game on every page it fits, and nowhere else", async ({ page }) => {
+    for (const count of [1, 4, 10]) {
+      await page.goto(buildPath({ language: "en", players: count, isHome: false }));
+      await expect(page.locator(".grid .game.is-featured")).toHaveCount(matchesPlayerCount(featured, count) ? 1 : 0);
+    }
   });
 
   test("without a note, the TV opens the game like the rest of the card", async ({ page }) => {
@@ -31,7 +40,7 @@ test.describe("Coup de cœur", () => {
       ({ x, y }) => document.elementFromPoint(x, y)?.closest("a")?.getAttribute("href"),
       { x: box.x + box.width / 2, y: box.y + box.height / 2 },
     );
-    expect(href).toBe(gameLink(featured!, "en"));
+    expect(href).toBe(gameLink(featured, "en"));
   });
 
   test("with a note, the TV says it: on hover, and on click until a click elsewhere or Escape", async ({ page }) => {
@@ -62,7 +71,7 @@ test.describe("Coup de cœur", () => {
     await expect(button).toBeFocused();
 
     // The title is still the way to the game.
-    await expect(card(page).getByRole("link", { name: featured!.name })).toHaveAttribute("href", gameLink(featured!, "en"));
+    await expect(card(page).getByRole("link", { name: featured.name })).toHaveAttribute("href", gameLink(featured, "en"));
   });
 
   test("with a note, a tap opens it on a phone", async ({ page }) => {

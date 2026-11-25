@@ -149,10 +149,15 @@ any field that was a guess.
 
 ## The « Coup de cœur du moment »
 
-One game at a time can carry `"featured": true` (as the last key of its
-entry; two fails the build). It leads every list it is on, with a pink
-« Coup de cœur du moment » tag and a small TV with heart eyes beside its name.
-To move it, take the key off one game and put it on another.
+Every week (Monday, UTC) a game of the catalogue becomes the « Coup de cœur
+du moment », dealt like a deck: every game has its week before any has a
+second (`src/featured.ts`). It leads every list it is on, with a pink tag
+and a small TV with heart eyes beside its name. A new game joins the deal by
+itself.
+
+To choose it by hand instead, put `"featured": true` on one game (as the
+last key of its entry; two fail the build): it stays the « Coup de cœur »
+until the key is taken off.
 
 The TV can also say a short note about the game, signed by the TV (its name
 is still to come: « la télé » until then). The note is text to translate, so
@@ -160,7 +165,8 @@ it lives with the descriptions: add a line to `featuredNotes` in each locale,
 keyed by the `id`. Only the languages that have one show it (a missing one
 falls back to English). Two or three sentences at most, in the TV's voice.
 Without any note, the TV is just a drawing and opens the game like the rest
-of the card.
+of the card. Since the weekly pick can land on any game, a note can be
+written for several games ahead of their week.
 
 ```ts
 // featuredNotes, in fr.ts

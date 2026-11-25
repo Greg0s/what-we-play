@@ -16,9 +16,9 @@ treat an outdated `CLAUDE.md` as a bug in that change, not separate cleanup.
 
 Structure:
 
-- `src/games.json` — the game data (no translatable text): `id`, `name`, `added` (the day it joined the catalogue, `YYYY-MM-DD`; a missing or malformed one fails the build; the games already there when the git history starts all carry its first day, 2026-09-07, and are never « New »), `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), optional `favicon` (a file of `public/favicons/`, for the few sites Google's favicon service has no icon for; otherwise the card asks Google for `link`'s host), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`), optional `featured` (the « Coup de cœur », one game at most; see below). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
+- `src/games.json` — the game data (no translatable text): `id`, `name`, `added` (the day it joined the catalogue, `YYYY-MM-DD`; a missing or malformed one fails the build; the games already there when the git history starts all carry its first day, 2026-09-07, and are never « New »), `minPlayers`/`maxPlayers` (`-1` = no max), `link` (plus optional `localizedLinks` — `{ "fr": …, "es": … }` — for sites that serve a translation at its own URL; cards and JSON-LD use it for the page's language and fall back to `link`), optional `favicon` (a file of `public/favicons/`, for the few sites Google's favicon service has no icon for; otherwise the card asks Google for `link`'s host), `genre` (one of `GENRES` in `src/games.ts`; an unknown one fails the build), tag booleans (`solo`, `soloWithStrangers`, `multiplayer`, `screenShare`), filter booleans (`mobileFriendly`, `accountNeeded`), optional `featured` (makes it the « Coup de cœur » instead of the week's pick, one game at most; see below). Hand-editable without touching code. `solo` and `multiplayer` are no longer shown or filtered on. To add a game, follow [docs/adding-a-game.md](docs/adding-a-game.md).
 - `src/games.ts` — typed access to that data (the `Game` type, `GENRES`, the player-count filter, `gameLink`, `gameFavicon`, `playerRangeShort`). Both the app and the prerender go through it, so they can never disagree on what belongs on a page.
-- `src/catalogue.ts` — what the list shows: player count, search, genre and the options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account, and « New », offered only while the list has new games), with the « Coup de cœur » first unless « New » is on. `src/fresh.ts` + `src/useLastVisit.ts` — which games are « New » (see New games below). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
+- `src/catalogue.ts` — what the list shows: player count, search, genre and the options (with strangers, screen share — which widens to the whole catalogue —, mobile, no account, and « New », offered only while the list has new games), with the « Coup de cœur » first unless « New » is on. `src/fresh.ts` + `src/useLastVisit.ts` — which games are « New » (see New games below). `src/featured.ts` — the week's « Coup de cœur » (see below). `src/tv.ts` — the TV's screen (one pair of eyes per player, moods, reels) in TV units, and the 3D pawns. `src/ui.ts` — small helpers the components share. `src/useDeck.ts` + `src/pickLines.ts` — the draw's deck and what the TV says with it (see The draw).
 - `src/i18n/` — internationalization (see below). `src/theme/` — light/dark mode (see Theming below). `src/relief/` — the 2D/3D TV (see below). `src/install/` — when to invite the visitor to install the app (see Installable app below).
 - `src/components/` — `Studio` (the banner: the bubble with the H1, the TV, the cord, the sticker and the keypad, whose keys are real links to each player-count page and whose Enter key draws a game), `Tv` + `TvScreen` (the mascot, flat and 3D), `PickDrawer` (the draw on wide screens), `PickScreen` (the draw on phones), `Floppy`, `Games` (search, genres, options, cards), `Game` (card, and the « Coup de cœur »'s small TV and note), `GlassesSwitch`, `LanguageSwitcher`, `ThemeSwitcher`, `HowItWorks` (header modal, portalled to `<body>` so its backdrop also covers the floating « Pick for us » button), `InstallPrompt` (the invitation to install the app).
 - `src/App.tsx` — wires everything together: the route state (player count, landing or not) kept in step with the URL, the catalogue state, the TV's moods (`useTvMood`) and the draw (`usePick`).
@@ -214,9 +214,22 @@ and the other options, turns « New » on and scrolls to the results.
 
 ## Coup de cœur
 
-One game at a time (`"featured": true` in `games.json`; two fail the build)
-leads the list, unless « New » is on, with a pink « Coup de cœur du moment »
-tag, a pink shadow, and a small TV with heart eyes beside its name. The TV can
+One game for the whole site, the same on every page and for every visitor,
+leads the list wherever it fits (player count, search, genre, options),
+unless « New » is on, with a pink « Coup de cœur du moment » tag, a pink
+shadow, and a small TV with heart eyes beside its name. Pages it doesn't fit
+have none. It changes every week (`src/featured.ts`): the weeks deal the
+catalogue in a seeded shuffle, so every game gets a week before any gets a
+second, and a pass never opens on the game that closed the last one. A game
+with `"featured": true` in `games.json` (one at most, or the build fails)
+overrides the deal. The draw is seeded, never random at render: it uses the
+build's day (`__BUILD_DAY__`, defined in `vite.config.ts`, today in UTC unless
+`BUILD_DAY` pins it), so the prerender and the browser agree, and the deploy
+workflow rebuilds `main` every Monday (`schedule`) so the pick moves on with
+no commit. GitHub pauses scheduled workflows after 60 days without activity
+on the repository; the button « Run workflow » (`workflow_dispatch`) restarts
+a deploy by hand. The e2e tests work out the week's game from today's date,
+so run them the week of the build. The TV can
 say a note about the game (`featuredNotes` in the locale files), signed by
 the TV: « Le mot de la télé » until the TV has a name. With a note, the TV is
 a button: on a mouse it speaks while hovered, and a click or a tap keeps the
@@ -373,8 +386,8 @@ screen on.
 ## Git workflow & deployment
 
 `main` deploys automatically to GitHub Pages on every push
-([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) — no
-preview environment. Work is always done on a feature branch with a Pull
+([.github/workflows/deploy.yml](.github/workflows/deploy.yml)), and again
+every Monday for the week's « Coup de cœur » — no preview environment. Work is always done on a feature branch with a Pull
 Request before merging. [.github/workflows/ci.yml](.github/workflows/ci.yml)
 runs lint, the full build (prerender + `check-seo`) and the Playwright suite
 on every PR, so a broken build or user-facing flow is caught before `main`.

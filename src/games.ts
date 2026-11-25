@@ -48,9 +48,8 @@ export type Game = {
   /** Requires creating or signing into an account to play. */
   accountNeeded: boolean;
   /**
-   * The « Coup de cœur du moment »: listed first, with a pink tag and a small
-   * TV with heart eyes. At most one game at a time. Its note, if any, lives in
-   * the locale files (`featuredNotes`); without one the TV is only a drawing.
+   * Makes this game the « Coup de cœur du moment », instead of the one drawn
+   * for the week (src/featured.ts). At most one game.
    */
   featured?: boolean;
 };
