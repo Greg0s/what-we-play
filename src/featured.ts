@@ -1,8 +1,8 @@
 /**
  * Which game is the « Coup de cœur du moment ». A game marked `"featured":
  * true` in games.json wins; otherwise one is dealt for the week, the same for
- * every visitor and every page: every game gets a week before any gets a
- * second one.
+ * every visitor and every page: each pass through the catalogue gives every
+ * game one week.
  *
  * The draw is seeded by the week, not random at render: the prerender and the
  * browser must agree (see Rendering in CLAUDE.md). The app asks for the week

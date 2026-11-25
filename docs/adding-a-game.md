@@ -150,10 +150,11 @@ any field that was a guess.
 ## The « Coup de cœur du moment »
 
 Every week (Monday, UTC) a game of the catalogue becomes the « Coup de cœur
-du moment », dealt like a deck: every game has its week before any has a
-second (`src/featured.ts`). It leads every list it is on, with a pink tag
-and a small TV with heart eyes beside its name. A new game joins the deal by
-itself.
+du moment », dealt like a deck: each pass through the catalogue gives every
+game one week (`src/featured.ts`). It leads the list on every page, even
+those whose player count leaves it out, until the visitor searches, picks a
+genre or an option it doesn't match. It wears a pink tag and a small TV
+with heart eyes beside its name. A new game joins the deal by itself.
 
 To choose it by hand instead, put `"featured": true` on one game (as the
 last key of its entry; two fail the build): it stays the « Coup de cœur »

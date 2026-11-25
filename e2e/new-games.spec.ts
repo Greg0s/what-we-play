@@ -4,7 +4,7 @@ import { games, gamesForPlayerCount } from "../src/games";
 import { en } from "../src/i18n/locales/en";
 import { VISIT_KEY } from "../src/useLastVisit";
 
-const cards = (page: Page) => page.locator(".grid .game");
+const cards = (page: Page) => page.locator(".grid .game:not(.is-extra)");
 const newOption = (page: Page) => page.locator(".options .opt", { hasText: en.catalogue.fresh });
 const news = (page: Page) => page.locator(".tv-news");
 
@@ -31,7 +31,7 @@ test.describe("New games", () => {
     await page.goto(path);
 
     const expected = gamesForPlayerCount(players).filter((game) => latestIds.has(game.id));
-    await expect(page.locator(".grid .game__tag.is-new")).toHaveCount(expected.length);
+    await expect(page.locator(".grid .game:not(.is-extra) .game__tag.is-new")).toHaveCount(expected.length);
     for (const game of expected) {
       const card = page.locator(".grid .game", { has: page.getByRole("heading", { name: game.name, level: 3, exact: true }) });
       await expect(card.locator(".is-new")).toHaveText(en.catalogue.tagNew);

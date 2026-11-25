@@ -26,6 +26,7 @@ export function Game({
   tags,
   fresh,
   featured,
+  extra = false,
   playLabel,
 }: {
   id: string;
@@ -39,8 +40,10 @@ export function Game({
   tags: CardTag[];
   /** The « New » tag's label, or null for a game that isn't new. */
   fresh: string | null;
-  /** Set only on the « Coup de cœur » (`featured` in games.json). */
+  /** Set only on the « Coup de cœur » (src/featured.ts). */
   featured: Featured | null;
+  /** Shown although the player count leaves it out (the « Coup de cœur » on opening): not one of the list's games. */
+  extra?: boolean;
   playLabel: string;
 }) {
   const play = {
@@ -96,7 +99,7 @@ export function Game({
   // card becomes a box whose title link stretches over all of it (`.game__link`).
   if (featured?.note) {
     return (
-      <div className="game is-featured has-note">
+      <div className={`game is-featured has-note${extra ? " is-extra" : ""}`}>
         {body(
           <a className="game__link" {...play}>
             {name}
@@ -109,7 +112,7 @@ export function Game({
 
   // Without one, the TV is a drawing inside the card's link, which it opens like the rest of the card.
   return (
-    <a className={`game${featured ? " is-featured" : ""}`} {...play}>
+    <a className={`game${featured ? " is-featured" : ""}${extra ? " is-extra" : ""}`} {...play}>
       {body(
         name,
         featured && (

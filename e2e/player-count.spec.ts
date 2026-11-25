@@ -15,7 +15,7 @@ test.describe("Player count keypad", () => {
     await expect(page).toHaveURL(/\/games-for-2-players\/$/);
     await expect(two).toHaveAttribute("aria-current", "page");
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(2).join(" "));
-    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(2).length);
+    await expect(page.locator(".grid .game:not(.is-extra)")).toHaveCount(gamesForPlayerCount(2).length);
   });
 
   test("10+ opens a stepper that goes past ten and floors at ten", async ({ page }) => {
@@ -28,7 +28,7 @@ test.describe("Player count keypad", () => {
     const less = page.getByRole("button", { name: en.header.removePlayer, exact: true });
     await more.click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(en.header.question(11).join(" "));
-    await expect(page.locator(".grid .game")).toHaveCount(gamesForPlayerCount(11).length);
+    await expect(page.locator(".grid .game:not(.is-extra)")).toHaveCount(gamesForPlayerCount(11).length);
 
     await less.click();
     await less.click();
