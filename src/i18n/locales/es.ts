@@ -78,6 +78,7 @@ export const es: Translation = {
     screenShare: "Pantalla compartida",
     mobileFriendly: "Apto para móvil",
     noAccountNeeded: "Sin cuenta",
+    fresh: "Nuevo",
     resetFilters: "Borrar todo",
     resultCount: (count: number) => (count === 1 ? "1 juego" : `${count} juegos`),
     scopeForPlayers: (players: number) =>
@@ -89,10 +90,22 @@ export const es: Translation = {
     tagScreenShare: "Pantalla compartida",
     tagAccount: "Requiere cuenta",
     tagNotMobile: "No en móvil",
+    tagNew: "Nuevo",
+    tagFeatured: "Flechazo del momento",
     play: "Jugar",
     emptyTitle: (query: string) => `Nada para «${query}»`,
     emptyFilters: "Ningún juego cumple todas estas condiciones",
     emptyHint: "La tele lo ha buscado todo. Prueba «dibujo», «música», o quita una opción.",
+  },
+  news: {
+    line: (count: number) => (count === 1 ? "¡Psst, una novedad!" : `¡Psst, ${count} novedades!`),
+    see: "Ver",
+    show: "Ver los juegos nuevos",
+  },
+  // « La tele » hasta que la tele tenga nombre.
+  featured: {
+    noteTitle: "La nota de la tele",
+    readNote: "Leer la nota de la tele",
   },
   genres: {
     drawing: { chip: "Dibujo", band: "Dibujo" },
@@ -178,6 +191,7 @@ export const es: Translation = {
     later: "Ahora no",
     close: "Cerrar",
   },
+  featuredNotes: {},
   gameDescriptions: {
     "uwufufu": "Vota en torneos sobre temas muy variados.",
     "wikipedia-speedruns":

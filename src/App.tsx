@@ -18,7 +18,9 @@ import {
 } from "./components/";
 import { cardTags, isPlainClick, type PadKey } from "./ui";
 import { NO_FILTERS, viewCatalogue, type Filters, type GenreChoice } from "./catalogue";
-import { DEFAULT_PLAYERS, games, type Game } from "./games";
+import { featuredId } from "./featured";
+import { arrivedIds, freshIds } from "./fresh";
+import { DEFAULT_PLAYERS, games, gamesForPlayerCount, type Game } from "./games";
 import { useTranslation } from "./i18n";
 import { DEFAULT_LANGUAGE, detectLanguage } from "./i18n/config";
 import { useIsomorphicLayoutEffect } from "./i18n/useIsomorphicLayoutEffect";
@@ -28,6 +30,7 @@ import { buildPath, parseRoute, type Route } from "./routes";
 import { buildScreen, DEFAULT_EYE, eyeColor, GENRE_COLORS, MAX_TILES, type Mood } from "./tv";
 import { useDocumentMeta } from "./useDocumentMeta";
 import { useDeck } from "./useDeck";
+import { useLastVisit } from "./useLastVisit";
 import { usePick } from "./usePick";
 import { useTimers } from "./useTimers";
 import { useTvMood } from "./useTvMood";
@@ -39,6 +42,9 @@ import { useTvMood } from "./useTvMood";
  * a player-count change appear without replaying the entrance.
  */
 const INTRO_DURATION_MS = 1500;
+
+/** The week's « Coup de cœur », fixed at build time so the prerender and the browser agree. */
+const FEATURED_ID = featuredId(__BUILD_DAY__);
 
 /** The keypad's keys; « 10+ » opens a stepper for bigger groups. */
 const PAD = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -137,9 +143,15 @@ function App({ route }: { route: Route }) {
     [gameDescription, gameKeywords, t],
   );
 
+  // « New »: the latest games for everyone, plus what arrived since the
+  // visitor's last visit once hydrated (src/fresh.ts).
+  const since = useLastVisit();
+  const fresh = useMemo(() => freshIds(since), [since]);
+  const arrived = useMemo(() => arrivedIds(since), [since]);
+
   const view = useMemo(
-    () => viewCatalogue({ players, query, genre, filters, searchText }),
-    [players, query, genre, filters, searchText],
+    () => viewCatalogue({ players, query, genre, filters, fresh, featured: FEATURED_ID, searchText }),
+    [players, query, genre, filters, fresh, searchText],
   );
   const count = view.list.length;
 
@@ -263,6 +275,33 @@ function App({ route }: { route: Route }) {
       }
     : null;
 
+  // ------------------------------------------------------------ news
+
+  // The TV announces new games only when something arrived since the last
+  // visit and fits the player count; otherwise a regular would hear about the
+  // same latest games every time. Its count is what « See » then lists: every
+  // « New » game for this player count.
+  const [newsSeen, setNewsSeen] = useState(false);
+  const forPlayers = useMemo(() => gamesForPlayerCount(players), [players]);
+  const newsCount = forPlayers.filter((game) => fresh.has(game.id)).length;
+  const hasArrived = forPlayers.some((game) => arrived.has(game.id));
+  const showNews = !newsSeen && hasArrived && !filters.fresh && !drawerOpen;
+
+  const seeNews = () => {
+    setNewsSeen(true);
+    setQuery("");
+    setGenre("all");
+    setFilters({ ...NO_FILTERS, fresh: true });
+    later("news", 50, () => {
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.querySelector(".count")?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+    });
+  };
+
+  const news = showNews
+    ? { line: t.news.line(newsCount), see: t.news.see, show: t.news.show, players, onSee: seeNews }
+    : null;
+
   // ------------------------------------------------------------ home
 
   // The logo always returns to the language's own landing page — no player
@@ -315,6 +354,7 @@ function App({ route }: { route: Route }) {
             />
           }
           say={say}
+          news={news}
           keys={keys}
           players={players}
           total={games.length}
@@ -326,6 +366,22 @@ function App({ route }: { route: Route }) {
           onPointerMove={(event) => tv.follow(event, screenRect())}
           onPointerLeave={tv.rest}
         />
+
+        {news && (
+          <p className="news-strip">
+            {news.line}
+            <button
+              type="button"
+              className="news-strip__see"
+              onClick={news.onSee}
+              aria-label={news.show}
+              data-umami-event="See new games"
+              data-umami-event-players={players}
+            >
+              {news.see}
+            </button>
+          </p>
+        )}
 
         <p className="sr" aria-live="polite">
           {drawerOpen && !pick.phase && pick.pick ? t.pick.chosen(pick.pick.name) : ""}
@@ -358,6 +414,8 @@ function App({ route }: { route: Route }) {
           filters={filters}
           onFilter={(key) => setFilters((current) => ({ ...current, [key]: !current[key] }))}
           onResetFilters={() => setFilters(NO_FILTERS)}
+          fresh={fresh}
+          featured={FEATURED_ID}
         />
       </main>
 

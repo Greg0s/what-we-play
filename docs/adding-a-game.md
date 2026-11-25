@@ -77,6 +77,7 @@ Append it at the end of the array, with the keys in this order:
 {
   "id": "timeguessr",
   "name": "TimeGuessr",
+  "added": "2026-11-15",
   "minPlayers": 1,
   "maxPlayers": 2,
   "link": "https://timeguessr.com/",
@@ -97,6 +98,11 @@ Append it at the end of the array, with the keys in this order:
 - `id`: lowercase kebab-case, unique, stable (it keys the locale entries).
 - `name`: the game's own name as the site writes it. It is not translated,
   so put a translated title in the keywords instead (see below).
+- `added`: the day the game goes online, `YYYY-MM-DD` (a missing or malformed
+  date fails the build). The last five games added wear a « New » tag for
+  everyone, and a returning visitor also sees as new every game added since
+  their last visit (`src/fresh.ts`). Appending at the end of the array
+  matters too: on the same day, the game further down counts as the newer.
 - Two-space indentation, no trailing comma.
 
 ## 3. Describe it in every locale
@@ -140,3 +146,30 @@ proxy that blocks it, it fails for that reason alone.
 Nothing else needs changing: the pages, sitemap, `llms.txt`, JSON-LD and the
 draw all read `games.json`. Open a pull request listing the games added and
 any field that was a guess.
+
+## The « Coup de cœur du moment »
+
+Every week (Monday, UTC) a game of the catalogue becomes the « Coup de cœur
+du moment », dealt like a deck: each pass through the catalogue gives every
+game one week (`src/featured.ts`). It leads every list it is on (only where
+it matches the player count, the search, the genre and the options), with a pink tag
+and a small TV with heart eyes beside its name. A new game joins the deal by
+itself.
+
+To choose it by hand instead, put `"featured": true` on one game (as the
+last key of its entry; two fail the build): it stays the « Coup de cœur »
+until the key is taken off.
+
+The TV can also say a short note about the game, signed by the TV (its name
+is still to come: « la télé » until then). The note is text to translate, so
+it lives with the descriptions: add a line to `featuredNotes` in each locale,
+keyed by the `id`. Only the languages that have one show it (a missing one
+falls back to English). Two or three sentences at most, in the TV's voice.
+Without any note, the TV is just a drawing and opens the game like the rest
+of the card. Since the weekly pick can land on any game, a note can be
+written for several games ahead of their week.
+
+```ts
+// featuredNotes, in fr.ts
+"gartic-phone": "On l’a lancé « pour une partie » un vendredi soir, on a fini à 2 h du matin.",
+```

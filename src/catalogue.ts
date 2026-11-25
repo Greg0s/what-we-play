@@ -1,6 +1,6 @@
 import { games, gamesForPlayerCount, type Game, type Genre } from "./games";
 
-/** The four « Options » toggles. */
+/** The « Options » toggles. */
 export type Filters = {
   /** Only games playable with strangers matched online. */
   strangers: boolean;
@@ -10,6 +10,8 @@ export type Filters = {
   mobile: boolean;
   /** Only games playable without an account. */
   noAccount: boolean;
+  /** Only the « New » games (src/fresh.ts). Offered only while the list has some. */
+  fresh: boolean;
 };
 
 export const NO_FILTERS: Filters = {
@@ -17,6 +19,7 @@ export const NO_FILTERS: Filters = {
   screenShare: false,
   mobile: false,
   noAccount: false,
+  fresh: false,
 };
 
 export type GenreChoice = Genre | "all";
@@ -26,6 +29,8 @@ export type CatalogueView = {
   base: Game[];
   /** `base` narrowed to the chosen genre: what the page lists. */
   list: Game[];
+  /** « New » games the list would show with the « New » option off: the option's count. */
+  freshCount: number;
   hasQuery: boolean;
   /**
    * The player count is ignored: while searching, or with screen share on
@@ -44,10 +49,14 @@ export function viewCatalogue(options: {
   query: string;
   genre: GenreChoice;
   filters: Filters;
+  /** The games that wear « New » for this visitor (src/fresh.ts). */
+  fresh: ReadonlySet<string>;
+  /** The « Coup de cœur »'s id (src/featured.ts): it leads the list. */
+  featured: string;
   /** Everything the search may match for a game, in the page's language. */
   searchText: (game: Game) => string;
 }): CatalogueView {
-  const { players, query, genre, filters, searchText } = options;
+  const { players, query, genre, filters, fresh, featured, searchText } = options;
   const needle = normalizeForSearch(query.trim());
   const hasQuery = needle.length > 0;
   const wide = hasQuery || filters.screenShare;
@@ -59,8 +68,18 @@ export function viewCatalogue(options: {
   if (filters.mobile) base = base.filter((game) => game.mobileFriendly);
   if (filters.noAccount) base = base.filter((game) => !game.accountNeeded);
 
-  const list = genre === "all" ? base : base.filter((game) => game.genre === genre);
-  return { base, list, hasQuery, wide };
+  const inGenre = (game: Game) => genre === "all" || game.genre === genre;
+  const freshCount = base.filter((game) => inGenre(game) && fresh.has(game.id)).length;
+  if (filters.fresh) {
+    // Just the new ones: newest first, since that is what the visitor came to see.
+    base = base.filter((game) => fresh.has(game.id)).sort((a, b) => b.added.localeCompare(a.added));
+  } else {
+    // Otherwise the « Coup de cœur » leads.
+    base = [...base.filter((game) => game.id === featured), ...base.filter((game) => game.id !== featured)];
+  }
+
+  const list = base.filter(inGenre);
+  return { base, list, freshCount, hasQuery, wide };
 }
 
 export function activeFilterCount(filters: Filters): number {

@@ -63,6 +63,7 @@ export function Studio({
   tv,
   tvZoneRef,
   say,
+  news,
   keys,
   players,
   total,
@@ -80,6 +81,8 @@ export function Studio({
   tvZoneRef: RefObject<HTMLDivElement | null>;
   /** What the TV says while a pick is open, above it. */
   say: { line: string; className: string } | null;
+  /** New games since the last visit, announced in the same bubble when no pick is open. */
+  news: { line: string; see: string; show: string; players: number; onSee: () => void } | null;
   keys: PadKey[];
   players: number;
   /** Size of the whole catalogue, on the round sticker. */
@@ -129,6 +132,21 @@ export function Studio({
           {say && (
             <p className={`tv-say ${say.className}`} aria-hidden="true">
               {say.line}
+            </p>
+          )}
+          {!say && news && (
+            <p className="tv-say tv-news">
+              {news.line}
+              <button
+                type="button"
+                className="tv-news__see"
+                onClick={news.onSee}
+                aria-label={news.show}
+                data-umami-event="See new games"
+                data-umami-event-players={news.players}
+              >
+                {news.see}
+              </button>
             </p>
           )}
         </div>

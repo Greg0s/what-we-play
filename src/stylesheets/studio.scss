@@ -195,6 +195,65 @@
   }
 }
 
+/* New games since the last visit: the same bubble, with a button. It waits for the banner to settle before it pops. */
+.tv-news {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  animation: say-pop-a 0.2s cubic-bezier(0.3, 1.4, 0.5, 1) 0.9s backwards;
+
+  &__see {
+    padding: 0;
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 2.5px;
+    text-underline-offset: 4px;
+    cursor: pointer;
+
+    @media (hover: hover) {
+      &:hover {
+        color: $pink;
+      }
+    }
+  }
+}
+
+/* The same news on phones, where the TV has no room for its bubble: a strip under the banner. */
+.news-strip {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 0 0;
+  padding: 10px 16px;
+  background: $yellow;
+  color: $ink;
+  border: 2.5px solid $ink;
+  border-radius: 14px;
+  box-shadow: 3px 3px 0 var(--color-shadow);
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: 15px;
+
+  &__see {
+    flex: none;
+    padding: 7px 14px;
+    background: $ink;
+    color: #ffffff;
+    border: 0;
+    border-radius: 9px;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  @media (max-width: $phone) {
+    display: flex;
+  }
+}
+
 /* ------------------------------------------------------------ the sticker */
 
 .badge2 {

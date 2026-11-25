@@ -3,6 +3,9 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Every Monday: the build draws the week's « Coup de cœur » (src/featured.ts).
+  schedule:
+    - cron: "7 0 * * 1"
   # Lets a failed deploy be run again from the Actions tab without a new commit.
   workflow_dispatch:
 
