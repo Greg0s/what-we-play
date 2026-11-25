@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Lets a failed deploy be run again from the Actions tab without a new commit.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -44,14 +46,17 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      # The three Pages actions move together: deploy-pages@v4 stopped finding
+      # the artifact that upload-pages-artifact@v3 uploads (every deploy from
+      # 2026-11-24 failed with "No artifacts named github-pages were found").
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: "./dist"
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
