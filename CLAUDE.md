@@ -335,7 +335,10 @@ screen on.
 
 `main` deploys automatically to GitHub Pages on every push
 ([.github/workflows/deploy.yml](.github/workflows/deploy.yml)) — no
-preview environment. Work is always done on a feature branch with a Pull
+preview environment. A merged PR is not live until that run is green: check
+it. It can also be started by hand from the Actions tab. Bump
+`configure-pages`, `upload-pages-artifact` and `deploy-pages` together:
+mismatched majors upload fine and then fail to deploy. Work is always done on a feature branch with a Pull
 Request before merging. [.github/workflows/ci.yml](.github/workflows/ci.yml)
 runs lint, the full build (prerender + `check-seo`) and the Playwright suite
 on every PR, so a broken build or user-facing flow is caught before `main`.
