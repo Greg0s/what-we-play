@@ -31,7 +31,7 @@ export const es: Translation = {
   preview: {
     tape: "Juegos online con amigos",
     sticker: "Juegos gratis elegidos a mano",
-    alt: "What we play? — una tele retro les propone a cuatro peones juegos online para jugar con amigos",
+    alt: "What we play? Una tele retro les propone a cuatro peones juegos online para jugar con amigos",
   },
   language: {
     label: "Idioma",

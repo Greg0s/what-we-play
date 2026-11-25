@@ -3,7 +3,7 @@ import App from "./App";
 import { LanguageProvider } from "./i18n";
 import { ReliefProvider } from "./relief";
 import { ThemeProvider } from "./theme";
-import { LANGUAGES, OG_LOCALES } from "./i18n/config";
+import { DEFAULT_LANGUAGE, LANGUAGES, OG_LOCALES, STORAGE_KEY } from "./i18n/config";
 import { games, gamesForPlayerCount } from "./games";
 import { en } from "./i18n/locales/en";
 import { pageMeta, previewImage } from "./pageMeta";
@@ -34,6 +34,45 @@ function renderJsonLd(route: Route, dateModified?: string): string {
     .join("\n    ");
 }
 
+/**
+ * Sends a visitor who lands on an unprefixed (English) page to their own
+ * language's version of it, with a real navigation, before anything paints.
+ *
+ * The app used to swap the language after hydration and `replaceState` the
+ * URL, but by then the browser had already read an English page: Chrome
+ * (notably the installed app, whose `start_url` is `/`) kept offering to
+ * translate "from English" a page it was showing in French. Loading the
+ * prefixed page instead gives it `lang`, markup and URL that agree.
+ *
+ * Same lookup as `detectLanguage` in src/i18n/config.ts (a stored choice, then
+ * the browser's languages), inlined because it must run before any bundle.
+ * The target comes from the page's own `hreflang` links, which sit above it,
+ * and only its path is kept so it stays on whatever host served the page.
+ * Crawlers that run no JavaScript, or browse in English, stay put.
+ */
+function renderLanguageRedirect(): string {
+  const script = `(function () {
+      try {
+        var languages = ${JSON.stringify(LANGUAGES)};
+        var language = localStorage.getItem(${JSON.stringify(STORAGE_KEY)});
+        if (languages.indexOf(language) < 0) {
+          language = null;
+          var preferred = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language];
+          for (var i = 0; i < preferred.length && !language; i++) {
+            var base = String(preferred[i]).toLowerCase().split("-")[0];
+            if (languages.indexOf(base) >= 0) language = base;
+          }
+        }
+        if (!language || language === ${JSON.stringify(DEFAULT_LANGUAGE)}) return;
+        var link = document.querySelector('link[rel="alternate"][hreflang="' + language + '"]');
+        if (link) location.replace(new URL(link.href).pathname + location.search + location.hash);
+      } catch (e) {
+        // No storage or no URL support: the app still switches after hydration.
+      }
+    })();`;
+  return `<script>${script}</script>`;
+}
+
 /** The part of the `<head>` that differs from one page to the next. */
 function renderHead(route: Route, dateModified?: string): string {
   const { title, description } = pageMeta(route);
@@ -48,6 +87,7 @@ function renderHead(route: Route, dateModified?: string): string {
       ({ hreflang, url: href }) =>
         `<link rel="alternate" hreflang="${hreflang}" href="${href}" />`
     ),
+    ...(route.language === DEFAULT_LANGUAGE ? [renderLanguageRedirect()] : []),
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:title" content="${escapeAttribute(title)}" />`,
     `<meta property="og:description" content="${escapeAttribute(description)}" />`,
@@ -120,7 +160,7 @@ export function buildLlmsTxt(): string {
             ? en.content.playerRange(game.minPlayers, game.maxPlayers)
             : `${game.minPlayers}-${game.maxPlayers} players`;
       const description = en.gameDescriptions[game.id as keyof typeof en.gameDescriptions];
-      return `- [${game.name}](${game.link}) — ${range}. ${description}`;
+      return `- [${game.name}](${game.link}): ${range}. ${description}`;
     })
     .join("\n");
 
